@@ -10,8 +10,7 @@
     "dev": "npm run buildDev && node ./dist/server.js",
     "buildProd": "rimraf dist && webpack --mode production --config webpack.server.config.js && webpack --mode production --config webpack.prod.config.js",
     "prod": "npm run buildProd && node ./dist/server.js",
-    "buildDeploy": "webpack --mode production --config webpack.server.config.js && webpack --mode production --config webpack.prod.config.js",
-    "start": "npm run buildDeploy && node ./dist/server.js"
+    "start": "npm run buildProd && node ./dist/server.js"
   },
   "repository": {
     "type": "git",
