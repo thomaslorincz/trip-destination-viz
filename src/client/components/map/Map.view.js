@@ -28,12 +28,29 @@ export default class MapView extends View {
 
     this.map = new mapboxgl.Map({
       container: 'map',
-      style: 'mapbox://styles/mapbox/light-v9',
+      style: 'mapbox://styles/mapbox/dark-v9',
       center: [-113.323975, 53.631611],
       zoom: 7,
     });
 
     this.map.dragRotate.disable();
     this.map.touchZoomRotate.disable();
+
+    this.map.on('load', () => {
+      this.map.addLayer({
+        'id': 'destinations',
+        'source': {
+          type: 'vector',
+          url: 'mapbox://thomaslorincz.1rvjiy6d',
+        },
+        'source-layer': '2065_BAP_all_300-dshlgz',
+        'type': 'circle',
+        'paint': {
+          'circle-radius': 2,
+          'circle-opacity': 0.5,
+          'circle-color': '#FF0000',
+        },
+      });
+    });
   }
 }
