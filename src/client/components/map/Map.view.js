@@ -12,7 +12,7 @@ export default class MapView extends View {
     this.timeControl = document.getElementById('time-control');
     this.timeControl.addEventListener('click', (event) => {
       this.container.dispatchEvent(new CustomEvent('timeClicked', {
-        detail: event.target.textContent,
+        detail: event.target.dataset.value,
       }));
     });
 
