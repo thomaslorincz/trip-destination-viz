@@ -47,7 +47,14 @@ export default class MapView extends View {
         'type': 'circle',
         'paint': {
           'circle-radius': 2,
-          'circle-opacity': 0.5,
+          'circle-opacity': [
+            'interpolate', ['linear'], ['zoom'],
+            0, 0.1,
+            6, 0.1,
+            9, 0.3,
+            12, 1,
+            24, 1,
+          ],
           'circle-color': '#FF0000',
         },
       });
