@@ -6,7 +6,11 @@
     "node": ">=10.0.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "buildDev": "rimraf dist && webpack --mode development --config webpack.server.config.js && webpack --mode development --config webpack.dev.config.js",
+    "dev": "npm run buildDev && node ./dist/server.js",
+    "buildProd": "rimraf dist && webpack --mode production --config webpack.server.config.js && webpack --mode production --config webpack.prod.config.js",
+    "prod": "npm run buildProd && node ./dist/server.js",
+    "start": "npm run buildProd && node ./dist/server.js"
   },
   "repository": {
     "type": "git",
@@ -44,6 +48,7 @@
     "webpack": "^4.32.2",
     "webpack-cli": "^3.3.2",
     "webpack-dev-middleware": "^3.7.0",
-    "webpack-hot-middleware": "^2.25.0"
+    "webpack-hot-middleware": "^2.25.0",
+    "webpack-node-externals": "^1.7.2"
   }
 }
