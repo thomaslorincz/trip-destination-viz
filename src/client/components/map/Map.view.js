@@ -9,6 +9,13 @@ export default class MapView extends View {
   constructor(container) {
     super(container);
 
+    this.timeControl = document.getElementById('time-control');
+    this.timeControl.addEventListener('click', (event) => {
+      this.container.dispatchEvent(new CustomEvent('timeClicked', {
+        detail: event.target.textContent,
+      }));
+    });
+
     mapboxgl.accessToken = 'pk.eyJ1IjoidGhvbWFzbG9yaW5jeiIsImEiOiJjamx5aXVwaH' +
         'AxamZzM3dsaWdkZ3Q2eGJyIn0.mXjlp9c3l2-NBoS1uaEUdw';
 
@@ -22,28 +29,158 @@ export default class MapView extends View {
     this.map.dragRotate.disable();
     this.map.touchZoomRotate.disable();
 
+    this.circlePaint = {
+      'circle-radius': 2,
+      'circle-opacity': 0.4,
+      'circle-opacity-transition': {duration: 500},
+      'circle-color': '#FF0000',
+    };
+
     this.map.on('load', () => {
+      // Time 1
       this.map.addLayer({
-        'id': 'destinations',
+        'id': '1',
         'source': {
           type: 'vector',
-          url: 'mapbox://thomaslorincz.1rvjiy6d',
+          url: 'mapbox://thomaslorincz.583pjmkt',
         },
-        'source-layer': '2065_BAP_all_300-dshlgz',
+        'source-layer': 'output_2065CityII_1-4glz7d',
         'type': 'circle',
-        'paint': {
-          'circle-radius': 2,
-          'circle-opacity': [
-            'interpolate', ['linear'], ['zoom'],
-            0, 0.1,
-            6, 0.1,
-            9, 0.3,
-            12, 1,
-            24, 1,
-          ],
-          'circle-color': '#FF0000',
-        },
+        'paint': this.circlePaint,
       });
+
+      // Time 21
+      this.map.addLayer({
+        'id': '21',
+        'source': {
+          type: 'vector',
+          url: 'mapbox://thomaslorincz.2bifjb7r',
+        },
+        'source-layer': 'output_2065CityII_21-4z53tz',
+        'type': 'circle',
+        'paint': this.circlePaint,
+      });
+
+      // Time 22
+      this.map.addLayer({
+        'id': '22',
+        'source': {
+          type: 'vector',
+          url: 'mapbox://thomaslorincz.103wx5eq',
+        },
+        'source-layer': 'output_2065CityII_22-0ypg9r',
+        'type': 'circle',
+        'paint': this.circlePaint,
+      });
+
+      // Time 23
+      this.map.addLayer({
+        'id': '23',
+        'source': {
+          type: 'vector',
+          url: 'mapbox://thomaslorincz.8v024ybb',
+        },
+        'source-layer': 'output_2065CityII_23-0asb0b',
+        'type': 'circle',
+        'paint': this.circlePaint,
+      });
+
+      // Time 3
+      this.map.addLayer({
+        'id': '3',
+        'source': {
+          type: 'vector',
+          url: 'mapbox://thomaslorincz.0f930dhx',
+        },
+        'source-layer': 'output_2065CityII_3-0hy705',
+        'type': 'circle',
+        'paint': this.circlePaint,
+      });
+
+      // Time 41
+      this.map.addLayer({
+        'id': '41',
+        'source': {
+          type: 'vector',
+          url: 'mapbox://thomaslorincz.70il1oe0',
+        },
+        'source-layer': 'output_2065CityII_41-b6wa2r',
+        'type': 'circle',
+        'paint': this.circlePaint,
+      });
+
+      // Time 42
+      this.map.addLayer({
+        'id': '42',
+        'source': {
+          type: 'vector',
+          url: 'mapbox://thomaslorincz.apavzgr8',
+        },
+        'source-layer': 'output_2065CityII_42-8jwfg2',
+        'type': 'circle',
+        'paint': this.circlePaint,
+      });
+
+      // Time 43
+      this.map.addLayer({
+        'id': '43',
+        'source': {
+          type: 'vector',
+          url: 'mapbox://thomaslorincz.bk6ao503',
+        },
+        'source-layer': 'output_2065CityII_43-3xxcy9',
+        'type': 'circle',
+        'paint': this.circlePaint,
+      });
+
+      // Time 5
+      this.map.addLayer({
+        'id': '5',
+        'source': {
+          type: 'vector',
+          url: 'mapbox://thomaslorincz.4c836euq',
+        },
+        'source-layer': 'output_2065CityII_5-b90mgd',
+        'type': 'circle',
+        'paint': this.circlePaint,
+      });
+
+      // Time 6
+      this.map.addLayer({
+        'id': '6',
+        'source': {
+          type: 'vector',
+          url: 'mapbox://thomaslorincz.4hlqkniu',
+        },
+        'source-layer': 'output_2065CityII_6-2opt4s',
+        'type': 'circle',
+        'paint': this.circlePaint,
+      });
+
+      this.container.dispatchEvent(new CustomEvent('loaded'));
     });
+  }
+
+  /**
+   * @param {'all'|'1'|'21'|'22'|'23'|'3'|'41'|'42'|'43'|'5'|'6'} time
+   */
+  draw(time) {
+    if (document.querySelector('.time.selected')) {
+      document.querySelector('.time.selected').classList.remove('selected');
+    }
+    document.getElementById(`time-${time}`).classList.add('selected');
+
+    const layers = ['1', '21', '22', '23', '3', '41', '42', '43', '5', '6'];
+    if (time === 'all') {
+      layers.forEach((layer) => {
+        this.map.setPaintProperty(layer, 'circle-opacity', 0.4);
+      });
+    } else {
+      this.map.setPaintProperty(time, 'circle-opacity', 0.4);
+      layers.splice(layers.indexOf(time), 1);
+      layers.forEach((layer) => {
+        this.map.setPaintProperty(layer, 'circle-opacity', 0);
+      });
+    }
   }
 }
