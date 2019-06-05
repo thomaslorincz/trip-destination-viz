@@ -1,4 +1,4 @@
-import '@babel/polyfill';
+import 'core-js/stable';
 import AppModel from './app/App.model';
 import AppPresenter from './app/App.presenter';
 import './style.css';
