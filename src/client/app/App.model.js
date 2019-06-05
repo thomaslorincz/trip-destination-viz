@@ -8,6 +8,7 @@ export default class AppModel extends Model {
   constructor() {
     super();
 
+    /** @type {'all'|string[]} */
     this.time = 'all';
   }
 
@@ -22,9 +23,19 @@ export default class AppModel extends Model {
 
   /**
    * @param {'all'|'1'|'21'|'22'|'23'|'3'|'41'|'42'|'43'|'5'|'6'} time
+   * @param {boolean} ctrlKey
    */
-  updateTime(time) {
-    this.time = time;
+  updateTime({time, ctrlKey}) {
+    if (time === 'all') {
+      this.time = time;
+    } else if (ctrlKey && this.time === 'all') {
+      this.time = [time];
+    } else if (ctrlKey) {
+      this.time.push(time);
+    } else {
+      this.time = [time];
+    }
+
     document.dispatchEvent(new CustomEvent('timeUpdated', {
       detail: this.time,
     }));

@@ -12,7 +12,10 @@ export default class MapView extends View {
     this.timeControl = document.getElementById('time-control');
     this.timeControl.addEventListener('click', (event) => {
       this.container.dispatchEvent(new CustomEvent('timeClicked', {
-        detail: event.target.dataset.value,
+        detail: {
+          time: event.target.dataset.value,
+          ctrlKey: event.ctrlKey,
+        },
       }));
     });
 
@@ -162,13 +165,19 @@ export default class MapView extends View {
   }
 
   /**
-   * @param {'all'|'1'|'21'|'22'|'23'|'3'|'41'|'42'|'43'|'5'|'6'} time
+   * @param {'all'|string[]} time
    */
   draw(time) {
-    if (document.querySelector('.time.selected')) {
-      document.querySelector('.time.selected').classList.remove('selected');
+    document.querySelectorAll('.time.selected').forEach((element) => {
+      element.classList.remove('selected');
+    });
+    if (time === 'all') {
+      document.getElementById('time-all').classList.add('selected');
+    } else {
+      time.forEach((value) => {
+        document.getElementById(`time-${value}`).classList.add('selected');
+      });
     }
-    document.getElementById(`time-${time}`).classList.add('selected');
 
     const layers = ['1', '21', '22', '23', '3', '41', '42', '43', '5', '6'];
     if (time === 'all') {
@@ -176,10 +185,11 @@ export default class MapView extends View {
         this.map.setPaintProperty(layer, 'circle-opacity', 0.4);
       });
     } else {
-      this.map.setPaintProperty(time, 'circle-opacity', 0.4);
-      layers.splice(layers.indexOf(time), 1);
       layers.forEach((layer) => {
         this.map.setPaintProperty(layer, 'circle-opacity', 0);
+      });
+      time.forEach((value) => {
+        this.map.setPaintProperty(value, 'circle-opacity', 0.4);
       });
     }
   }
