@@ -21,7 +21,11 @@ export default class MapPresenter extends Presenter {
       this.model.updateTime(event.detail);
     });
 
-    document.addEventListener('timeUpdated', (event) => {
+    this.view.container.addEventListener('datasetClicked', (event) => {
+      this.model.updateDataset(event.detail);
+    });
+
+    document.addEventListener('settingsUpdated', (event) => {
       this.view.draw(event.detail);
     });
   }

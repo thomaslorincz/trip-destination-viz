@@ -22,24 +22,32 @@ body {
   z-index: 0;
 }
 
-#time-control {
+#control-container {
   display: flex;
   position: absolute;
   box-sizing: border-box;
+  justify-content: center;
   flex-direction: row;
-  justify-content: space-evenly;
-  font-family: 'Montserrat', sans-serif;
-  margin: 0 auto;
-  padding: 10px 20px;
-  bottom: 20px;
+  width: 100%;
+  height: auto;
   z-index: 1;
+  bottom: 20px;
+}
+
+.control {
+  display: inline-block;
+  position: relative;
+  box-sizing: border-box;
+  font-family: 'Montserrat', sans-serif;
+  padding: 10px 20px;
+  margin: 0 10px;
   background-color: white;
   color: darkblue;
   border-radius: 25px;
   box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
 }
 
-.time {
+.control-value {
   display: inline-block;
   position: relative;
   box-sizing: border-box;
@@ -49,13 +57,12 @@ body {
   font-size: 14px;
   background-color: white;
   border-radius: 15px;
-  text-transform: capitalize;
 }
 
-.time.selected {
+.control-value.selected {
   background-color: gainsboro;
 }
 
-.time:hover {
+.control-value:hover {
   background-color: gainsboro;
 }

@@ -8,6 +8,9 @@ export default class AppModel extends Model {
   constructor() {
     super();
 
+    /** @type {'2065BAP'|'2065CityII'} */
+    this.dataset = '2065BAP';
+
     /** @type {'all'|string[]} */
     this.time = 'all';
   }
@@ -17,7 +20,10 @@ export default class AppModel extends Model {
    */
   initialDraw() {
     document.dispatchEvent(new CustomEvent('initialDraw', {
-      detail: this.time,
+      detail: {
+        dataset: this.dataset,
+        time: this.time,
+      },
     }));
   }
 
@@ -36,8 +42,24 @@ export default class AppModel extends Model {
       this.time = [time];
     }
 
-    document.dispatchEvent(new CustomEvent('timeUpdated', {
-      detail: this.time,
+    document.dispatchEvent(new CustomEvent('settingsUpdated', {
+      detail: {
+        dataset: this.dataset,
+        time: this.time,
+      },
+    }));
+  }
+
+  /**
+   * @param {'2065BAP'|'2065CityII'} dataset
+   */
+  updateDataset(dataset) {
+    this.dataset = dataset;
+    document.dispatchEvent(new CustomEvent('settingsUpdated', {
+      detail: {
+        dataset: this.dataset,
+        time: this.time,
+      },
     }));
   }
 }
