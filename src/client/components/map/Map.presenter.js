@@ -17,16 +17,20 @@ export default class MapPresenter extends Presenter {
       this.view.draw(event.detail);
     });
 
-    this.view.container.addEventListener('legendClicked', (event) => {
+    this.view.container.addEventListener('datasetClicked', (event) => {
+      this.model.updateDataset(event.detail);
+    });
+
+    this.view.container.addEventListener('purposeClicked', (event) => {
       this.model.updatePurpose(event.detail);
+    });
+
+    this.view.container.addEventListener('overlayClicked', (event) => {
+      this.model.updateOverlay(event.detail);
     });
 
     this.view.container.addEventListener('timeClicked', (event) => {
       this.model.updateTime(event.detail);
-    });
-
-    this.view.container.addEventListener('datasetClicked', (event) => {
-      this.model.updateDataset(event.detail);
     });
 
     document.addEventListener('settingsUpdated', (event) => {

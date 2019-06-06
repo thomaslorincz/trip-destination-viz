@@ -10,6 +10,7 @@ export default class MapView extends View {
     super(container);
 
     this.layers = ['2065BAP', '2065CityII'];
+    this.overlays = ['city', 'nc'];
 
     this.allCircleColor = '#FFFFFF';
     this.dataDrivenCircleColors = [
@@ -27,23 +28,35 @@ export default class MapView extends View {
       '#000000',
     ];
 
-    this.legendEntries = document.querySelectorAll('.legend-entry');
-    this.legendEntries.forEach((entry) => {
+    this.datasetEntries = document.querySelectorAll('.dataset-entry');
+    this.datasetEntries.forEach((entry) => {
       entry.addEventListener('click', (event) => {
-        this.container.dispatchEvent(new CustomEvent('legendClicked', {
+        this.container.dispatchEvent(new CustomEvent('datasetClicked', {
+          detail: event.target.dataset.value,
+        }));
+      });
+    });
+
+    this.purposeEntries = document.querySelectorAll('.purpose-entry');
+    this.purposeEntries.forEach((entry) => {
+      entry.addEventListener('click', (event) => {
+        this.container.dispatchEvent(new CustomEvent('purposeClicked', {
           detail: {
-            purpose: event.target.dataset.value,
+            value: event.target.dataset.value,
             ctrlKey: event.ctrlKey,
           },
         }));
       });
     });
 
-    this.datasetControls = document.querySelectorAll('.dataset-value');
-    this.datasetControls.forEach((control) => {
-      control.addEventListener('click', (event) => {
-        this.container.dispatchEvent(new CustomEvent('datasetClicked', {
-          detail: event.target.dataset.value,
+    this.overlayEntries = document.querySelectorAll('.overlay-entry');
+    this.overlayEntries.forEach((entry) => {
+      entry.addEventListener('click', (event) => {
+        this.container.dispatchEvent(new CustomEvent('overlayClicked', {
+          detail: {
+            value: event.target.dataset.value,
+            ctrlKey: event.ctrlKey,
+          },
         }));
       });
     });
@@ -114,73 +127,162 @@ export default class MapView extends View {
         },
       });
 
+      this.map.addLayer({
+        'id': 'city',
+        'source': {
+          type: 'vector',
+          url: 'mapbox://thomaslorincz.48okpw5t',
+        },
+        'source-layer': 'city_boundary-d6ewoz',
+        'type': 'line',
+        'paint': {
+          'line-width': 3,
+          'line-color': '#FF0000',
+        },
+      });
+
+      this.map.addLayer({
+        'id': 'nc',
+        'source': {
+          type: 'vector',
+          url: 'mapbox://thomaslorincz.d571qaco',
+        },
+        'source-layer': 'nc_CityII-axaip8',
+        'type': 'line',
+        'paint': {
+          'line-width': 3,
+          'line-color': '#0000FF',
+        },
+      });
+
       this.container.dispatchEvent(new CustomEvent('loaded'));
     });
   }
 
   /**
    * @param {'2065BAP'|'2065CityII'} dataset
-   * @param {'all'|string[]} time
-   * @param {'all'|string[]} purpose
+   * @param {'all'|Set} purpose
+   * @param {''|Set} overlay
+   * @param {'all'|Set} time
    */
-  draw({dataset, time, purpose}) {
+  draw({dataset, purpose, overlay, time}) {
+    this.drawDataset(dataset);
+    this.drawPurpose(purpose);
+    this.drawOverlay(overlay);
+    this.drawTime(time);
+    this.drawDots(dataset, purpose, time);
+  }
+
+  /**
+   * @param {'2065BAP'|'2065CityII'} dataset
+   */
+  drawDataset(dataset) {
     this.layers.forEach((layerId) => {
       this.map.setLayoutProperty(layerId, 'visibility', 'none');
     });
-
     this.map.setLayoutProperty(dataset, 'visibility', 'visible');
 
-    // Clear all selected styling
-    document.querySelectorAll('.control-value.selected').forEach((element) => {
-      element.classList.remove('selected');
-    });
-    document.querySelectorAll('.legend-entry.selected').forEach((element) => {
-      element.classList.remove('selected');
-    });
+    const oldChecked = document.querySelector('.dataset-entry.selected');
+    if (oldChecked) {
+      oldChecked.classList.remove('selected');
+      const icon = oldChecked.querySelector('.left-control-icon');
+      icon.textContent = 'radio_button_unchecked';
+    }
 
     document.getElementById(`data-${dataset}`).classList.add('selected');
+    const newChecked = document.querySelector('.dataset-entry.selected');
+    if (newChecked) {
+      const icon = newChecked.querySelector('.left-control-icon');
+      icon.textContent = 'radio_button_checked';
+    }
+  }
 
-    if (time === 'all' && purpose === 'all') {
-      document.getElementById('time-all').classList.add('selected');
+  /**
+   * @param {'all'|Set} purpose
+   */
+  drawPurpose(purpose) {
+    document.querySelectorAll('.purpose-entry.selected').forEach((element) => {
+      element.classList.remove('selected');
+    });
+    if (purpose === 'all') {
       document.getElementById('purpose-all').classList.add('selected');
+    } else {
+      purpose.forEach((value) => {
+        document.getElementById(`purpose-${value}`).classList.add('selected');
+      });
+    }
+  }
+
+  /**
+   * @param {''|Set} overlay
+   */
+  drawOverlay(overlay) {
+    this.overlays.forEach((layerId) => {
+      this.map.setLayoutProperty(layerId, 'visibility', 'none');
+    });
+
+    document.querySelectorAll('.overlay-entry.selected').forEach((element) => {
+      element.classList.remove('selected');
+    });
+    if (overlay !== '') {
+      overlay.forEach((value) => {
+        document.getElementById(`overlay-${value}`).classList.add('selected');
+        this.map.setLayoutProperty(value, 'visibility', 'visible');
+      });
+    }
+  }
+
+  /**
+   * @param {'all'|Set} time
+   */
+  drawTime(time) {
+    document.querySelectorAll('.time-value.selected').forEach((element) => {
+      element.classList.remove('selected');
+    });
+    if (time === 'all') {
+      document.getElementById('time-all').classList.add('selected');
+    } else {
+      time.forEach((value) => {
+        document.getElementById(`time-${value}`).classList.add('selected');
+      });
+    }
+  }
+
+  /**
+   * @param {'2065BAP'|'2065CityII'} dataset
+   * @param {'all'|Set} purpose
+   * @param {'all'|Set} time
+   */
+  drawDots(dataset, purpose, time) {
+    if (time === 'all' && purpose === 'all') {
       this.map.getLayer(dataset).setPaintProperty(
           'circle-color',
           this.allCircleColor
       );
       this.map.setFilter(dataset, null);
     } else if (time === 'all' && typeof purpose === 'object') {
-      document.getElementById('time-all').classList.add('selected');
-      purpose.forEach((value) => {
-        document.getElementById(`purpose-${value}`).classList.add('selected');
-        this.map.setFilter(dataset, ['in', 'purp', ...purpose]);
-      });
       this.map.getLayer(dataset).setPaintProperty(
           'circle-color',
           this.dataDrivenCircleColors
       );
+      this.map.setFilter(dataset, ['in', 'purp', ...purpose]);
     } else if (purpose === 'all' && typeof time === 'object') {
-      document.getElementById('purpose-all').classList.add('selected');
       this.map.getLayer(dataset).setPaintProperty(
           'circle-color',
           this.allCircleColor
       );
-      time.forEach((value) => {
-        document.getElementById(`time-${value}`).classList.add('selected');
+      const timeNumbers = Array.from(time.values()).map((timeString) => {
+        return parseInt(timeString);
       });
-      const timeNumbers = time.map((timeString) => parseInt(timeString));
       this.map.setFilter(dataset, ['in', 'time', ...timeNumbers]);
     } else {
-      purpose.forEach((value) => {
-        document.getElementById(`purpose-${value}`).classList.add('selected');
-      });
       this.map.getLayer(dataset).setPaintProperty(
           'circle-color',
           this.dataDrivenCircleColors
       );
-      time.forEach((value) => {
-        document.getElementById(`time-${value}`).classList.add('selected');
+      const timeNumbers = Array.from(time.values()).map((timeString) => {
+        return parseInt(timeString);
       });
-      const timeNumbers = time.map((timeString) => parseInt(timeString));
       this.map.setFilter(dataset, [
         'all',
         ['in', 'time', ...timeNumbers],
