@@ -13,16 +13,20 @@ export default class AppModel extends Model {
 
     /** @type {'all'|string[]} */
     this.time = 'all';
+
+    /** @type {'all'|string[]} */
+    this.purpose = 'all';
   }
 
   /**
    * A method for dispatching the initial draw event of the app.
    */
   initialDraw() {
-    document.dispatchEvent(new CustomEvent('initialDraw', {
+    document.dispatchEvent(new CustomEvent('settingsUpdated', {
       detail: {
         dataset: this.dataset,
         time: this.time,
+        purpose: this.purpose,
       },
     }));
   }
@@ -46,6 +50,7 @@ export default class AppModel extends Model {
       detail: {
         dataset: this.dataset,
         time: this.time,
+        purpose: this.purpose,
       },
     }));
   }
@@ -59,6 +64,31 @@ export default class AppModel extends Model {
       detail: {
         dataset: this.dataset,
         time: this.time,
+        purpose: this.purpose,
+      },
+    }));
+  }
+
+  /**
+   * @param {'all'|'O'|'W'|'S'|'P'|'H'|'T'|'L'|'R'|'C'|'Q'} purpose
+   * @param {boolean} ctrlKey
+   */
+  updatePurpose({purpose, ctrlKey}) {
+    if (purpose === 'all') {
+      this.purpose = purpose;
+    } else if (ctrlKey && this.purpose === 'all') {
+      this.purpose = [purpose];
+    } else if (ctrlKey) {
+      this.purpose.push(purpose);
+    } else {
+      this.purpose = [purpose];
+    }
+
+    document.dispatchEvent(new CustomEvent('settingsUpdated', {
+      detail: {
+        dataset: this.dataset,
+        time: this.time,
+        purpose: this.purpose,
       },
     }));
   }

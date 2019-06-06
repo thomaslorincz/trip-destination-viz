@@ -17,6 +17,10 @@ export default class MapPresenter extends Presenter {
       this.view.draw(event.detail);
     });
 
+    this.view.container.addEventListener('legendClicked', (event) => {
+      this.model.updatePurpose(event.detail);
+    });
+
     this.view.container.addEventListener('timeClicked', (event) => {
       this.model.updateTime(event.detail);
     });

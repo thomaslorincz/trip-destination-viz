@@ -22,6 +22,70 @@ body {
   z-index: 0;
 }
 
+#legend {
+  display: flex;
+  position: absolute;
+  flex-direction: column;
+  box-sizing: border-box;
+  top: 20px;
+  left: 20px;
+  z-index: 1;
+  background-color: white;
+  border-radius: 20px;
+  padding: 10px;
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
+}
+
+.legend-entry {
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  cursor: pointer;
+  transition: background-color 250ms ease;
+  border-radius: 12px;
+  padding: 4px 12px;
+  vertical-align: middle;
+}
+
+.legend-entry.selected {
+  background-color: gainsboro;
+}
+
+.legend-entry:hover {
+  background-color: gainsboro;
+}
+
+.entry-colour {
+  display: inline-block;
+  position: relative;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.entry-name {
+  display: inline-block;
+  position: relative;
+  font-size: 14px;
+  font-family: "Montserrat", sans-serif;
+  color: darkblue;
+  padding: 0 8px;
+  pointer-events: none;
+}
+
+#white-circle {background-color: white; border: 1px solid black;}
+#red-circle {background-color: red;}
+#orange-circle {background-color: orange;}
+#yellow-circle {background-color: yellow;}
+#yellow-green-circle {background-color: greenyellow;}
+#green-circle {background-color: green;}
+#green-blue-circle {background-color: lightseagreen;}
+#blue-circle {background-color: blue;}
+#violet-circle {background-color: darkorchid;}
+#pink-circle {background-color: deeppink;}
+#brown-circle {background-color: saddlebrown;}
+
 #control-container {
   display: flex;
   position: absolute;

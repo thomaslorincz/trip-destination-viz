@@ -11,21 +11,53 @@ export default class MapView extends View {
 
     this.layers = ['2065BAP', '2065CityII'];
 
-    this.datasetControl = document.getElementById('dataset-control');
-    this.datasetControl.addEventListener('click', (event) => {
-      this.container.dispatchEvent(new CustomEvent('datasetClicked', {
-        detail: event.target.dataset.value,
-      }));
+    this.allCircleColor = '#FFFFFF';
+    this.dataDrivenCircleColors = [
+      'match', ['get', 'purp'],
+      'O', '#FF0000',
+      'W', '#FFA500',
+      'S', '#FFFF00',
+      'P', '#9ACD32',
+      'H', '#008000',
+      'T', '#20B2AA',
+      'L', '#0000FF',
+      'R', '#9932CC',
+      'C', '#FF1493',
+      'Q', '#8B4513',
+      '#000000',
+    ];
+
+    this.legendEntries = document.querySelectorAll('.legend-entry');
+    this.legendEntries.forEach((entry) => {
+      entry.addEventListener('click', (event) => {
+        this.container.dispatchEvent(new CustomEvent('legendClicked', {
+          detail: {
+            purpose: event.target.dataset.value,
+            ctrlKey: event.ctrlKey,
+          },
+        }));
+      });
     });
 
-    this.timeControl = document.getElementById('time-control');
-    this.timeControl.addEventListener('click', (event) => {
-      this.container.dispatchEvent(new CustomEvent('timeClicked', {
-        detail: {
-          time: event.target.dataset.value,
-          ctrlKey: event.ctrlKey,
-        },
-      }));
+    this.datasetControls = document.querySelectorAll('.dataset-value');
+    this.datasetControls.forEach((control) => {
+      control.addEventListener('click', (event) => {
+        this.container.dispatchEvent(new CustomEvent('datasetClicked', {
+          detail: event.target.dataset.value,
+        }));
+      });
+    });
+
+    this.timeControls = document.querySelectorAll('.time-value');
+    this.timeControls.forEach((control) => {
+      control.addEventListener('click', (event) => {
+        this.container.dispatchEvent(new CustomEvent('timeClicked', {
+          detail: {
+            time: event.target.dataset.value,
+            ctrlKey: event.ctrlKey,
+          },
+        }));
+      });
     });
 
     mapboxgl.accessToken = 'pk.eyJ1IjoidGhvbWFzbG9yaW5jeiIsImEiOiJjamx5aXVwaH' +
@@ -55,10 +87,10 @@ export default class MapView extends View {
           'circle-opacity': [
             'interpolate', ['linear'], ['zoom'],
             0, 0.1,
-            8, 0.4,
+            8, 0.2,
             12, 1,
           ],
-          'circle-color': '#FF0000',
+          'circle-color': this.allCircleColor,
         },
       });
 
@@ -75,10 +107,10 @@ export default class MapView extends View {
           'circle-opacity': [
             'interpolate', ['linear'], ['zoom'],
             0, 0.1,
-            8, 0.4,
+            8, 0.2,
             12, 1,
           ],
-          'circle-color': '#0000FF',
+          'circle-color': this.allCircleColor,
         },
       });
 
@@ -89,8 +121,9 @@ export default class MapView extends View {
   /**
    * @param {'2065BAP'|'2065CityII'} dataset
    * @param {'all'|string[]} time
+   * @param {'all'|string[]} purpose
    */
-  draw({dataset, time}) {
+  draw({dataset, time, purpose}) {
     this.layers.forEach((layerId) => {
       this.map.setLayoutProperty(layerId, 'visibility', 'none');
     });
@@ -101,18 +134,58 @@ export default class MapView extends View {
     document.querySelectorAll('.control-value.selected').forEach((element) => {
       element.classList.remove('selected');
     });
+    document.querySelectorAll('.legend-entry.selected').forEach((element) => {
+      element.classList.remove('selected');
+    });
 
     document.getElementById(`data-${dataset}`).classList.add('selected');
 
-    if (time === 'all') {
+    if (time === 'all' && purpose === 'all') {
       document.getElementById('time-all').classList.add('selected');
+      document.getElementById('purpose-all').classList.add('selected');
+      this.map.getLayer(dataset).setPaintProperty(
+          'circle-color',
+          this.allCircleColor
+      );
       this.map.setFilter(dataset, null);
-    } else {
+    } else if (time === 'all' && typeof purpose === 'object') {
+      document.getElementById('time-all').classList.add('selected');
+      purpose.forEach((value) => {
+        document.getElementById(`purpose-${value}`).classList.add('selected');
+        this.map.setFilter(dataset, ['in', 'purp', ...purpose]);
+      });
+      this.map.getLayer(dataset).setPaintProperty(
+          'circle-color',
+          this.dataDrivenCircleColors
+      );
+    } else if (purpose === 'all' && typeof time === 'object') {
+      document.getElementById('purpose-all').classList.add('selected');
+      this.map.getLayer(dataset).setPaintProperty(
+          'circle-color',
+          this.allCircleColor
+      );
       time.forEach((value) => {
         document.getElementById(`time-${value}`).classList.add('selected');
       });
       const timeNumbers = time.map((timeString) => parseInt(timeString));
       this.map.setFilter(dataset, ['in', 'time', ...timeNumbers]);
+    } else {
+      purpose.forEach((value) => {
+        document.getElementById(`purpose-${value}`).classList.add('selected');
+      });
+      this.map.getLayer(dataset).setPaintProperty(
+          'circle-color',
+          this.dataDrivenCircleColors
+      );
+      time.forEach((value) => {
+        document.getElementById(`time-${value}`).classList.add('selected');
+      });
+      const timeNumbers = time.map((timeString) => parseInt(timeString));
+      this.map.setFilter(dataset, [
+        'all',
+        ['in', 'time', ...timeNumbers],
+        ['in', 'purp', ...purpose],
+      ]);
     }
   }
 }
