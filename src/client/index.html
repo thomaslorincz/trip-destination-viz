@@ -2,75 +2,97 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Montserrat&display=swap" rel="stylesheet">
   <link href="https://api.mapbox.com/mapbox-gl-js/v1.0.0/mapbox-gl.css" rel="stylesheet">
   <title>Trip Destinations</title>
 </head>
 <body>
 <div id="map"></div>
-<div id="legend">
-  <div id="purpose-all" class="legend-entry" data-value="all">
-    <div id="white-circle" class="entry-colour"></div>
-    <div class="entry-name">All</div>
+<div id="left-controls-container">
+  <div id="dataset-control" class="left-control">
+    <div class="left-control-title">Dataset</div>
+    <div id="data-2065BAP" class="left-control-entry" data-value="2065BAP">
+      <i class="left-control-icon material-icons-round black-icon">radio_button_checked</i>
+      <div class="left-control-label">BAP (2065)</div>
+    </div>
+    <div id="data-2065CityII" class="left-control-entry" data-value="2065CityII">
+      <i class="left-control-icon material-icons-round black-icon">radio_button_unchecked</i>
+      <div class="left-control-label">City Plan II (2065)</div>
+    </div>
   </div>
-  <div id="purpose-O" class="legend-entry" data-value="O">
-    <div id="red-circle" class="entry-colour"></div>
-    <div class="entry-name">Home</div>
+  <div id="purpose-control" class="left-control">
+    <div class="left-control-title">Trip Purpose</div>
+    <div id="purpose-all" class="left-control-entry" data-value="all">
+      <div class="left-control-icon circle white-circle"></div>
+      <div class="left-control-label">All</div>
+    </div>
+    <div id="purpose-O" class="left-control-entry" data-value="O">
+      <div class="left-control-icon circle red-circle"></div>
+      <div class="left-control-label">Home</div>
+    </div>
+    <div id="purpose-W" class="left-control-entry" data-value="W">
+      <div class="left-control-icon circle orange-circle"></div>
+      <div class="left-control-label">Work</div>
+    </div>
+    <div id="purpose-S" class="left-control-entry" data-value="S">
+      <div class="left-control-icon circle yellow-circle"></div>
+      <div class="left-control-label">School</div>
+    </div>
+    <div id="purpose-P" class="left-control-entry" data-value="P">
+      <div class="left-control-icon circle yellow-green-circle"></div>
+      <div class="left-control-label">Personal Business</div>
+    </div>
+    <div id="purpose-H" class="left-control-entry" data-value="H">
+      <div class="left-control-icon circle green-circle"></div>
+      <div class="left-control-label">Shop</div>
+    </div>
+    <div id="purpose-T" class="left-control-entry" data-value="T">
+      <div class="left-control-icon circle green-blue-circle"></div>
+      <div class="left-control-label">Eat</div>
+    </div>
+    <div id="purpose-L" class="left-control-entry" data-value="L">
+      <div class="left-control-icon circle blue-circle"></div>
+      <div class="left-control-label">Social</div>
+    </div>
+    <div id="purpose-R" class="left-control-entry" data-value="R">
+      <div class="left-control-icon circle violet-circle"></div>
+      <div class="left-control-label">Recreation</div>
+    </div>
+    <div id="purpose-C" class="left-control-entry" data-value="C">
+      <div class="left-control-icon circle pink-circle"></div>
+      <div class="left-control-label">Escort</div>
+    </div>
+    <div id="purpose-Q" class="left-control-entry" data-value="Q">
+      <div class="left-control-icon circle brown-circle"></div>
+      <div class="left-control-label">Quick Stop</div>
+    </div>
   </div>
-  <div id="purpose-W" class="legend-entry" data-value="W">
-    <div id="orange-circle" class="entry-colour"></div>
-    <div class="entry-name">Work</div>
-  </div>
-  <div id="purpose-S" class="legend-entry" data-value="S">
-    <div id="yellow-circle" class="entry-colour"></div>
-    <div class="entry-name">School</div>
-  </div>
-  <div id="purpose-P" class="legend-entry" data-value="P">
-    <div id="yellow-green-circle" class="entry-colour"></div>
-    <div class="entry-name">Personal Business</div>
-  </div>
-  <div id="purpose-H" class="legend-entry" data-value="H">
-    <div id="green-circle" class="entry-colour"></div>
-    <div class="entry-name">Shop</div>
-  </div>
-  <div id="purpose-T" class="legend-entry" data-value="T">
-    <div id="green-blue-circle" class="entry-colour"></div>
-    <div class="entry-name">Eat</div>
-  </div>
-  <div id="purpose-L" class="legend-entry" data-value="L">
-    <div id="blue-circle" class="entry-colour"></div>
-    <div class="entry-name">Social</div>
-  </div>
-  <div id="purpose-R" class="legend-entry" data-value="R">
-    <div id="violet-circle" class="entry-colour"></div>
-    <div class="entry-name">Recreation</div>
-  </div>
-  <div id="purpose-C" class="legend-entry" data-value="C">
-    <div id="pink-circle" class="entry-colour"></div>
-    <div class="entry-name">Escort</div>
-  </div>
-  <div id="purpose-Q" class="legend-entry" data-value="Q">
-    <div id="brown-circle" class="entry-colour"></div>
-    <div class="entry-name">Quick Stop</div>
+  <div id="overlay-control" class="left-control">
+    <div class="left-control-title">Overlay</div>
+    <div id="overlay-city" class="left-control-entry">
+      <i class="left-control-icon material-icons-round red-icon">layers</i>
+      <div class="left-control-label">City Boundary</div>
+    </div>
+    <div id="overlay-nc" class="left-control-entry">
+      <i class="left-control-icon material-icons-round blue-icon">layers</i>
+      <div class="left-control-label">Nodes & Corridors</div>
+    </div>
   </div>
 </div>
-<div id="control-container">
-  <div id="dataset-control" class="control">
-    <div id="data-2065BAP" class="control-value dataset-value" data-value="2065BAP">BAP (2065)</div>
-    <div id="data-2065CityII" class="control-value dataset-value" data-value="2065CityII">City Plan II (2065)</div>
-  </div>
-  <div id="time-control" class="control">
-    <div id="time-all" class="control-value time-value" data-value="all">All</div>
-    <div id="time-1" class="control-value time-value" data-value="1">04:00-06:00</div>
-    <div id="time-21" class="control-value time-value" data-value="21">06:00-07:00</div>
-    <div id="time-22" class="control-value time-value" data-value="22">07:00-08:00</div>
-    <div id="time-23" class="control-value time-value" data-value="23">08:00-09:00</div>
-    <div id="time-3" class="control-value time-value" data-value="3">09:00-15:30</div>
-    <div id="time-41" class="control-value time-value" data-value="41">15:30-16:30</div>
-    <div id="time-42" class="control-value time-value" data-value="42">16:30-17:30</div>
-    <div id="time-43" class="control-value time-value" data-value="43">17:30-18:30</div>
-    <div id="time-5" class="control-value time-value" data-value="5">18:30-22:00</div>
-    <div id="time-6" class="control-value time-value" data-value="6">22:00-04:00</div>
+<div id="time-control-container">
+  <div id="time-control">
+    <div id="time-all" class="time-value" data-value="all">All</div>
+    <div id="time-1" class="time-value" data-value="1">04:00-06:00</div>
+    <div id="time-21" class="time-value" data-value="21">06:00-07:00</div>
+    <div id="time-22" class="time-value" data-value="22">07:00-08:00</div>
+    <div id="time-23" class="time-value" data-value="23">08:00-09:00</div>
+    <div id="time-3" class="time-value" data-value="3">09:00-15:30</div>
+    <div id="time-41" class="time-value" data-value="41">15:30-16:30</div>
+    <div id="time-42" class="time-value" data-value="42">16:30-17:30</div>
+    <div id="time-43" class="time-value" data-value="43">17:30-18:30</div>
+    <div id="time-5" class="time-value" data-value="5">18:30-22:00</div>
+    <div id="time-6" class="time-value" data-value="6">22:00-04:00</div>
   </div>
 </div>
 </body>

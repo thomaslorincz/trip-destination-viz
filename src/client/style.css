@@ -22,49 +22,84 @@ body {
   z-index: 0;
 }
 
-#legend {
+#left-controls-container {
   display: flex;
   position: absolute;
   flex-direction: column;
   box-sizing: border-box;
-  top: 20px;
-  left: 20px;
+  width: 224px;
+  height: 100%;
+  top: 0;
+  left: 0;
+  padding: 20px 0 0 20px;
+}
+
+.left-control {
+  display: flex;
+  position: relative;
+  width: 100%;
+  height: auto;
+  flex-direction: column;
+  box-sizing: border-box;
   z-index: 1;
   background-color: white;
   border-radius: 20px;
   padding: 10px;
   box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
+  margin: 10px 0;
+  font-family: "Montserrat", sans-serif;
+  color: darkblue;
 }
 
-.legend-entry {
+.left-control:first-child {
+  margin: 0 0 10px 0;
+}
+
+.left-control:last-child {
+  margin: 10px 0 0 0;
+}
+
+.left-control-title {
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 18px;
+  text-align: center;
+  color: black;
+  padding: 0 0 4px 0;
+  cursor: default;
+}
+
+.left-control-entry {
   display: flex;
   position: relative;
   flex-direction: row;
+  width: 100%;
+  box-sizing: border-box;
+  font-size: 14px;
   cursor: pointer;
-  transition: background-color 250ms ease;
-  border-radius: 12px;
   padding: 4px 12px;
-  vertical-align: middle;
+  border-radius: 12px;
+  transition: background-color 250ms ease;
 }
 
-.legend-entry.selected {
+.left-control-entry.selected {
   background-color: gainsboro;
 }
 
-.legend-entry:hover {
+.left-control-entry:hover {
   background-color: gainsboro;
 }
 
-.entry-colour {
+.left-control-icon {
   display: inline-block;
   position: relative;
   width: 16px;
   height: 16px;
-  border-radius: 50%;
+  font-size: 16px;
   pointer-events: none;
 }
 
-.entry-name {
+.left-control-label {
   display: inline-block;
   position: relative;
   font-size: 14px;
@@ -74,19 +109,33 @@ body {
   pointer-events: none;
 }
 
-#white-circle {background-color: white; border: 1px solid black;}
-#red-circle {background-color: red;}
-#orange-circle {background-color: orange;}
-#yellow-circle {background-color: yellow;}
-#yellow-green-circle {background-color: greenyellow;}
-#green-circle {background-color: green;}
-#green-blue-circle {background-color: lightseagreen;}
-#blue-circle {background-color: blue;}
-#violet-circle {background-color: darkorchid;}
-#pink-circle {background-color: deeppink;}
-#brown-circle {background-color: saddlebrown;}
+.black-icon {color: black;}
+.red-icon {color:red;}
+.orange-icon {color: orange;}
+.yellow-icons {color: yellow;}
+.yellow-green-icon {color: greenyellow;}
+.green-icon {color: green;}
+.green-blue-icon {color: lightseagreen;}
+.blue-icon {color: blue;}
+.violet-icon {color: darkorchid;}
+.pink-icon {color: deeppink;}
+.brown-icon {color: saddlebrown;}
 
-#control-container {
+.circle {border-radius: 50%;}
+.white-circle {background-color: white; border: 1px solid black;}
+.red-circle {background-color: red;}
+.orange-circle {background-color: orange;}
+.yellow-circle {background-color: yellow;}
+.yellow-green-circle {background-color: greenyellow;}
+.green-circle {background-color: green;}
+.green-blue-circle {background-color: lightseagreen;}
+.blue-circle {background-color: blue;}
+.violet-circle {background-color: darkorchid;}
+.pink-circle {background-color: deeppink;}
+.brown-circle {background-color: saddlebrown;}
+.transparent-circle {background-color: transparent;}
+
+#time-control-container {
   display: flex;
   position: absolute;
   box-sizing: border-box;
@@ -99,7 +148,7 @@ body {
   bottom: 20px;
 }
 
-.control {
+#time-control {
   display: inline-block;
   position: relative;
   box-sizing: border-box;
@@ -112,7 +161,7 @@ body {
   box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
 }
 
-.control-value {
+.time-value {
   display: inline-block;
   position: relative;
   box-sizing: border-box;
@@ -124,10 +173,10 @@ body {
   border-radius: 15px;
 }
 
-.control-value.selected {
+.time-value.selected {
   background-color: gainsboro;
 }
 
-.control-value:hover {
+.time-value:hover {
   background-color: gainsboro;
 }
