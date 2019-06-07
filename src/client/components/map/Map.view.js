@@ -112,12 +112,8 @@ export default class MapView extends View {
         'source-layer': 'output_2065BAP-4us5kj',
         'type': 'circle',
         'paint': {
-          'circle-radius': ['*', 2, ['/', ['get', 'count'], 500]],
-          'circle-opacity': [
-            'interpolate', ['linear'], ['zoom'],
-            0, 0.1,
-            8, 0.2,
-            12, 1,
+          'circle-radius': [
+            'max', 0.25, ['*', 2, ['/', ['get', 'count'], 500]],
           ],
         },
       });
@@ -126,17 +122,13 @@ export default class MapView extends View {
         'id': '2065CityII',
         'source': {
           type: 'vector',
-          url: 'mapbox://thomaslorincz.6z4w75x7',
+          url: 'mapbox://thomaslorincz.6erkncy4',
         },
-        'source-layer': 'output_2065CityII-al5d0c',
+        'source-layer': 'output_2065CityII-cv66ke',
         'type': 'circle',
         'paint': {
-          'circle-radius': 2,
-          'circle-opacity': [
-            'interpolate', ['linear'], ['zoom'],
-            0, 0.1,
-            8, 0.2,
-            12, 1,
+          'circle-radius': [
+            'max', 0.25, ['*', 2, ['/', ['get', 'count'], 500]],
           ],
         },
       });
