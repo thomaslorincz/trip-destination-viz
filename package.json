@@ -5,6 +5,7 @@
   "engines": {
     "node": ">=10.0.0"
   },
+  "browserslist": ["defaults", "not ie 11", "not ie_mob 11"],
   "scripts": {
     "buildDev": "rimraf dist && webpack --mode development --config webpack.server.config.js && webpack --mode development --config webpack.dev.config.js",
     "dev": "npm run buildDev && npm start",
