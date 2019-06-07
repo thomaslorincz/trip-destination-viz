@@ -111,6 +111,10 @@ body {
 
 .dataset-icon {color: black;}
 
+.left-control-label.time-label {
+  padding: 0;
+}
+
 .circle {
   border-radius: 50%;
   border: 1px solid #2B2B2B;
@@ -182,37 +186,4 @@ body {
   z-index: 1;
   left: 0;
   bottom: 20px;
-}
-
-#time-control {
-  display: inline-block;
-  position: relative;
-  box-sizing: border-box;
-  font-family: 'Montserrat', sans-serif;
-  padding: 10px 20px;
-  margin: 0 10px;
-  background-color: white;
-  color: darkblue;
-  border-radius: 25px;
-  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
-}
-
-.time-value {
-  display: inline-block;
-  position: relative;
-  box-sizing: border-box;
-  padding: 4px 10px;
-  cursor: pointer;
-  transition: background-color 500ms ease;
-  font-size: 14px;
-  background-color: white;
-  border-radius: 15px;
-}
-
-.time-value.selected {
-  background-color: gainsboro;
-}
-
-.time-value:hover {
-  background-color: gainsboro;
 }
