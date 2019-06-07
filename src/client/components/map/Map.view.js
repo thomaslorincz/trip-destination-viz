@@ -12,22 +12,6 @@ export default class MapView extends View {
     this.layers = ['2065BAP', '2065CityII'];
     this.overlays = ['city', 'nc'];
 
-    this.allCircleColor = '#FFFFFF';
-    this.dataDrivenCircleColors = [
-      'match', ['get', 'purp'],
-      'O', '#FF0000',
-      'W', '#FFA500',
-      'S', '#FFFF00',
-      'P', '#9ACD32',
-      'H', '#008000',
-      'T', '#20B2AA',
-      'L', '#0000FF',
-      'R', '#9932CC',
-      'C', '#FF1493',
-      'Q', '#8B4513',
-      '#000000',
-    ];
-
     this.datasetEntries = document.querySelectorAll('.dataset-entry');
     this.datasetEntries.forEach((entry) => {
       entry.addEventListener('click', (event) => {
@@ -47,6 +31,13 @@ export default class MapView extends View {
           },
         }));
       });
+      entry.addEventListener('contextmenu', (event) => {
+        event.preventDefault();
+        this.colourChoices.classList.remove('square-choices');
+        this.colourChoices.classList.add('circle-choices');
+        this.colourChoices.dataset.category = 'purpose';
+        this.drawColourChoices(event, entry);
+      });
     });
 
     this.overlayEntries = document.querySelectorAll('.overlay-entry');
@@ -59,6 +50,29 @@ export default class MapView extends View {
           },
         }));
       });
+      entry.addEventListener('contextmenu', (event) => {
+        event.preventDefault();
+        this.colourChoices.classList.remove('circle-choices');
+        this.colourChoices.classList.add('square-choices');
+        this.colourChoices.dataset.category = 'overlay';
+        this.drawColourChoices(event, entry);
+      });
+    });
+
+    this.colourChoices = document.getElementById('colour-choices');
+    const circles = this.colourChoices.querySelectorAll('.colour-choice-icon');
+    circles.forEach((circle) => {
+      circle.addEventListener('click', () => {
+        this.hideColourChoices();
+        this.container.dispatchEvent(new CustomEvent('colourClicked', {
+          detail: {
+            category: this.colourChoices.dataset.category,
+            key: this.colourChoices.dataset.value,
+            value: getComputedStyle(circle).backgroundColor,
+          },
+        }));
+      });
+      this.colourChoices.appendChild(circle);
     });
 
     this.timeControls = document.querySelectorAll('.time-value');
@@ -72,6 +86,8 @@ export default class MapView extends View {
         }));
       });
     });
+
+    this.outsideClickListener = null;
 
     mapboxgl.accessToken = 'pk.eyJ1IjoidGhvbWFzbG9yaW5jeiIsImEiOiJjamx5aXVwaH' +
         'AxamZzM3dsaWdkZ3Q2eGJyIn0.mXjlp9c3l2-NBoS1uaEUdw';
@@ -91,19 +107,18 @@ export default class MapView extends View {
         'id': '2065BAP',
         'source': {
           type: 'vector',
-          url: 'mapbox://thomaslorincz.cs0686xn',
+          url: 'mapbox://thomaslorincz.0bgp74x8',
         },
-        'source-layer': 'output_2065BAP-aldvxa',
+        'source-layer': 'output_2065BAP-4us5kj',
         'type': 'circle',
         'paint': {
-          'circle-radius': 2,
+          'circle-radius': ['*', 2, ['/', ['get', 'count'], 500]],
           'circle-opacity': [
             'interpolate', ['linear'], ['zoom'],
             0, 0.1,
             8, 0.2,
             12, 1,
           ],
-          'circle-color': this.allCircleColor,
         },
       });
 
@@ -123,7 +138,6 @@ export default class MapView extends View {
             8, 0.2,
             12, 1,
           ],
-          'circle-color': this.allCircleColor,
         },
       });
 
@@ -135,10 +149,7 @@ export default class MapView extends View {
         },
         'source-layer': 'city_boundary-d6ewoz',
         'type': 'line',
-        'paint': {
-          'line-width': 3,
-          'line-color': '#FF0000',
-        },
+        'paint': {'line-width': 2},
       });
 
       this.map.addLayer({
@@ -149,10 +160,7 @@ export default class MapView extends View {
         },
         'source-layer': 'nc_CityII-axaip8',
         'type': 'line',
-        'paint': {
-          'line-width': 3,
-          'line-color': '#0000FF',
-        },
+        'paint': {'line-width': 2},
       });
 
       this.container.dispatchEvent(new CustomEvent('loaded'));
@@ -164,13 +172,47 @@ export default class MapView extends View {
    * @param {'all'|Set} purpose
    * @param {''|Set} overlay
    * @param {'all'|Set} time
+   * @param {{}} colours
    */
-  draw({dataset, purpose, overlay, time}) {
+  draw({dataset, purpose, overlay, time, colours}) {
+    this.applyColours(purpose, colours);
     this.drawDataset(dataset);
     this.drawPurpose(purpose);
     this.drawOverlay(overlay);
     this.drawTime(time);
     this.drawDots(dataset, purpose, time);
+  }
+
+  /**
+   * @param {string} purpose
+   * @param {{}} colours
+   */
+  applyColours(purpose, colours) {
+    document.querySelectorAll('.purpose-entry').forEach((entry) => {
+      const icon = entry.querySelector('.left-control-icon');
+      icon.style.backgroundColor = colours['purpose'][entry.dataset.value];
+    });
+
+    this.layers.forEach((id) => {
+      if (purpose === 'all') {
+        this.map.setPaintProperty(
+            id, 'circle-color', colours['purpose']['all']
+        );
+      } else {
+        this.map.setPaintProperty(
+            id, 'circle-color', colours['purpose']['dataDriven']
+        );
+      }
+    });
+
+    this.overlays.forEach((id) => {
+      this.map.setPaintProperty(id, 'line-color', colours['overlay'][id]);
+    });
+
+    document.querySelectorAll('.overlay-entry').forEach((entry) => {
+      const icon = entry.querySelector('.left-control-icon');
+      icon.style.backgroundColor = colours['overlay'][entry.dataset.value];
+    });
   }
 
   /**
@@ -255,31 +297,15 @@ export default class MapView extends View {
    */
   drawDots(dataset, purpose, time) {
     if (time === 'all' && purpose === 'all') {
-      this.map.getLayer(dataset).setPaintProperty(
-          'circle-color',
-          this.allCircleColor
-      );
       this.map.setFilter(dataset, null);
     } else if (time === 'all' && typeof purpose === 'object') {
-      this.map.getLayer(dataset).setPaintProperty(
-          'circle-color',
-          this.dataDrivenCircleColors
-      );
       this.map.setFilter(dataset, ['in', 'purp', ...purpose]);
     } else if (purpose === 'all' && typeof time === 'object') {
-      this.map.getLayer(dataset).setPaintProperty(
-          'circle-color',
-          this.allCircleColor
-      );
       const timeNumbers = Array.from(time.values()).map((timeString) => {
         return parseInt(timeString);
       });
       this.map.setFilter(dataset, ['in', 'time', ...timeNumbers]);
     } else {
-      this.map.getLayer(dataset).setPaintProperty(
-          'circle-color',
-          this.dataDrivenCircleColors
-      );
       const timeNumbers = Array.from(time.values()).map((timeString) => {
         return parseInt(timeString);
       });
@@ -289,5 +315,33 @@ export default class MapView extends View {
         ['in', 'purp', ...purpose],
       ]);
     }
+  }
+
+  /**
+   * @param {Event} event
+   * @param {HTMLElement} entry
+   */
+  drawColourChoices(event, entry) {
+    this.colourChoices.classList.add('visible');
+    this.colourChoices.dataset.value = event.target.dataset.value;
+    const rect = entry.getBoundingClientRect();
+    this.colourChoices.style.top = `${rect.top}px`;
+    this.colourChoices.style.left = `${rect.right}px`;
+
+    document.removeEventListener('click', this.outsideClickListener);
+    this.outsideClickListener = (event) => {
+      if (!this.colourChoices.contains(event.target)) {
+        this.hideColourChoices();
+      }
+    };
+    document.addEventListener('click', this.outsideClickListener);
+  }
+
+  /**
+   * Hides the colour choices popup
+   */
+  hideColourChoices() {
+    this.colourChoices.classList.remove('visible');
+    document.removeEventListener('click', this.outsideClickListener);
   }
 }

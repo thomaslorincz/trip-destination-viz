@@ -29,6 +29,10 @@ export default class MapPresenter extends Presenter {
       this.model.updateOverlay(event.detail);
     });
 
+    this.view.container.addEventListener('colourClicked', (event) => {
+      this.model.updateColours(event.detail);
+    });
+
     this.view.container.addEventListener('timeClicked', (event) => {
       this.model.updateTime(event.detail);
     });

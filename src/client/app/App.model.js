@@ -19,6 +19,46 @@ export default class AppModel extends Model {
 
     /** @type {'all'|Set} */
     this.time = 'all';
+
+    this.dataDrivenPurposeColours = [
+      'match', ['get', 'purp'],
+      'O', '#FF0000',
+      'W', '#FFA500',
+      'S', '#FFFF00',
+      'P', '#ADFF2F',
+      'H', '#008000',
+      'T', '#20B2AA',
+      'L', '#0000FF',
+      'R', '#9932CC',
+      'C', '#FF1493',
+      'Q', '#8B4513',
+      '#000000',
+    ];
+
+    this.purposeToColourIndex = {
+      O: 3, W: 5, S: 7, P: 9, H: 11, T: 13, L: 15, R: 17, C: 19, Q: 21,
+    };
+
+    this.colours = {
+      purpose: {
+        dataDriven: this.dataDrivenPurposeColours,
+        all: '#FFFFFF',
+        O: '#FF0000',
+        W: '#FFA500',
+        S: '#FFFF00',
+        P: '#ADFF2F',
+        H: '#008000',
+        T: '#20B2AA',
+        L: '#0000FF',
+        R: '#9932CC',
+        C: '#FF1493',
+        Q: '#8B4513',
+      },
+      overlay: {
+        city: '#FF0000',
+        nc: '#FFFF00',
+      },
+    };
   }
 
   /**
@@ -109,6 +149,28 @@ export default class AppModel extends Model {
   }
 
   /**
+   * @param {'purpose'|'overlay'} category
+   * @param {string} key
+   * @param {string} value
+   */
+  updateColours({category, key, value}) {
+    const colours = this.colours[category];
+    if (category === 'purpose') {
+      if (key === 'all') {
+        colours['all'] = value;
+      } else {
+        colours[key] = value;
+        this.dataDrivenPurposeColours[this.purposeToColourIndex[key]] = value;
+        colours['dataDriven'] = this.dataDrivenPurposeColours;
+      }
+    } else {
+      colours[key] = value;
+    }
+
+    this.dispatchSettingsUpdated();
+  }
+
+  /**
    * Shorthand method for dispatching a settingsUpdated event.
    */
   dispatchSettingsUpdated() {
@@ -118,6 +180,7 @@ export default class AppModel extends Model {
         purpose: this.purpose,
         overlay: this.overlay,
         time: this.time,
+        colours: this.colours,
       },
     }));
   }
