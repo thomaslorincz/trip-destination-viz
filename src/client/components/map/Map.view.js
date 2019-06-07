@@ -83,6 +83,8 @@ export default class MapView extends View {
     mapboxgl.accessToken = 'pk.eyJ1IjoidGhvbWFzbG9yaW5jeiIsImEiOiJjamx5aXVwaH' +
         'AxamZzM3dsaWdkZ3Q2eGJyIn0.mXjlp9c3l2-NBoS1uaEUdw';
 
+    const link = 'https://github.com/thomaslorincz';
+    const attribution = 'Developed by Thomas Lorincz';
     this.map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/thomaslorincz/cjwjclmjn22nj1cqohlh03qrf',
@@ -90,7 +92,7 @@ export default class MapView extends View {
       zoom: 8,
       attributionControl: false,
     }).addControl(new mapboxgl.AttributionControl({
-      customAttribution: '<a href="https://github.com/thomaslorincz" target="_blank">Developed by Thomas Lorincz<a/>',
+      customAttribution: `<a href="${link}" target="_blank">${attribution}<a/>`,
     }));
 
     this.map.dragRotate.disable();
