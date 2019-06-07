@@ -59,6 +59,18 @@ export default class MapView extends View {
       });
     });
 
+    this.timeEntries = document.querySelectorAll('.time-entry');
+    this.timeEntries.forEach((entry) => {
+      entry.addEventListener('click', (event) => {
+        this.container.dispatchEvent(new CustomEvent('timeClicked', {
+          detail: {
+            time: event.target.dataset.value,
+            ctrlKey: event.ctrlKey,
+          },
+        }));
+      });
+    });
+
     this.colourChoices = document.getElementById('colour-choices');
     const circles = this.colourChoices.querySelectorAll('.colour-choice-icon');
     circles.forEach((circle) => {
@@ -73,18 +85,6 @@ export default class MapView extends View {
         }));
       });
       this.colourChoices.appendChild(circle);
-    });
-
-    this.timeControls = document.querySelectorAll('.time-value');
-    this.timeControls.forEach((control) => {
-      control.addEventListener('click', (event) => {
-        this.container.dispatchEvent(new CustomEvent('timeClicked', {
-          detail: {
-            time: event.target.dataset.value,
-            ctrlKey: event.ctrlKey,
-          },
-        }));
-      });
     });
 
     this.outsideClickListener = null;
@@ -278,7 +278,7 @@ export default class MapView extends View {
    * @param {'all'|Set} time
    */
   drawTime(time) {
-    document.querySelectorAll('.time-value.selected').forEach((element) => {
+    document.querySelectorAll('.time-entry.selected').forEach((element) => {
       element.classList.remove('selected');
     });
     if (time === 'all') {
