@@ -158,7 +158,7 @@ export default class MapView extends View {
   /**
    * @param {'2065BAP'|'2065CityII'} dataset
    * @param {'all'|Set} purpose
-   * @param {''|Set} overlay
+   * @param {Set} overlay
    * @param {'all'|Set} time
    * @param {{}} colours
    */
@@ -250,7 +250,7 @@ export default class MapView extends View {
   }
 
   /**
-   * @param {''|Set} overlay
+   * @param {Set} overlay
    */
   drawOverlay(overlay) {
     this.overlays.forEach((layerId) => {
@@ -260,12 +260,10 @@ export default class MapView extends View {
     document.querySelectorAll('.overlay-entry.selected').forEach((element) => {
       element.classList.remove('selected');
     });
-    if (overlay !== '') {
-      overlay.forEach((value) => {
-        document.getElementById(`overlay-${value}`).classList.add('selected');
-        this.map.setLayoutProperty(value, 'visibility', 'visible');
-      });
-    }
+    overlay.forEach((value) => {
+      document.getElementById(`overlay-${value}`).classList.add('selected');
+      this.map.setLayoutProperty(value, 'visibility', 'visible');
+    });
     document.querySelectorAll('.overlay-entry').forEach((entry) => {
       if (entry.classList.contains('selected')) {
         const icon = entry.querySelector('.left-control-checkbox');
