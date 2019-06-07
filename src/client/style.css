@@ -27,7 +27,7 @@ body {
   position: absolute;
   flex-direction: column;
   box-sizing: border-box;
-  width: 228px;
+  width: 260px;
   height: 100%;
   top: 0;
   left: 0;
@@ -107,12 +107,18 @@ body {
   color: darkblue;
   padding: 0 8px;
   pointer-events: none;
+  flex-grow: 1;
 }
 
 .dataset-icon {color: black;}
 
 .left-control-label.time-label {
   padding: 0;
+}
+
+.left-control-checkbox {
+  color: black;
+  font-size: 18px;
 }
 
 .circle {
@@ -174,16 +180,3 @@ body {
 .violet-bg {background-color: darkorchid;}
 .pink-bg {background-color: deeppink;}
 .brown-bg {background-color: saddlebrown;}
-
-#time-control-container {
-  display: flex;
-  position: absolute;
-  box-sizing: border-box;
-  justify-content: center;
-  flex-direction: row;
-  width: 100%;
-  height: auto;
-  z-index: 1;
-  left: 0;
-  bottom: 20px;
-}
