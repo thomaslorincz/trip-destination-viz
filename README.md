@@ -3,7 +3,7 @@ A visualization of daily trip destination in Edmonton across several time period
 ## Website
 https://trip-viz.herokuapp.com
 ## Supported Browsers
-The last 2 versions of all major browsers are supported (including IE 10 and 11)
+All major browsers are supported except Internet Explorer
 ## Development
 ### Install
 ```
