@@ -180,3 +180,27 @@ body {
 .violet-bg {background-color: darkorchid;}
 .pink-bg {background-color: deeppink;}
 .brown-bg {background-color: saddlebrown;}
+
+#help-icon {
+  display: block;
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  top: 20px;
+  right: 20px;
+  color: black;
+  font-size: 28px;
+  border-radius: 50%;
+  z-index: 1;
+  background-color: white;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
+  transition: background-color 250ms ease;
+}
+
+#help-icon:hover {
+  background-color: gainsboro;
+}
