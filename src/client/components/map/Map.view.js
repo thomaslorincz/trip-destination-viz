@@ -97,7 +97,10 @@ export default class MapView extends View {
       style: 'mapbox://styles/thomaslorincz/cjwjclmjn22nj1cqohlh03qrf',
       center: [-113.323975, 53.631611],
       zoom: 7,
-    });
+      attributionControl: false,
+    }).addControl(new mapboxgl.AttributionControl({
+      customAttribution: '<a href="https://github.com/thomaslorincz" target="_blank">Developed by Thomas Lorincz<a/>',
+    }));
 
     this.map.dragRotate.disable();
     this.map.touchZoomRotate.disable();
