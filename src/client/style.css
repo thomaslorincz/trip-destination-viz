@@ -45,7 +45,6 @@ body {
   background-color: white;
   border-radius: 20px;
   padding: 10px;
-  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
   margin: 10px 0;
   font-family: "Montserrat", sans-serif;
   color: darkblue;
@@ -64,7 +63,7 @@ body {
   box-sizing: border-box;
   font-size: 18px;
   text-align: center;
-  color: black;
+  color: #2B2B2B;
   padding: 0 0 4px 0;
   cursor: default;
 }
@@ -73,6 +72,7 @@ body {
   display: flex;
   position: relative;
   flex-direction: row;
+  align-items: center;
   width: 100%;
   box-sizing: border-box;
   font-size: 14px;
@@ -110,14 +110,14 @@ body {
   flex-grow: 1;
 }
 
-.dataset-icon {color: black;}
+.dataset-icon {color: #2B2B2B;}
 
 .left-control-label.time-label {
   padding: 0;
 }
 
 .left-control-checkbox {
-  color: black;
+  color: #2B2B2B;
   font-size: 18px;
 }
 
@@ -127,6 +127,8 @@ body {
 }
 
 .square {
+  width: 14px;
+  height: 14px;
   border: 1px solid #2B2B2B;
 }
 
@@ -189,7 +191,7 @@ body {
   line-height: 30px;
   top: 20px;
   right: 20px;
-  color: black;
+  color: #2B2B2B;
   font-size: 28px;
   border-radius: 50%;
   z-index: 1;
@@ -197,7 +199,6 @@ body {
   text-align: center;
   vertical-align: middle;
   cursor: pointer;
-  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
   transition: background-color 250ms ease;
 }
 
