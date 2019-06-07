@@ -11,8 +11,8 @@ export default class AppModel extends Model {
     /** @type {'2065BAP'|'2065CityII'} */
     this.dataset = '2065BAP';
 
-    /** @type {''|Set} */
-    this.overlay = '';
+    /** @type {Set} */
+    this.overlay = new Set(['city']);
 
     /** @type {'all'|Set} */
     this.purpose = 'all';
@@ -55,7 +55,7 @@ export default class AppModel extends Model {
         Q: '#8B4513',
       },
       overlay: {
-        city: '#FF0000',
+        city: '#0000FF',
         nc: '#FFFF00',
       },
     };
@@ -78,71 +78,62 @@ export default class AppModel extends Model {
 
   /**
    * @param {'all'|'O'|'W'|'S'|'P'|'H'|'T'|'L'|'R'|'C'|'Q'} value
-   * @param {boolean} ctrlKey
    */
-  updatePurpose({value, ctrlKey}) {
-    if (ctrlKey && value === 'all') {
-      this.purpose = new Set();
-    } else if (value === 'all') {
-      this.purpose = value;
-    } else if (ctrlKey && this.purpose === 'all') {
-      this.purpose = new Set([value]);
-    } else if (ctrlKey) {
-      if (this.purpose.has(value)) {
-        this.purpose.delete(value);
+  updatePurpose({value}) {
+    if (value === 'all') {
+      if (this.purpose === 'all') {
+        this.purpose = new Set();
       } else {
-        this.purpose.add(value);
+        this.purpose = value;
       }
     } else {
-      this.purpose = new Set([value]);
+      if (this.purpose === 'all') {
+        this.purpose = new Set([value]);
+      } else {
+        if (this.purpose.has(value)) {
+          this.purpose.delete(value);
+        } else {
+          this.purpose.add(value);
+        }
+      }
     }
 
     this.dispatchSettingsUpdated();
   }
 
   /**
-   * @param {'city'|'nc'|''} value
-   * @param {boolean} ctrlKey
+   * @param {'city'|'nc'} value
    */
-  updateOverlay({value, ctrlKey}) {
-    if (ctrlKey && value === '') {
-      this.overlay = new Set();
-    } else if (value === '') {
-      this.overlay = value;
-    } else if (ctrlKey && this.overlay === '') {
-      this.overlay = new Set([value]);
-    } else if (ctrlKey) {
-      if (this.overlay.has(value)) {
-        this.overlay.delete(value);
-      } else {
-        this.overlay.add(value);
-      }
+  updateOverlay({value}) {
+    if (this.overlay.has(value)) {
+      this.overlay.delete(value);
     } else {
-      this.overlay = new Set([value]);
+      this.overlay.add(value);
     }
 
     this.dispatchSettingsUpdated();
   }
 
   /**
-   * @param {'all'|'1'|'21'|'22'|'23'|'3'|'41'|'42'|'43'|'5'|'6'} time
-   * @param {boolean} ctrlKey
+   * @param {'all'|'1'|'21'|'22'|'23'|'3'|'41'|'42'|'43'|'5'|'6'} value
    */
-  updateTime({time, ctrlKey}) {
-    if (ctrlKey && time === 'all') {
-      this.time = new Set();
-    } else if (time === 'all') {
-      this.time = time;
-    } else if (ctrlKey && this.time === 'all') {
-      this.time = new Set([time]);
-    } else if (ctrlKey) {
-      if (this.time.has(time)) {
-        this.time.delete(time);
+  updateTime({value}) {
+    if (value === 'all') {
+      if (this.time === 'all') {
+        this.time = new Set();
       } else {
-        this.time.add(time);
+        this.time = value;
       }
     } else {
-      this.time = new Set([time]);
+      if (this.time === 'all') {
+        this.time = new Set([value]);
+      } else {
+        if (this.time.has(value)) {
+          this.time.delete(value);
+        } else {
+          this.time.add(value);
+        }
+      }
     }
 
     this.dispatchSettingsUpdated();

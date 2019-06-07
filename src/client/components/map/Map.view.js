@@ -25,10 +25,7 @@ export default class MapView extends View {
     this.purposeEntries.forEach((entry) => {
       entry.addEventListener('click', (event) => {
         this.container.dispatchEvent(new CustomEvent('purposeClicked', {
-          detail: {
-            value: event.target.dataset.value,
-            ctrlKey: event.ctrlKey,
-          },
+          detail: {value: event.target.dataset.value},
         }));
       });
       entry.addEventListener('contextmenu', (event) => {
@@ -44,10 +41,7 @@ export default class MapView extends View {
     this.overlayEntries.forEach((entry) => {
       entry.addEventListener('click', (event) => {
         this.container.dispatchEvent(new CustomEvent('overlayClicked', {
-          detail: {
-            value: event.target.dataset.value,
-            ctrlKey: event.ctrlKey,
-          },
+          detail: {value: event.target.dataset.value},
         }));
       });
       entry.addEventListener('contextmenu', (event) => {
@@ -63,10 +57,7 @@ export default class MapView extends View {
     this.timeEntries.forEach((entry) => {
       entry.addEventListener('click', (event) => {
         this.container.dispatchEvent(new CustomEvent('timeClicked', {
-          detail: {
-            time: event.target.dataset.value,
-            ctrlKey: event.ctrlKey,
-          },
+          detail: {value: event.target.dataset.value},
         }));
       });
     });
@@ -96,7 +87,7 @@ export default class MapView extends View {
       container: 'map',
       style: 'mapbox://styles/thomaslorincz/cjwjclmjn22nj1cqohlh03qrf',
       center: [-113.323975, 53.631611],
-      zoom: 7,
+      zoom: 8,
       attributionControl: false,
     }).addControl(new mapboxgl.AttributionControl({
       customAttribution: '<a href="https://github.com/thomaslorincz" target="_blank">Developed by Thomas Lorincz<a/>',
@@ -219,19 +210,16 @@ export default class MapView extends View {
     });
     this.map.setLayoutProperty(dataset, 'visibility', 'visible');
 
-    const oldChecked = document.querySelector('.dataset-entry.selected');
-    if (oldChecked) {
-      oldChecked.classList.remove('selected');
-      const icon = oldChecked.querySelector('.left-control-icon');
+    document.querySelectorAll('.dataset-entry').forEach((entry) => {
+      entry.classList.remove('selected');
+      const icon = entry.querySelector('.left-control-icon');
       icon.textContent = 'radio_button_unchecked';
-    }
+    });
 
     document.getElementById(`data-${dataset}`).classList.add('selected');
-    const newChecked = document.querySelector('.dataset-entry.selected');
-    if (newChecked) {
-      const icon = newChecked.querySelector('.left-control-icon');
-      icon.textContent = 'radio_button_checked';
-    }
+    const selected = document.querySelector('.dataset-entry.selected');
+    const icon = selected.querySelector('.left-control-icon');
+    icon.textContent = 'radio_button_checked';
   }
 
   /**
@@ -248,6 +236,15 @@ export default class MapView extends View {
         document.getElementById(`purpose-${value}`).classList.add('selected');
       });
     }
+    document.querySelectorAll('.purpose-entry').forEach((entry) => {
+      if (entry.classList.contains('selected')) {
+        const icon = entry.querySelector('.left-control-checkbox');
+        icon.textContent = 'check_box';
+      } else {
+        const icon = entry.querySelector('.left-control-checkbox');
+        icon.textContent = 'check_box_outline_blank';
+      }
+    });
   }
 
   /**
@@ -267,6 +264,15 @@ export default class MapView extends View {
         this.map.setLayoutProperty(value, 'visibility', 'visible');
       });
     }
+    document.querySelectorAll('.overlay-entry').forEach((entry) => {
+      if (entry.classList.contains('selected')) {
+        const icon = entry.querySelector('.left-control-checkbox');
+        icon.textContent = 'check_box';
+      } else {
+        const icon = entry.querySelector('.left-control-checkbox');
+        icon.textContent = 'check_box_outline_blank';
+      }
+    });
   }
 
   /**
@@ -283,6 +289,15 @@ export default class MapView extends View {
         document.getElementById(`time-${value}`).classList.add('selected');
       });
     }
+    document.querySelectorAll('.time-entry').forEach((entry) => {
+      if (entry.classList.contains('selected')) {
+        const icon = entry.querySelector('.left-control-checkbox');
+        icon.textContent = 'check_box';
+      } else {
+        const icon = entry.querySelector('.left-control-checkbox');
+        icon.textContent = 'check_box_outline_blank';
+      }
+    });
   }
 
   /**
