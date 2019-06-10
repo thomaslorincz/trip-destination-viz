@@ -9,8 +9,14 @@ export default class MapView extends View {
   constructor(container) {
     super(container);
 
-    this.layers = ['2065BAP', '2065CityII']; // TODO: Replace hardcoding
-    this.overlays = ['cma', 'city', 'nc']; // TODO: Replace hardcoding
+    this.layers = [];
+    document.querySelectorAll('.dataset-entry').forEach((entry) => {
+      this.layers.push(entry.dataset.value);
+    });
+    this.overlays = [];
+    document.querySelectorAll('.overlay-entry').forEach((entry) => {
+      this.overlays.push(entry.dataset.value);
+    });
 
     this.datasetEntries = document.querySelectorAll('.dataset-entry');
     this.datasetEntries.forEach((entry) => {
