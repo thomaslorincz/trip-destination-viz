@@ -63,6 +63,13 @@ export default class AppModel extends Model {
 
     /** @type {boolean} */
     this.helpOpen = false;
+
+    this.collapsed = {
+      dataset: false,
+      purpose: false,
+      overlay: false,
+      time: false,
+    };
   }
 
   /**
@@ -173,6 +180,16 @@ export default class AppModel extends Model {
   toggleHelp() {
     this.helpOpen = !this.helpOpen;
     this.dispatchHelpUpdated();
+  }
+
+  /**
+   * @param {'dataset'|'purpose'|'overlay'|'time'} control
+   */
+  toggleCollapse(control) {
+    this.collapsed[control] = !this.collapsed[control];
+    document.dispatchEvent(new CustomEvent('collapsedUpdated', {
+      detail: this.collapsed,
+    }));
   }
 
   /**
