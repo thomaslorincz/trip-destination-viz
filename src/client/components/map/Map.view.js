@@ -78,11 +78,30 @@ export default class MapView extends View {
       this.colourChoices.appendChild(circle);
     });
 
+    this.helpIcon = document.getElementById('help-icon');
+    this.helpIcon.addEventListener('click', () => {
+      this.container.dispatchEvent(new CustomEvent('helpClicked'));
+    });
+
+    this.help = document.getElementById('help');
+    this.help.addEventListener('click', (event) => {
+      if (event.target === document.getElementById('help')) {
+        this.container.dispatchEvent(new CustomEvent('helpClicked'));
+      }
+    });
+
+    this.closeHelp = document.getElementById('close-help');
+    this.closeHelp.addEventListener('click', () => {
+      this.container.dispatchEvent(new CustomEvent('helpClicked'));
+    });
+
     this.outsideClickListener = null;
 
     mapboxgl.accessToken = 'pk.eyJ1IjoidGhvbWFzbG9yaW5jeiIsImEiOiJjamx5aXVwaH' +
         'AxamZzM3dsaWdkZ3Q2eGJyIn0.mXjlp9c3l2-NBoS1uaEUdw';
 
+    const link = 'https://github.com/thomaslorincz';
+    const attribution = 'Developed by Thomas Lorincz';
     this.map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/thomaslorincz/cjwjclmjn22nj1cqohlh03qrf',
@@ -90,7 +109,7 @@ export default class MapView extends View {
       zoom: 8,
       attributionControl: false,
     }).addControl(new mapboxgl.AttributionControl({
-      customAttribution: '<a href="https://github.com/thomaslorincz" target="_blank">Developed by Thomas Lorincz<a/>',
+      customAttribution: `<a href="${link}" target="_blank">${attribution}<a/>`,
     }));
 
     this.map.dragRotate.disable();
@@ -156,7 +175,7 @@ export default class MapView extends View {
   /**
    * @param {'2065BAP'|'2065CityII'} dataset
    * @param {'all'|Set} purpose
-   * @param {''|Set} overlay
+   * @param {Set} overlay
    * @param {'all'|Set} time
    * @param {{}} colours
    */
@@ -248,7 +267,7 @@ export default class MapView extends View {
   }
 
   /**
-   * @param {''|Set} overlay
+   * @param {Set} overlay
    */
   drawOverlay(overlay) {
     this.overlays.forEach((layerId) => {
@@ -258,12 +277,10 @@ export default class MapView extends View {
     document.querySelectorAll('.overlay-entry.selected').forEach((element) => {
       element.classList.remove('selected');
     });
-    if (overlay !== '') {
-      overlay.forEach((value) => {
-        document.getElementById(`overlay-${value}`).classList.add('selected');
-        this.map.setLayoutProperty(value, 'visibility', 'visible');
-      });
-    }
+    overlay.forEach((value) => {
+      document.getElementById(`overlay-${value}`).classList.add('selected');
+      this.map.setLayoutProperty(value, 'visibility', 'visible');
+    });
     document.querySelectorAll('.overlay-entry').forEach((entry) => {
       if (entry.classList.contains('selected')) {
         const icon = entry.querySelector('.left-control-checkbox');
@@ -353,5 +370,17 @@ export default class MapView extends View {
   hideColourChoices() {
     this.colourChoices.classList.remove('visible');
     document.removeEventListener('click', this.outsideClickListener);
+  }
+
+  /**
+   * @param {boolean} open
+   */
+  drawHelp(open) {
+    const help = document.getElementById('help');
+    if (open) {
+      help.style.display = 'flex';
+    } else {
+      help.style.display = 'none';
+    }
   }
 }

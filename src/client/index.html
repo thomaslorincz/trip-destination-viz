@@ -153,5 +153,23 @@
   <div class="colour-choice-icon pink-bg"></div>
   <div class="colour-choice-icon brown-bg"></div>
 </div>
+<i id="help-icon" class="material-icons-round">help_outline</i>
+<div id="help">
+  <div id="help-dialogue">
+    <i id="close-help" class="material-icons-round">close</i>
+    <h1>Trip Destination Viz</h1>
+    <p>This visualization displays predicted trip destination density in Edmonton in 2065.</p>
+    <p>Each dataset contains trip data predictions according to a city plan.</p>
+    <h2>Analysis</h2>
+    <p>Each dot represents 1-500 trips to a particular zone in the city. Their size is scaled linearly according to their trip count.</p>
+    <p>To visualize the trip density, points are assigned a random lat/lon that falls within the destination zone of the trip(s) that they represent.</p>
+    <h2>Controls</h2>
+    <p>The controls on the left side of the app can be used to choose the dataset and filter the data on screen.</p>
+    <p>To change the colours of the dots or overlays, right-click the entry and a colour-chooser will pop up.</p>
+    <h2>Future Work</h2>
+    <p>Right now, the dots are randomly assigned to points within their destination zones. However, some of these points end up in nonsensical areas like bodies of water.</p>
+    <p>Future iterations of this tool will use a more accurate zone boundary file that will limit the lat/lon assignments to developed areas.</p>
+  </div>
+</div>
 </body>
 </html>

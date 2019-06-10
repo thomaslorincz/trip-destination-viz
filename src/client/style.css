@@ -45,7 +45,6 @@ body {
   background-color: white;
   border-radius: 20px;
   padding: 10px;
-  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
   margin: 10px 0;
   font-family: "Montserrat", sans-serif;
   color: darkblue;
@@ -64,7 +63,7 @@ body {
   box-sizing: border-box;
   font-size: 18px;
   text-align: center;
-  color: black;
+  color: #2B2B2B;
   padding: 0 0 4px 0;
   cursor: default;
 }
@@ -73,6 +72,7 @@ body {
   display: flex;
   position: relative;
   flex-direction: row;
+  align-items: center;
   width: 100%;
   box-sizing: border-box;
   font-size: 14px;
@@ -110,14 +110,14 @@ body {
   flex-grow: 1;
 }
 
-.dataset-icon {color: black;}
+.dataset-icon {color: #2B2B2B;}
 
 .left-control-label.time-label {
   padding: 0;
 }
 
 .left-control-checkbox {
-  color: black;
+  color: #2B2B2B;
   font-size: 18px;
 }
 
@@ -127,6 +127,8 @@ body {
 }
 
 .square {
+  width: 14px;
+  height: 14px;
   border: 1px solid #2B2B2B;
 }
 
@@ -180,3 +182,77 @@ body {
 .violet-bg {background-color: darkorchid;}
 .pink-bg {background-color: deeppink;}
 .brown-bg {background-color: saddlebrown;}
+
+#help-icon {
+  display: block;
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  line-height: 30px;
+  top: 20px;
+  right: 20px;
+  color: #2B2B2B;
+  font-size: 28px;
+  border-radius: 50%;
+  z-index: 4;
+  background-color: white;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  transition: background-color 250ms ease;
+  user-select: none;
+}
+
+#help-icon:hover {
+  background-color: gainsboro;
+}
+
+#help {
+  display: none;
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  background-color: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+}
+
+#help-dialogue {
+  display: block;
+  position: absolute;
+  flex-direction: column;
+  box-sizing: border-box;
+  max-width: 800px;
+  min-width: 400px;
+  height: auto;
+  max-height: 100%;
+  padding: 20px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
+  font-family: "Montserrat", sans-serif;
+  cursor: default;
+}
+
+#close-help {
+  display: inline-block;
+  position: absolute;
+  box-sizing: border-box;
+  width: auto;
+  height: auto;
+  top: 20px;
+  right: 20px;
+  color: gainsboro;
+  cursor: pointer;
+  pointer-events: all;
+  user-select: none;
+}
+
+#close-help:hover {
+  color: #2B2B2B;
+}
