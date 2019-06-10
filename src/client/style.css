@@ -61,7 +61,30 @@ body {
   margin: 10px 0 0 0;
 }
 
+.collapse-icon {
+  display: inline-block;
+  position: absolute;
+  right: 0;
+  box-sizing: border-box;
+  width: auto;
+  height: auto;
+  color: gainsboro;
+  cursor: pointer;
+  pointer-events: all;
+  user-select: none;
+  transition: color 250ms ease;
+  margin-right: 20px;
+  z-index: 1;
+}
+
+.collapse-icon:hover {
+  color: #2B2B2B;
+}
+
 .left-control-title {
+  display: flex;
+  position: relative;
+  justify-content: center;
   width: 100%;
   box-sizing: border-box;
   font-size: 18px;
@@ -69,6 +92,16 @@ body {
   color: #2B2B2B;
   padding: 0 0 4px 0;
   cursor: default;
+}
+
+.left-control-content {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+}
+
+.left-control-content.collapsed {
+  display: none;
 }
 
 .left-control-entry {
@@ -256,6 +289,7 @@ body {
   cursor: pointer;
   pointer-events: all;
   user-select: none;
+  transition: color 250ms ease;
 }
 
 #close-help:hover {

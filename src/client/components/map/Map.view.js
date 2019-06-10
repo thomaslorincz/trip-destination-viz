@@ -18,90 +18,12 @@ export default class MapView extends View {
       this.overlays.push(entry.dataset.value);
     });
 
-    this.datasetEntries = document.querySelectorAll('.dataset-entry');
-    this.datasetEntries.forEach((entry) => {
-      entry.addEventListener('click', (event) => {
-        this.container.dispatchEvent(new CustomEvent('datasetClicked', {
-          detail: event.target.dataset.value,
-        }));
-      });
-    });
-
-    this.purposeEntries = document.querySelectorAll('.purpose-entry');
-    this.purposeEntries.forEach((entry) => {
-      entry.addEventListener('click', (event) => {
-        this.container.dispatchEvent(new CustomEvent('purposeClicked', {
-          detail: {value: event.target.dataset.value},
-        }));
-      });
-      entry.addEventListener('contextmenu', (event) => {
-        event.preventDefault();
-        this.colourChoices.classList.remove('square-choices');
-        this.colourChoices.classList.add('circle-choices');
-        this.colourChoices.dataset.category = 'purpose';
-        this.drawColourChoices(event, entry);
-      });
-    });
-
-    this.overlayEntries = document.querySelectorAll('.overlay-entry');
-    this.overlayEntries.forEach((entry) => {
-      entry.addEventListener('click', (event) => {
-        this.container.dispatchEvent(new CustomEvent('overlayClicked', {
-          detail: {value: event.target.dataset.value},
-        }));
-      });
-      entry.addEventListener('contextmenu', (event) => {
-        event.preventDefault();
-        this.colourChoices.classList.remove('circle-choices');
-        this.colourChoices.classList.add('square-choices');
-        this.colourChoices.dataset.category = 'overlay';
-        this.drawColourChoices(event, entry);
-      });
-    });
-
-    this.timeEntries = document.querySelectorAll('.time-entry');
-    this.timeEntries.forEach((entry) => {
-      entry.addEventListener('click', (event) => {
-        this.container.dispatchEvent(new CustomEvent('timeClicked', {
-          detail: {value: event.target.dataset.value},
-        }));
-      });
-    });
-
-    this.colourChoices = document.getElementById('colour-choices');
-    const circles = this.colourChoices.querySelectorAll('.colour-choice-icon');
-    circles.forEach((circle) => {
-      circle.addEventListener('click', () => {
-        this.hideColourChoices();
-        this.container.dispatchEvent(new CustomEvent('colourClicked', {
-          detail: {
-            category: this.colourChoices.dataset.category,
-            key: this.colourChoices.dataset.value,
-            value: getComputedStyle(circle).backgroundColor,
-          },
-        }));
-      });
-      this.colourChoices.appendChild(circle);
-    });
-
-    this.helpIcon = document.getElementById('help-icon');
-    this.helpIcon.addEventListener('click', () => {
-      this.container.dispatchEvent(new CustomEvent('helpClicked'));
-    });
-
-    this.help = document.getElementById('help');
-    this.help.addEventListener('click', (event) => {
-      if (event.target === document.getElementById('help')) {
-        this.container.dispatchEvent(new CustomEvent('helpClicked'));
-      }
-    });
-
-    this.closeHelp = document.getElementById('close-help');
-    this.closeHelp.addEventListener('click', () => {
-      this.container.dispatchEvent(new CustomEvent('helpClicked'));
-    });
-
-    this.outsideClickListener = null;
+    this.initializeDatasetControl();
+    this.initializePurposeControl();
+    this.initializeOverlayControl();
+    this.initializeTimeControl();
+    this.initializeColourChooser();
+    this.initializeHelp();
 
     mapboxgl.accessToken = 'pk.eyJ1IjoidGhvbWFzbG9yaW5jeiIsImEiOiJjamx5aXVwaH' +
         'AxamZzM3dsaWdkZ3Q2eGJyIn0.mXjlp9c3l2-NBoS1uaEUdw';
@@ -201,6 +123,144 @@ export default class MapView extends View {
       });
 
       this.container.dispatchEvent(new CustomEvent('loaded'));
+    });
+  }
+
+  /**
+   * Initializes the radio button control for selecting a dataset.
+   */
+  initializeDatasetControl() {
+    this.datasetEntries = document.querySelectorAll('.dataset-entry');
+    this.datasetEntries.forEach((entry) => {
+      entry.addEventListener('click', (event) => {
+        this.container.dispatchEvent(new CustomEvent('datasetClicked', {
+          detail: event.target.dataset.value,
+        }));
+      });
+    });
+    this.datasetCollapse = document.getElementById('collapse-dataset');
+    this.datasetCollapse.addEventListener('click', () => {
+      this.container.dispatchEvent(new CustomEvent('toggleCollapse', {
+        detail: 'dataset',
+      }));
+    });
+  }
+
+  /**
+   * Initializes the checkbox purpose control for filtering by purpose.
+   */
+  initializePurposeControl() {
+    this.purposeEntries = document.querySelectorAll('.purpose-entry');
+    this.purposeEntries.forEach((entry) => {
+      entry.addEventListener('click', (event) => {
+        this.container.dispatchEvent(new CustomEvent('purposeClicked', {
+          detail: {value: event.target.dataset.value},
+        }));
+      });
+      entry.addEventListener('contextmenu', (event) => {
+        event.preventDefault();
+        this.colourChoices.classList.remove('square-choices');
+        this.colourChoices.classList.add('circle-choices');
+        this.colourChoices.dataset.category = 'purpose';
+        this.drawColourChoices(event, entry);
+      });
+    });
+    this.purposeCollapse = document.getElementById('collapse-purpose');
+    this.purposeCollapse.addEventListener('click', () => {
+      this.container.dispatchEvent(new CustomEvent('toggleCollapse', {
+        detail: 'purpose',
+      }));
+    });
+  }
+
+  /**
+   * Initializes the checkbox overlay control for adding/removing overlays.
+   */
+  initializeOverlayControl() {
+    this.overlayEntries = document.querySelectorAll('.overlay-entry');
+    this.overlayEntries.forEach((entry) => {
+      entry.addEventListener('click', (event) => {
+        this.container.dispatchEvent(new CustomEvent('overlayClicked', {
+          detail: {value: event.target.dataset.value},
+        }));
+      });
+      entry.addEventListener('contextmenu', (event) => {
+        event.preventDefault();
+        this.colourChoices.classList.remove('circle-choices');
+        this.colourChoices.classList.add('square-choices');
+        this.colourChoices.dataset.category = 'overlay';
+        this.drawColourChoices(event, entry);
+      });
+    });
+    this.overlayCollapse = document.getElementById('collapse-overlay');
+    this.overlayCollapse.addEventListener('click', () => {
+      this.container.dispatchEvent(new CustomEvent('toggleCollapse', {
+        detail: 'overlay',
+      }));
+    });
+  }
+
+  /**
+   * Initializes the checkbox time control for filtering by time.
+   */
+  initializeTimeControl() {
+    this.timeEntries = document.querySelectorAll('.time-entry');
+    this.timeEntries.forEach((entry) => {
+      entry.addEventListener('click', (event) => {
+        this.container.dispatchEvent(new CustomEvent('timeClicked', {
+          detail: {value: event.target.dataset.value},
+        }));
+      });
+    });
+    this.timeCollapse = document.getElementById('collapse-time');
+    this.timeCollapse.addEventListener('click', () => {
+      this.container.dispatchEvent(new CustomEvent('toggleCollapse', {
+        detail: 'time',
+      }));
+    });
+  }
+
+  /**
+   * Initializes the colour chooser which is used to change control colours.
+   */
+  initializeColourChooser() {
+    this.colourChoices = document.getElementById('colour-choices');
+    const circles = this.colourChoices.querySelectorAll('.colour-choice-icon');
+    circles.forEach((circle) => {
+      circle.addEventListener('click', () => {
+        this.hideColourChoices();
+        this.container.dispatchEvent(new CustomEvent('colourClicked', {
+          detail: {
+            category: this.colourChoices.dataset.category,
+            key: this.colourChoices.dataset.value,
+            value: getComputedStyle(circle).backgroundColor,
+          },
+        }));
+      });
+      this.colourChoices.appendChild(circle);
+    });
+
+    this.outsideClickListener = null;
+  }
+
+  /**
+   * Initializes the help icon and help dialogue for displaying project
+   * information and controls.
+   */
+  initializeHelp() {
+    this.helpIcon = document.getElementById('help-icon');
+    this.helpIcon.addEventListener('click', () => {
+      this.container.dispatchEvent(new CustomEvent('helpClicked'));
+    });
+    this.help = document.getElementById('help');
+    this.help.addEventListener('click', (event) => {
+      if (event.target === document.getElementById('help')) {
+        this.container.dispatchEvent(new CustomEvent('helpClicked'));
+      }
+    });
+    this.closeHelp = document.getElementById('close-help');
+    this.closeHelp.addEventListener('click', () => {
+      this.container.dispatchEvent(new CustomEvent('helpClicked'));
     });
   }
 
@@ -414,6 +474,23 @@ export default class MapView extends View {
     } else {
       help.style.display = 'none';
     }
+  }
+
+  /**
+   * @param {object} collapsedMap
+   */
+  drawCollapsed(collapsedMap) {
+    Object.keys(collapsedMap).forEach((control) => {
+      const content = document.getElementById(`${control}-content`);
+      const icon = document.getElementById(`collapse-${control}`);
+      if (collapsedMap[control]) {
+        content.classList.add('collapsed');
+        icon.textContent = 'expand_more';
+      } else {
+        content.classList.remove('collapsed');
+        icon.textContent = 'expand_less';
+      }
+    });
   }
 
   /**
