@@ -1,5 +1,5 @@
 # Trip Destination Visualization
-A visualization of daily trip destination in Edmonton across several time periods
+A visualization of daily trip destination in the Edmonton Central Metropolitan Area across several time periods
 ## Website
 https://trip-viz.herokuapp.com
 ## Supported Browsers
