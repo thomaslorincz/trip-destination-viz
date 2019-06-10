@@ -48,5 +48,9 @@ export default class MapPresenter extends Presenter {
     document.addEventListener('settingsUpdated', (event) => {
       this.view.draw(event.detail);
     });
+
+    document.addEventListener('zoomToBounds', () => {
+      this.view.zoomToBounds();
+    });
   }
 }

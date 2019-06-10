@@ -394,4 +394,20 @@ export default class MapView extends View {
       help.style.display = 'none';
     }
   }
+
+  /**
+   * Zoom to the bounds of the Edmonton CMA.
+   */
+  zoomToBounds() {
+    const sourceBounds = [
+      -115.11466435378404,
+      53.0446531902415,
+      -112.16116688370097,
+      54.062144456520585,
+    ];
+    const sw = new mapboxgl.LngLat(sourceBounds[0], sourceBounds[1]);
+    const ne = new mapboxgl.LngLat(sourceBounds[2], sourceBounds[3]);
+    const bounds = new mapboxgl.LngLatBounds(sw, ne);
+    this.map.fitBounds(bounds);
+  }
 }
