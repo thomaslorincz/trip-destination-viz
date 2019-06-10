@@ -119,6 +119,8 @@ body {
 .left-control-checkbox {
   color: #2B2B2B;
   font-size: 18px;
+  pointer-events: none;
+  user-select: none;
 }
 
 .circle {
