@@ -9,8 +9,8 @@ export default class MapView extends View {
   constructor(container) {
     super(container);
 
-    this.layers = ['2065BAP', '2065CityII'];
-    this.overlays = ['city', 'nc'];
+    this.layers = ['2065BAP', '2065CityII']; // TODO: Replace hardcoding
+    this.overlays = ['cma', 'city', 'nc']; // TODO: Replace hardcoding
 
     this.datasetEntries = document.querySelectorAll('.dataset-entry');
     this.datasetEntries.forEach((entry) => {
@@ -144,6 +144,17 @@ export default class MapView extends View {
             'max', 0.1, ['/', ['get', 'count'], 500],
           ],
         },
+      });
+
+      this.map.addLayer({
+        'id': 'cma',
+        'source': {
+          type: 'vector',
+          url: 'mapbox://thomaslorincz.1kz18y39',
+        },
+        'source-layer': 'cma_boundary-5vtklc',
+        'type': 'line',
+        'paint': {'line-width': 2},
       });
 
       this.map.addLayer({
