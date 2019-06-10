@@ -32,6 +32,8 @@ body {
   top: 0;
   left: 0;
   padding: 20px 0 0 20px;
+  overflow: auto;
+  direction: rtl;
 }
 
 .left-control {
@@ -48,6 +50,7 @@ body {
   margin: 10px 0;
   font-family: "Montserrat", sans-serif;
   color: darkblue;
+  direction: ltr;
 }
 
 .left-control:first-child {
