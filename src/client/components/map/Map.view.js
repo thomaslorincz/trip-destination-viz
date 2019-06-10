@@ -78,6 +78,23 @@ export default class MapView extends View {
       this.colourChoices.appendChild(circle);
     });
 
+    this.helpIcon = document.getElementById('help-icon');
+    this.helpIcon.addEventListener('click', () => {
+      this.container.dispatchEvent(new CustomEvent('helpClicked'));
+    });
+
+    this.help = document.getElementById('help');
+    this.help.addEventListener('click', (event) => {
+      if (event.target === document.getElementById('help')) {
+        this.container.dispatchEvent(new CustomEvent('helpClicked'));
+      }
+    });
+
+    this.closeHelp = document.getElementById('close-help');
+    this.closeHelp.addEventListener('click', () => {
+      this.container.dispatchEvent(new CustomEvent('helpClicked'));
+    });
+
     this.outsideClickListener = null;
 
     mapboxgl.accessToken = 'pk.eyJ1IjoidGhvbWFzbG9yaW5jeiIsImEiOiJjamx5aXVwaH' +
@@ -353,5 +370,17 @@ export default class MapView extends View {
   hideColourChoices() {
     this.colourChoices.classList.remove('visible');
     document.removeEventListener('click', this.outsideClickListener);
+  }
+
+  /**
+   * @param {boolean} open
+   */
+  drawHelp(open) {
+    const help = document.getElementById('help');
+    if (open) {
+      help.style.display = 'flex';
+    } else {
+      help.style.display = 'none';
+    }
   }
 }

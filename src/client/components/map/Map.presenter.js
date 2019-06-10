@@ -37,6 +37,14 @@ export default class MapPresenter extends Presenter {
       this.model.updateColours(event.detail);
     });
 
+    this.view.container.addEventListener('helpClicked', () => {
+      this.model.toggleHelp();
+    });
+
+    document.addEventListener('helpUpdated', (event) => {
+      this.view.drawHelp(event.detail);
+    });
+
     document.addEventListener('settingsUpdated', (event) => {
       this.view.draw(event.detail);
     });

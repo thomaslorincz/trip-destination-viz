@@ -59,6 +59,9 @@ export default class AppModel extends Model {
         nc: '#FFFF00',
       },
     };
+
+    /** @type {boolean} */
+    this.helpOpen = false;
   }
 
   /**
@@ -66,6 +69,7 @@ export default class AppModel extends Model {
    */
   initialDraw() {
     this.dispatchSettingsUpdated();
+    this.dispatchHelpUpdated();
   }
 
   /**
@@ -159,6 +163,23 @@ export default class AppModel extends Model {
     }
 
     this.dispatchSettingsUpdated();
+  }
+
+  /**
+   * Toggle the state of the help dialogue.
+   */
+  toggleHelp() {
+    this.helpOpen = !this.helpOpen;
+    this.dispatchHelpUpdated();
+  }
+
+  /**
+   * Shorthand method for dispatching a helpUpdated event.
+   */
+  dispatchHelpUpdated() {
+    document.dispatchEvent(new CustomEvent('helpUpdated', {
+      detail: this.helpOpen,
+    }));
   }
 
   /**
