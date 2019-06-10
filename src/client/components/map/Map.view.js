@@ -153,6 +153,21 @@ export default class MapView extends View {
       });
 
       this.map.addLayer({
+        'id': '2065CityII_300',
+        'source': {
+          type: 'vector',
+          url: 'mapbox://thomaslorincz.4qfirexj',
+        },
+        'source-layer': 'output_2065CityII_300-7gjcgt',
+        'type': 'circle',
+        'paint': {
+          'circle-radius': [
+            'max', 0.1, ['/', ['get', 'count'], 300],
+          ],
+        },
+      });
+
+      this.map.addLayer({
         'id': 'cma',
         'source': {
           type: 'vector',
