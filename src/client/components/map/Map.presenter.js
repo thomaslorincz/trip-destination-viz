@@ -49,10 +49,6 @@ export default class MapPresenter extends Presenter {
       this.view.draw(event.detail);
     });
 
-    document.addEventListener('zoomToBounds', () => {
-      this.view.zoomToBounds();
-    });
-
     this.view.container.addEventListener('toggleCollapse', (event) => {
       this.model.toggleCollapse(event.detail);
     });

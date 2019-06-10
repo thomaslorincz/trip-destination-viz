@@ -78,7 +78,6 @@ export default class AppModel extends Model {
   initialDraw() {
     this.dispatchSettingsUpdated();
     this.dispatchHelpUpdated();
-    document.dispatchEvent(new CustomEvent('zoomToBounds'));
   }
 
   /**

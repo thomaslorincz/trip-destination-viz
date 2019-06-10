@@ -33,15 +33,13 @@ export default class MapView extends View {
     this.map = new mapboxgl.Map({
       container: 'map',
       style: 'mapbox://styles/thomaslorincz/cjwjclmjn22nj1cqohlh03qrf',
-      center: [-113.323975, 53.631611],
-      zoom: 8,
+      bounds: [[-115.11466, 53.04465], [-112.16116, 54.06214]],
       attributionControl: false,
+      dragRotate: false,
+      pitchWithRotate: false,
     }).addControl(new mapboxgl.AttributionControl({
       customAttribution: `<a href="${link}" target="_blank">${attribution}<a/>`,
     }));
-
-    this.map.dragRotate.disable();
-    this.map.touchZoomRotate.disable();
 
     this.map.on('load', () => {
       this.map.addLayer({
@@ -491,21 +489,5 @@ export default class MapView extends View {
         icon.textContent = 'expand_less';
       }
     });
-  }
-
-  /**
-   * Zoom to the bounds of the Edmonton CMA.
-   */
-  zoomToBounds() {
-    const sourceBounds = [
-      -115.11466435378404,
-      53.0446531902415,
-      -112.16116688370097,
-      54.062144456520585,
-    ];
-    const sw = new mapboxgl.LngLat(sourceBounds[0], sourceBounds[1]);
-    const ne = new mapboxgl.LngLat(sourceBounds[2], sourceBounds[3]);
-    const bounds = new mapboxgl.LngLatBounds(sw, ne);
-    this.map.fitBounds(bounds);
   }
 }
