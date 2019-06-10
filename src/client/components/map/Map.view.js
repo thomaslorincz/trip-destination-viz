@@ -126,7 +126,7 @@ export default class MapView extends View {
         'type': 'circle',
         'paint': {
           'circle-radius': [
-            'max', 0.25, ['*', 2, ['/', ['get', 'count'], 500]],
+            'max', 0.1, ['/', ['get', 'count'], 500],
           ],
         },
       });
@@ -141,7 +141,7 @@ export default class MapView extends View {
         'type': 'circle',
         'paint': {
           'circle-radius': [
-            'max', 0.25, ['*', 2, ['/', ['get', 'count'], 500]],
+            'max', 0.1, ['/', ['get', 'count'], 500],
           ],
         },
       });
