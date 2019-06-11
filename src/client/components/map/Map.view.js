@@ -46,34 +46,19 @@ export default class MapView extends View {
         'id': '2065BAP',
         'source': {
           type: 'vector',
-          url: 'mapbox://thomaslorincz.0bgp74x8',
+          url: 'mapbox://thomaslorincz.b38h0wik',
         },
-        'source-layer': 'output_2065BAP-4us5kj',
+        'source-layer': 'output_2065BAP_300-2jb2ha',
         'type': 'circle',
         'paint': {
           'circle-radius': [
-            'max', 0.1, ['/', ['get', 'count'], 500],
+            'max', 0.1, ['/', ['get', 'count'], 300],
           ],
         },
       });
 
       this.map.addLayer({
         'id': '2065CityII',
-        'source': {
-          type: 'vector',
-          url: 'mapbox://thomaslorincz.6erkncy4',
-        },
-        'source-layer': 'output_2065CityII-cv66ke',
-        'type': 'circle',
-        'paint': {
-          'circle-radius': [
-            'max', 0.1, ['/', ['get', 'count'], 500],
-          ],
-        },
-      });
-
-      this.map.addLayer({
-        'id': '2065CityII_300',
         'source': {
           type: 'vector',
           url: 'mapbox://thomaslorincz.4qfirexj',

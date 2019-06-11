@@ -20,11 +20,7 @@
       </div>
       <div id="data-2065CityII" class="left-control-entry dataset-entry" data-value="2065CityII">
         <i class="left-control-icon material-icons-round dataset-icon"></i>
-        <div class="left-control-label">City Plan II (500) (2065)</div>
-      </div>
-      <div id="data-2065CityII_300" class="left-control-entry dataset-entry" data-value="2065CityII_300">
-        <i class="left-control-icon material-icons-round dataset-icon"></i>
-        <div class="left-control-label">City Plan II (300) (2065)</div>
+        <div class="left-control-label">City Plan II (2065)</div>
       </div>
     </div>
   </div>
@@ -182,7 +178,7 @@
     <p>This visualization displays predicted trip destination density in the Edmonton Central Metropolitan Area in 2065.</p>
     <p>Each dataset contains trip data predictions according to a city plan.</p>
     <h2>Analysis</h2>
-    <p>Each dot represents 1-500 trips to a particular zone in the city. Their size is scaled linearly according to their trip count.</p>
+    <p>Each dot represents 1-300 trips to a particular zone in the city. Their size is scaled according to max(0.1, (trips / 300)).</p>
     <p>To visualize the trip density, points are assigned a random lat/lon that falls within the destination zone of the trip(s) that they represent.</p>
     <h2>Controls</h2>
     <p>The controls on the left side of the app can be used to choose the dataset and filter the data on screen.</p>
