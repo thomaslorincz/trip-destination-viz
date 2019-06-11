@@ -295,3 +295,7 @@ body {
 #close-help:hover {
   color: #2B2B2B;
 }
+
+.mapboxgl-ctrl-bottom-left {
+  left: 300px;
+}
