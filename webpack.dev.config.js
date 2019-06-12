@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
+const workboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = {
   entry: './src/client/index.js',
@@ -64,5 +65,17 @@ module.exports = {
     }),
     new ManifestPlugin(),
     new webpack.HotModuleReplacementPlugin(),
+    new workboxPlugin.GenerateSW({
+      swDest: 'sw.js',
+      clientsClaim: true,
+      skipWaiting: true,
+      runtimeCaching: [{
+        urlPattern: new RegExp('^https:\/\/fonts\.googleapis\.com/'),
+        handler: 'StaleWhileRevalidate',
+        options: {
+          cacheName: 'google-fonts-stylesheets',
+        },
+      }],
+    }),
   ],
 };
