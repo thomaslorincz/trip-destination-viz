@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
 
 module.exports = {
   entry: './src/client/index.js',
@@ -61,6 +62,7 @@ module.exports = {
       filename: './index.html',
       excludeChunks: ['server'],
     }),
+    new ManifestPlugin(),
     new webpack.HotModuleReplacementPlugin(),
   ],
 };

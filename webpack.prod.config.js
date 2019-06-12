@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
+const ManifestPlugin = require('webpack-manifest-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
@@ -62,6 +63,7 @@ module.exports = {
       template: './src/client/index.html',
       filename: './index.html',
     }),
+    new ManifestPlugin(),
     new MiniCssExtractPlugin({
       filename: '[name].css',
       chunkFilename: '[id].css',
