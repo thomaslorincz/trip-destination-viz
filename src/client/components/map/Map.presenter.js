@@ -13,10 +13,6 @@ export default class MapPresenter extends Presenter {
       this.model.initialDraw();
     });
 
-    document.addEventListener('initialDraw', (event) => {
-      this.view.draw(event.detail);
-    });
-
     this.view.container.addEventListener('datasetClicked', (event) => {
       this.model.updateDataset(event.detail);
     });
