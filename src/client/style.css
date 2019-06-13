@@ -68,17 +68,19 @@ body {
   box-sizing: border-box;
   width: auto;
   height: auto;
-  color: gainsboro;
+  color: #2B2B2B;
   cursor: pointer;
   pointer-events: all;
   user-select: none;
-  transition: color 250ms ease;
+  background-color: white;
+  transition: background-color 250ms ease;
   margin-right: 20px;
   z-index: 1;
+  border-radius: 50%;
 }
 
 .collapse-icon:hover {
-  color: #2B2B2B;
+  background-color: gainsboro;
 }
 
 .left-control-title {

@@ -1,7 +1,7 @@
 {
   "name": "trip-destination-viz",
   "version": "1.0.0",
-  "description": "A visualization of daily trip destinations in the Edmonton Central Metropolitan Area in 2065.",
+  "description": "A visualization of daily trip destinations in the Edmonton Central Metropolitan Area in 2065",
   "engines": {
     "node": ">=10.0.0",
     "npm": ">=6.0.0"
@@ -56,7 +56,6 @@
     "webpack-cli": "^3.3.3",
     "webpack-dev-middleware": "^3.7.0",
     "webpack-hot-middleware": "^2.25.0",
-    "webpack-manifest-plugin": "^2.0.4",
     "webpack-node-externals": "^1.7.2",
     "workbox-webpack-plugin": "^4.3.1"
   }
