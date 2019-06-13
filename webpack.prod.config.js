@@ -1,4 +1,5 @@
 const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 const ManifestPlugin = require('webpack-manifest-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
@@ -43,23 +44,13 @@ module.exports = {
         ],
       },
       {
-        test: /\.(png|svg|jpe?g|gif|geojson|csv)$/,
-        use: [
-          {
-            loader: 'file-loader',
-            options: {
-              name: '[hash].[ext]',
-            },
-          },
-        ],
-      },
-      {
         test: /\.css$/,
         use: [MiniCssExtractPlugin.loader, 'css-loader'],
       },
     ],
   },
   plugins: [
+    new CopyWebpackPlugin([{from: 'assets', to: 'images'}]),
     new HtmlWebPackPlugin({
       template: './src/client/index.html',
       filename: 'index.html',
