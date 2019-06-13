@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.05a6131fdd717b9ae705e2864dce4d85.js"
+  "/precache-manifest.dd3f128ea5da2deabe546b66b91c7983.js"
 );
 
 workbox.core.skipWaiting();
@@ -30,3 +30,4 @@ self.__precacheManifest = [].concat(self.__precacheManifest || []);
 workbox.precaching.precacheAndRoute(self.__precacheManifest, {});
 
 workbox.routing.registerRoute(/^https:\/\/fonts.googleapis.com\//, new workbox.strategies.StaleWhileRevalidate({ "cacheName":"google-fonts-stylesheets", plugins: [] }), 'GET');
+workbox.routing.registerRoute(/^https:\/\/api\.mapbox\.com\/mapbox-gl-js\/v1\.0\.0\/mapbox-gl\.css$/, new workbox.strategies.StaleWhileRevalidate(), 'GET');

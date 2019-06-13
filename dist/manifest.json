@@ -1,7 +1,7 @@
 {
   "main.css": "/main.css",
   "main.js": "/main.js",
-  "./index.html": "/./index.html",
-  "precache-manifest.05a6131fdd717b9ae705e2864dce4d85.js": "/precache-manifest.05a6131fdd717b9ae705e2864dce4d85.js",
+  "index.html": "/index.html",
+  "precache-manifest.dd3f128ea5da2deabe546b66b91c7983.js": "/precache-manifest.dd3f128ea5da2deabe546b66b91c7983.js",
   "sw.js": "/sw.js"
 }
