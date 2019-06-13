@@ -1,7 +1,6 @@
 const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
-const ManifestPlugin = require('webpack-manifest-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
@@ -50,13 +49,15 @@ module.exports = {
     ],
   },
   plugins: [
-    new CopyWebpackPlugin([{from: 'assets', to: 'images'}]),
+    new CopyWebpackPlugin([
+      {from: 'assets', to: 'images'},
+      {from: 'src/client/manifest.json'},
+    ]),
     new HtmlWebPackPlugin({
       template: './src/client/index.html',
       filename: 'index.html',
       excludeChunks: ['server'],
     }),
-    new ManifestPlugin(),
     new MiniCssExtractPlugin({
       filename: '[name].css',
       chunkFilename: '[id].css',

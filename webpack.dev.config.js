@@ -2,7 +2,6 @@ const path = require('path');
 const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
-const ManifestPlugin = require('webpack-manifest-plugin');
 const workboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = {
@@ -48,13 +47,15 @@ module.exports = {
     ],
   },
   plugins: [
-    new CopyWebpackPlugin([{from: 'assets', to: 'images'}]),
+    new CopyWebpackPlugin([
+      {from: 'assets', to: 'images'},
+      {from: 'src/client/manifest.json'},
+    ]),
     new HtmlWebPackPlugin({
       template: './src/client/index.html',
       filename: 'index.html',
       excludeChunks: ['server'],
     }),
-    new ManifestPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new workboxPlugin.GenerateSW({
       swDest: 'sw.js',
