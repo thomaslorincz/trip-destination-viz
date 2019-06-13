@@ -60,7 +60,7 @@ module.exports = {
   plugins: [
     new HtmlWebPackPlugin({
       template: './src/client/index.html',
-      filename: './index.html',
+      filename: 'index.html',
       excludeChunks: ['server'],
     }),
     new ManifestPlugin(),
@@ -69,13 +69,20 @@ module.exports = {
       swDest: 'sw.js',
       clientsClaim: true,
       skipWaiting: true,
-      runtimeCaching: [{
-        urlPattern: new RegExp('^https:\/\/fonts\.googleapis\.com/'),
-        handler: 'StaleWhileRevalidate',
-        options: {
-          cacheName: 'google-fonts-stylesheets',
+      runtimeCaching: [
+        {
+          urlPattern: /^https:\/\/fonts\.googleapis\.com/,
+          handler: 'StaleWhileRevalidate',
+          options: {
+            cacheName: 'google-fonts-stylesheets',
+          },
         },
-      }],
+        {
+          // eslint-disable-next-line
+          urlPattern: /^https:\/\/api\.mapbox\.com\/mapbox-gl-js\/v1\.0\.0\/mapbox-gl\.css$/,
+          handler: 'StaleWhileRevalidate',
+        },
+      ],
     }),
   ],
 };
