@@ -4,11 +4,6 @@ import AppModel from './app/App.model';
 import AppPresenter from './app/App.presenter';
 import './style.css';
 
-// Needed for Hot Module Replacement
-if (typeof(module.hot) !== 'undefined') {
-  module.hot.accept();
-}
-
 // Register a service worker
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -18,6 +13,11 @@ if ('serviceWorker' in navigator) {
       console.log('SW registration failed: ', registrationError);
     });
   });
+}
+
+// Needed for Hot Module Replacement
+if (typeof(module.hot) !== 'undefined') {
+  module.hot.accept();
 }
 
 // Initiate the app
