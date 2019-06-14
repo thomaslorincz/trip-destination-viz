@@ -11,7 +11,6 @@ app.use('/', expressStaticGzip(__dirname, {
   enableBrotli: true,
   customCompressions: [],
   orderPreference: ['br'],
-  index: true,
 }));
 
 app.listen(port, () => console.log(`Listening on port ${port}`));

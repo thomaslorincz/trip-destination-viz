@@ -5,7 +5,6 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
-const workboxPlugin = require('workbox-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -68,25 +67,6 @@ module.exports = {
       algorithm: 'brotliCompress',
       test: /\.(js|css|html)$/,
       deleteOriginalAssets: true,
-    }),
-    new workboxPlugin.GenerateSW({
-      swDest: 'sw.js',
-      clientsClaim: true,
-      skipWaiting: true,
-      runtimeCaching: [
-        {
-          urlPattern: new RegExp('^https:\/\/fonts\.googleapis\.com/'),
-          handler: 'StaleWhileRevalidate',
-          options: {
-            cacheName: 'google-fonts-stylesheets',
-          },
-        },
-        {
-          // eslint-disable-next-line
-          urlPattern: /^https:\/\/api\.mapbox\.com\/mapbox-gl-js\/v1\.0\.0\/mapbox-gl\.css$/,
-          handler: 'StaleWhileRevalidate',
-        },
-      ],
     }),
   ],
 };
