@@ -282,22 +282,34 @@ body {
 }
 
 #close-help {
-  display: inline-block;
-  position: absolute;
+  display: inline-flex;
+  position: relative;
   box-sizing: border-box;
+  border-radius: 50%;
+  float: right;
+  font-size: 32px;
   width: auto;
   height: auto;
-  top: 20px;
-  right: 20px;
-  color: gainsboro;
+  color: #2B2B2B;
   cursor: pointer;
   pointer-events: all;
   user-select: none;
-  transition: color 250ms ease;
+  background-color: white;
+  transition: background-color 250ms ease;
 }
 
 #close-help:hover {
-  color: #2B2B2B;
+  background-color: gainsboro;
+}
+
+#help-dialogue-content {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+}
+
+#help-dialogue-content > h1 {
+  margin-top: 0;
 }
 
 .mapboxgl-ctrl-bottom-left {
