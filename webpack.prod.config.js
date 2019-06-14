@@ -51,7 +51,6 @@ module.exports = {
   plugins: [
     new CopyWebpackPlugin([
       {from: 'assets', to: 'images'},
-      {from: 'src/client/manifest.json'},
     ]),
     new HtmlWebPackPlugin({
       template: './src/client/index.html',
