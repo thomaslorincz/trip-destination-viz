@@ -12,7 +12,7 @@ export default class AppModel extends Model {
     this.dataset = '2065BAP';
 
     /** @type {Set} */
-    this.overlay = new Set(['cma', 'city']);
+    this.overlay = new Set(['cma', 'city', 'lrt']);
 
     /** @type {'all'|Set} */
     this.purpose = 'all';
@@ -58,6 +58,7 @@ export default class AppModel extends Model {
         cma: '#9932CC',
         city: '#0000FF',
         nc: '#FFFF00',
+        lrt: '#FF1493',
       },
     };
 
@@ -114,7 +115,7 @@ export default class AppModel extends Model {
   }
 
   /**
-   * @param {'city'|'nc'} value
+   * @param {string} value
    */
   updateOverlay({value}) {
     if (this.overlay.has(value)) {

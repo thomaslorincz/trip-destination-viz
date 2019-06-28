@@ -120,6 +120,17 @@ export default class MapView extends View {
         'paint': {'line-width': 2},
       });
 
+      this.map.addLayer({
+        'id': 'lrt',
+        'source': {
+          type: 'vector',
+          url: 'mapbox://thomaslorincz.75obfmea',
+        },
+        'source-layer': 'lrt_2065-0kp6p1',
+        'type': 'line',
+        'paint': {'line-width': 2},
+      });
+
       this.container.dispatchEvent(new CustomEvent('loaded'));
     });
   }
