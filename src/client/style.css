@@ -36,6 +36,10 @@ body {
   direction: rtl;
 }
 
+#left-controls-container.hidden {
+  display: none;
+}
+
 .left-control {
   display: flex;
   position: relative;
@@ -172,6 +176,43 @@ body {
   width: 14px;
   height: 14px;
   border: 1px solid #2B2B2B;
+}
+
+#hide-controls-container {
+  display: flex;
+  position: absolute;
+  flex-direction: row;
+  align-items: center;
+  width: auto;
+  height: 100%;
+  top: 0;
+  left: 294px;
+}
+
+#hide-controls-divider {
+  display: inline-block;
+  position: relative;
+  width: 1px;
+  height: 100px;
+  background-color: white;
+  border-radius: 1px;
+}
+
+#hide-controls-button {
+  display: inline-flex;
+  position: relative;
+  align-items: center;
+  justify-items: center;
+  border-radius: 8px;
+  margin: 0 4px;
+  color: white;
+  cursor: pointer;
+  transition: color 250ms ease;
+  user-select: none;
+}
+
+#hide-controls-button:hover {
+  color: gainsboro;
 }
 
 #colour-choices {
@@ -313,5 +354,5 @@ body {
 }
 
 .mapboxgl-ctrl-bottom-left {
-  left: 300px;
+  left: 304px;
 }

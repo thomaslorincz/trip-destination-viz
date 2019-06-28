@@ -22,6 +22,7 @@ export default class MapView extends View {
     this.initializePurposeControl();
     this.initializeOverlayControl();
     this.initializeTimeControl();
+    this.initializeHide();
     this.initializeColourChooser();
     this.initializeHelp();
 
@@ -230,6 +231,16 @@ export default class MapView extends View {
   }
 
   /**
+   * Initializes the hide/show chevron button used to minimize the controls.
+   */
+  initializeHide() {
+    this.hideButton = document.getElementById('hide-controls-button');
+    this.hideButton.addEventListener('click', () => {
+      this.container.dispatchEvent(new CustomEvent('hideClicked'));
+    });
+  }
+
+  /**
    * Initializes the colour chooser which is used to change control colours.
    */
   initializeColourChooser() {
@@ -278,15 +289,17 @@ export default class MapView extends View {
    * @param {'all'|Set} purpose
    * @param {Set} overlay
    * @param {'all'|Set} time
+   * @param {boolean} hidden
    * @param {{}} colours
    */
-  draw({dataset, purpose, overlay, time, colours}) {
+  draw({dataset, purpose, overlay, time, hidden, colours}) {
     this.applyColours(purpose, colours);
     this.drawDataset(dataset);
     this.drawPurpose(purpose);
     this.drawOverlay(overlay);
     this.drawTime(time);
     this.drawDots(dataset, purpose, time);
+    this.drawVisibility(hidden);
   }
 
   /**
@@ -500,5 +513,21 @@ export default class MapView extends View {
         icon.textContent = 'expand_less';
       }
     });
+  }
+
+  /**
+   * @param {boolean} hidden
+   */
+  drawVisibility(hidden) {
+    const leftControls = document.getElementById('left-controls-container');
+    if (hidden) {
+      this.hideButton.innerHTML
+          = '<i class="material-icons-round">chevron_right</i>';
+      leftControls.classList.add('hidden');
+    } else {
+      this.hideButton.innerHTML
+          = '<i class="material-icons-round">chevron_left</i>';
+      leftControls.classList.remove('hidden');
+    }
   }
 }

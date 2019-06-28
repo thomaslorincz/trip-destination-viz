@@ -20,6 +20,8 @@ export default class AppModel extends Model {
     /** @type {'all'|Set} */
     this.time = 'all';
 
+    this.controlsHidden = false;
+
     this.dataDrivenPurposeColours = [
       'match', ['get', 'purp'],
       'O', '#FF0000',
@@ -175,6 +177,14 @@ export default class AppModel extends Model {
   }
 
   /**
+   * Toggle the visibility of the left controls.
+   */
+  toggleHide() {
+    this.controlsHidden = !this.controlsHidden;
+    this.dispatchSettingsUpdated();
+  }
+
+  /**
    * Toggle the state of the help dialogue.
    */
   toggleHelp() {
@@ -211,6 +221,7 @@ export default class AppModel extends Model {
         purpose: this.purpose,
         overlay: this.overlay,
         time: this.time,
+        hidden: this.controlsHidden,
         colours: this.colours,
       },
     }));

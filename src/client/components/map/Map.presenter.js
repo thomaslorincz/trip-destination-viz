@@ -29,6 +29,10 @@ export default class MapPresenter extends Presenter {
       this.model.updateTime(event.detail);
     });
 
+    this.view.container.addEventListener('hideClicked', () => {
+      this.model.toggleHide();
+    });
+
     this.view.container.addEventListener('colourClicked', (event) => {
       this.model.updateColours(event.detail);
     });
