@@ -2,6 +2,7 @@ import path from 'path';
 import express from 'express';
 
 const app = express();
+const port = process.env.PORT || 8080;
 
 const httpsRedirect = (req, res, next) => {
   if (req.headers['x-forwarded-proto'] === 'https') {
@@ -16,4 +17,4 @@ app.use(express.static(__dirname));
 
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
 
-app.listen(8080, () => console.log('Listening on port 8080'));
+app.listen(port, () => console.log(`Listening on port ${port}`));
