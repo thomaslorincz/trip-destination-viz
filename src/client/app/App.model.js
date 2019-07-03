@@ -66,7 +66,6 @@ export default class AppModel extends Model {
       },
     };
 
-    /** @type {boolean} */
     this.helpOpen = false;
 
     this.collapsed = {
@@ -82,7 +81,7 @@ export default class AppModel extends Model {
    */
   initialDraw() {
     this.dispatchSettingsUpdated();
-    this.dispatchHelpUpdated();
+    this.emitter.emit('helpUpdated', this.helpOpen);
   }
 
   /**
@@ -191,7 +190,7 @@ export default class AppModel extends Model {
    */
   toggleHelp() {
     this.helpOpen = !this.helpOpen;
-    this.dispatchHelpUpdated();
+    this.emitter.emit('helpUpdated', this.helpOpen);
   }
 
   /**
@@ -200,13 +199,6 @@ export default class AppModel extends Model {
   toggleCollapse(control) {
     this.collapsed[control] = !this.collapsed[control];
     this.emitter.emit('collapsedUpdated', this.collapsed);
-  }
-
-  /**
-   * Shorthand method for dispatching a helpUpdated event.
-   */
-  dispatchHelpUpdated() {
-    this.emitter.emit('helpUpdated', this.helpOpen);
   }
 
   /**
