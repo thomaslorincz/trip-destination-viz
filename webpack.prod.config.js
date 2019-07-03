@@ -46,7 +46,6 @@ module.exports = {
           emitWarning: true,
           failOnError: true,
           failOnWarning: false,
-          formatter: require('eslint/lib/cli-engine/formatters/stylish'),
         },
       },
       {
