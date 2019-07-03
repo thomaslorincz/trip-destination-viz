@@ -1,5 +1,6 @@
 import path from 'path';
 import express from 'express';
+import helmet from 'helmet';
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -12,6 +13,7 @@ const httpsRedirect = (req, res, next) => {
   }
 };
 
+app.use(helmet());
 app.use(httpsRedirect);
 app.use(express.static(__dirname));
 
