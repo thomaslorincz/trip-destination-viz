@@ -5,9 +5,11 @@ export default class Presenter {
   /**
    * @param {Model} model
    * @param {View} view
+   * @param {EventEmitter} emitter
    */
-  constructor(model, view) {
+  constructor(model, view, emitter = null) {
     this.model = model;
     this.view = view;
+    this.emitter = emitter;
   }
 }

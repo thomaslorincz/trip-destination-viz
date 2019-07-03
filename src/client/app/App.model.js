@@ -4,9 +4,11 @@ import Model from '../superclasses/Model';
  * Model that stores and controls the app's data and state.
  */
 export default class AppModel extends Model {
-  // eslint-disable-next-line
-  constructor() {
-    super();
+  /**
+   * @param {EventEmitter} emitter
+   */
+  constructor(emitter) {
+    super(emitter);
 
     /** @type {'2065BAP'|'2065CityII'} */
     this.dataset = '2065BAP';
@@ -197,33 +199,27 @@ export default class AppModel extends Model {
    */
   toggleCollapse(control) {
     this.collapsed[control] = !this.collapsed[control];
-    document.dispatchEvent(new CustomEvent('collapsedUpdated', {
-      detail: this.collapsed,
-    }));
+    this.emitter.emit('collapsedUpdated', this.collapsed);
   }
 
   /**
    * Shorthand method for dispatching a helpUpdated event.
    */
   dispatchHelpUpdated() {
-    document.dispatchEvent(new CustomEvent('helpUpdated', {
-      detail: this.helpOpen,
-    }));
+    this.emitter.emit('helpUpdated', this.helpOpen);
   }
 
   /**
    * Shorthand method for dispatching a settingsUpdated event.
    */
   dispatchSettingsUpdated() {
-    document.dispatchEvent(new CustomEvent('settingsUpdated', {
-      detail: {
-        dataset: this.dataset,
-        purpose: this.purpose,
-        overlay: this.overlay,
-        time: this.time,
-        hidden: this.controlsHidden,
-        colours: this.colours,
-      },
-    }));
+    this.emitter.emit('settingsUpdated', {
+      dataset: this.dataset,
+      purpose: this.purpose,
+      overlay: this.overlay,
+      time: this.time,
+      hidden: this.controlsHidden,
+      colours: this.colours,
+    });
   }
 }
