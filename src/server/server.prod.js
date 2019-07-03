@@ -14,7 +14,10 @@ const httpsRedirect = (req, res, next) => {
 };
 
 app.use(helmet());
-app.use(httpsRedirect);
+// Only use SSL redirect on deployed servers
+if (port === process.env.PORT) {
+  app.use(httpsRedirect);
+}
 app.use(express.static(__dirname));
 
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
