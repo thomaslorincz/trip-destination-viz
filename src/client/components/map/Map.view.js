@@ -1,13 +1,14 @@
 import mapboxgl from 'mapbox-gl';
 import View from '../../superclasses/View';
 
-// eslint-disable-next-line
+/** @class */
 export default class MapView extends View {
   /**
    * @param {HTMLElement} container
+   * @param {EventEmitter} emitter
    */
-  constructor(container) {
-    super(container);
+  constructor(container, emitter) {
+    super(container, emitter);
 
     this.layers = [];
     document.querySelectorAll('.dataset-entry').forEach((entry) => {
@@ -132,7 +133,7 @@ export default class MapView extends View {
         'paint': {'line-width': 2},
       });
 
-      this.container.dispatchEvent(new CustomEvent('loaded'));
+      this.emitter.emit('loaded');
     });
   }
 
@@ -143,16 +144,12 @@ export default class MapView extends View {
     this.datasetEntries = document.querySelectorAll('.dataset-entry');
     this.datasetEntries.forEach((entry) => {
       entry.addEventListener('click', (event) => {
-        this.container.dispatchEvent(new CustomEvent('datasetClicked', {
-          detail: event.target.dataset.value,
-        }));
+        this.emitter.emit('datasetClicked', event.target.dataset.value);
       });
     });
     this.datasetCollapse = document.getElementById('collapse-dataset');
     this.datasetCollapse.addEventListener('click', () => {
-      this.container.dispatchEvent(new CustomEvent('toggleCollapse', {
-        detail: 'dataset',
-      }));
+      this.emitter.emit('toggleCollapse', 'dataset');
     });
   }
 
@@ -163,9 +160,7 @@ export default class MapView extends View {
     this.purposeEntries = document.querySelectorAll('.purpose-entry');
     this.purposeEntries.forEach((entry) => {
       entry.addEventListener('click', (event) => {
-        this.container.dispatchEvent(new CustomEvent('purposeClicked', {
-          detail: {value: event.target.dataset.value},
-        }));
+        this.emitter.emit('purposeClicked', event.target.dataset.value);
       });
       entry.addEventListener('contextmenu', (event) => {
         event.preventDefault();
@@ -177,9 +172,7 @@ export default class MapView extends View {
     });
     this.purposeCollapse = document.getElementById('collapse-purpose');
     this.purposeCollapse.addEventListener('click', () => {
-      this.container.dispatchEvent(new CustomEvent('toggleCollapse', {
-        detail: 'purpose',
-      }));
+      this.emitter.emit('toggleCollapse', 'purpose');
     });
   }
 
@@ -190,9 +183,7 @@ export default class MapView extends View {
     this.overlayEntries = document.querySelectorAll('.overlay-entry');
     this.overlayEntries.forEach((entry) => {
       entry.addEventListener('click', (event) => {
-        this.container.dispatchEvent(new CustomEvent('overlayClicked', {
-          detail: {value: event.target.dataset.value},
-        }));
+        this.emitter.emit('overlayClicked', event.target.dataset.value);
       });
       entry.addEventListener('contextmenu', (event) => {
         event.preventDefault();
@@ -204,9 +195,7 @@ export default class MapView extends View {
     });
     this.overlayCollapse = document.getElementById('collapse-overlay');
     this.overlayCollapse.addEventListener('click', () => {
-      this.container.dispatchEvent(new CustomEvent('toggleCollapse', {
-        detail: 'overlay',
-      }));
+      this.emitter.emit('toggleCollapse', 'overlay');
     });
   }
 
@@ -217,16 +206,12 @@ export default class MapView extends View {
     this.timeEntries = document.querySelectorAll('.time-entry');
     this.timeEntries.forEach((entry) => {
       entry.addEventListener('click', (event) => {
-        this.container.dispatchEvent(new CustomEvent('timeClicked', {
-          detail: {value: event.target.dataset.value},
-        }));
+        this.emitter.emit('timeClicked', event.target.dataset.value);
       });
     });
     this.timeCollapse = document.getElementById('collapse-time');
     this.timeCollapse.addEventListener('click', () => {
-      this.container.dispatchEvent(new CustomEvent('toggleCollapse', {
-        detail: 'time',
-      }));
+      this.emitter.emit('toggleCollapse', 'time');
     });
   }
 
@@ -236,7 +221,7 @@ export default class MapView extends View {
   initializeHide() {
     this.hideButton = document.getElementById('hide-controls-button');
     this.hideButton.addEventListener('click', () => {
-      this.container.dispatchEvent(new CustomEvent('hideClicked'));
+      this.emitter.emit('hideClicked');
     });
   }
 
@@ -249,13 +234,11 @@ export default class MapView extends View {
     circles.forEach((circle) => {
       circle.addEventListener('click', () => {
         this.hideColourChoices();
-        this.container.dispatchEvent(new CustomEvent('colourClicked', {
-          detail: {
-            category: this.colourChoices.dataset.category,
-            key: this.colourChoices.dataset.value,
-            value: getComputedStyle(circle).backgroundColor,
-          },
-        }));
+        this.emitter.emit('colourClicked', {
+          category: this.colourChoices.dataset.category,
+          key: this.colourChoices.dataset.value,
+          value: getComputedStyle(circle).backgroundColor,
+        });
       });
       this.colourChoices.appendChild(circle);
     });
@@ -270,17 +253,17 @@ export default class MapView extends View {
   initializeHelp() {
     this.helpIcon = document.getElementById('help-icon');
     this.helpIcon.addEventListener('click', () => {
-      this.container.dispatchEvent(new CustomEvent('helpClicked'));
+      this.emitter.emit('helpClicked');
     });
     this.help = document.getElementById('help');
     this.help.addEventListener('click', (event) => {
       if (event.target === document.getElementById('help')) {
-        this.container.dispatchEvent(new CustomEvent('helpClicked'));
+        this.emitter.emit('helpClicked');
       }
     });
     this.closeHelp = document.getElementById('close-help');
     this.closeHelp.addEventListener('click', () => {
-      this.container.dispatchEvent(new CustomEvent('helpClicked'));
+      this.emitter.emit('helpClicked');
     });
   }
 

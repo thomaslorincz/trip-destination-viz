@@ -93,23 +93,23 @@ export default class AppModel extends Model {
   }
 
   /**
-   * @param {'all'|'O'|'W'|'S'|'P'|'H'|'T'|'L'|'R'|'C'|'Q'} value
+   * @param {'all'|'O'|'W'|'S'|'P'|'H'|'T'|'L'|'R'|'C'|'Q'} purpose
    */
-  updatePurpose({value}) {
-    if (value === 'all') {
+  updatePurpose(purpose) {
+    if (purpose === 'all') {
       if (this.purpose === 'all') {
         this.purpose = new Set();
       } else {
-        this.purpose = value;
+        this.purpose = purpose;
       }
     } else {
       if (this.purpose === 'all') {
-        this.purpose = new Set([value]);
+        this.purpose = new Set([purpose]);
       } else {
-        if (this.purpose.has(value)) {
-          this.purpose.delete(value);
+        if (this.purpose.has(purpose)) {
+          this.purpose.delete(purpose);
         } else {
-          this.purpose.add(value);
+          this.purpose.add(purpose);
         }
       }
     }
@@ -118,36 +118,36 @@ export default class AppModel extends Model {
   }
 
   /**
-   * @param {string} value
+   * @param {string} overlay
    */
-  updateOverlay({value}) {
-    if (this.overlay.has(value)) {
-      this.overlay.delete(value);
+  updateOverlay(overlay) {
+    if (this.overlay.has(overlay)) {
+      this.overlay.delete(overlay);
     } else {
-      this.overlay.add(value);
+      this.overlay.add(overlay);
     }
 
     this.dispatchSettingsUpdated();
   }
 
   /**
-   * @param {'all'|'1'|'21'|'22'|'23'|'3'|'41'|'42'|'43'|'5'|'6'} value
+   * @param {'all'|'1'|'21'|'22'|'23'|'3'|'41'|'42'|'43'|'5'|'6'} time
    */
-  updateTime({value}) {
-    if (value === 'all') {
+  updateTime(time) {
+    if (time === 'all') {
       if (this.time === 'all') {
         this.time = new Set();
       } else {
-        this.time = value;
+        this.time = time;
       }
     } else {
       if (this.time === 'all') {
-        this.time = new Set([value]);
+        this.time = new Set([time]);
       } else {
-        if (this.time.has(value)) {
-          this.time.delete(value);
+        if (this.time.has(time)) {
+          this.time.delete(time);
         } else {
-          this.time.add(value);
+          this.time.add(time);
         }
       }
     }
@@ -201,9 +201,7 @@ export default class AppModel extends Model {
     this.emitter.emit('collapsedUpdated', this.collapsed);
   }
 
-  /**
-   * Shorthand method for dispatching a settingsUpdated event.
-   */
+  /** Shorthand method for dispatching a settingsUpdated event. */
   dispatchSettingsUpdated() {
     this.emitter.emit('settingsUpdated', {
       dataset: this.dataset,

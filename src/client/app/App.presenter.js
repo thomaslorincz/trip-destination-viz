@@ -12,8 +12,8 @@ export default class AppPresenter extends Presenter {
   constructor(model, view, emitter) {
     super(model, view, emitter);
 
-    this.mapView = new MapView(document.getElementById('map'));
-    new MapPresenter(this.model, this.mapView);
+    this.mapView = new MapView(document.getElementById('map'), this.emitter);
+    new MapPresenter(this.model, this.mapView, this.emitter);
 
     this.emitter.on('settingsUpdated', (settings) => {
       this.mapView.draw(settings);

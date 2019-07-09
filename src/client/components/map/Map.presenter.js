@@ -1,60 +1,49 @@
 import Presenter from '../../superclasses/Presenter';
 
-// eslint-disable-next-line
+/** @class */
 export default class MapPresenter extends Presenter {
   /**
    * @param {AppModel} model
    * @param {MapView} view
+   * @param {EventEmitter} emitter
    */
-  constructor(model, view) {
-    super(model, view);
+  constructor(model, view, emitter) {
+    super(model, view, emitter);
 
-    this.view.container.addEventListener('loaded', () => {
+    this.emitter.on('loaded', () => {
       this.model.initialDraw();
     });
 
-    this.view.container.addEventListener('datasetClicked', (event) => {
-      this.model.updateDataset(event.detail);
+    this.emitter.on('datasetClicked', (dataset) => {
+      this.model.updateDataset(dataset);
     });
 
-    this.view.container.addEventListener('purposeClicked', (event) => {
-      this.model.updatePurpose(event.detail);
+    this.emitter.on('purposeClicked', (purpose) => {
+      this.model.updatePurpose(purpose);
     });
 
-    this.view.container.addEventListener('overlayClicked', (event) => {
-      this.model.updateOverlay(event.detail);
+    this.emitter.on('overlayClicked', (overlay) => {
+      this.model.updateOverlay(overlay);
     });
 
-    this.view.container.addEventListener('timeClicked', (event) => {
-      this.model.updateTime(event.detail);
+    this.emitter.on('timeClicked', (time) => {
+      this.model.updateTime(time);
     });
 
-    this.view.container.addEventListener('hideClicked', () => {
+    this.emitter.on('hideClicked', () => {
       this.model.toggleHide();
     });
 
-    this.view.container.addEventListener('colourClicked', (event) => {
-      this.model.updateColours(event.detail);
+    this.emitter.on('colourClicked', ({category, key, value}) => {
+      this.model.updateColours({category, key, value});
     });
 
-    this.view.container.addEventListener('helpClicked', () => {
+    this.emitter.on('helpClicked', () => {
       this.model.toggleHelp();
     });
 
-    document.addEventListener('helpUpdated', (event) => {
-      this.view.drawHelp(event.detail);
-    });
-
-    document.addEventListener('settingsUpdated', (event) => {
-      this.view.draw(event.detail);
-    });
-
-    this.view.container.addEventListener('toggleCollapse', (event) => {
-      this.model.toggleCollapse(event.detail);
-    });
-
-    document.addEventListener('collapsedUpdated', (event) => {
-      this.view.drawCollapsed(event.detail);
+    this.emitter.on('toggleCollapse', (control) => {
+      this.model.toggleCollapse(control);
     });
   }
 }
