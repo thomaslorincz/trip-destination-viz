@@ -6,11 +6,6 @@
     "node": ">=10.0.0",
     "npm": ">=6.0.0"
   },
-  "browserslist": [
-    "defaults",
-    "not ie 11",
-    "not ie_mob 11"
-  ],
   "scripts": {
     "pretest": "webpack --mode production --config webpack.test.config.js",
     "test": "mocha test/test.build.js",
