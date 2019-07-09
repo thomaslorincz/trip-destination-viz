@@ -1,25 +1,21 @@
 import Model from '../superclasses/Model';
 
-/**
- * Model that stores and controls the app's data and state.
- */
+/** Model that stores and controls the app's data and state. */
 export default class AppModel extends Model {
-  /**
-   * @param {EventEmitter} emitter
-   */
+  /** @param {EventEmitter} emitter */
   constructor(emitter) {
     super(emitter);
 
-    /** @type {'2065BAP'|'2065CityII'} */
+    /* @type {'2065BAP'|'2065CityII'} */
     this.dataset = '2065BAP';
 
-    /** @type {Set} */
+    /* @type {Set} */
     this.overlay = new Set(['cma', 'city', 'lrt']);
 
-    /** @type {'all'|Set} */
+    /* @type {'all'|Set} */
     this.purpose = 'all';
 
-    /** @type {'all'|Set} */
+    /* @type {'all'|Set} */
     this.time = 'all';
 
     this.controlsHidden = false;
@@ -76,25 +72,19 @@ export default class AppModel extends Model {
     };
   }
 
-  /**
-   * A method for dispatching the initial draw event of the app.
-   */
+  /** A method for dispatching the initial draw event of the app. */
   initialDraw() {
     this.dispatchSettingsUpdated();
     this.emitter.emit('helpUpdated', this.helpOpen);
   }
 
-  /**
-   * @param {'2065BAP'|'2065CityII'} dataset
-   */
+  /** @param {'2065BAP'|'2065CityII'} dataset */
   updateDataset(dataset) {
     this.dataset = dataset;
     this.dispatchSettingsUpdated();
   }
 
-  /**
-   * @param {'all'|'O'|'W'|'S'|'P'|'H'|'T'|'L'|'R'|'C'|'Q'} purpose
-   */
+  /** @param {'all'|'O'|'W'|'S'|'P'|'H'|'T'|'L'|'R'|'C'|'Q'} purpose */
   updatePurpose(purpose) {
     if (purpose === 'all') {
       if (this.purpose === 'all') {
@@ -117,9 +107,7 @@ export default class AppModel extends Model {
     this.dispatchSettingsUpdated();
   }
 
-  /**
-   * @param {string} overlay
-   */
+  /** @param {string} overlay */
   updateOverlay(overlay) {
     if (this.overlay.has(overlay)) {
       this.overlay.delete(overlay);
@@ -130,9 +118,7 @@ export default class AppModel extends Model {
     this.dispatchSettingsUpdated();
   }
 
-  /**
-   * @param {'all'|'1'|'21'|'22'|'23'|'3'|'41'|'42'|'43'|'5'|'6'} time
-   */
+  /** @param {'all'|'1'|'21'|'22'|'23'|'3'|'41'|'42'|'43'|'5'|'6'} time */
   updateTime(time) {
     if (time === 'all') {
       if (this.time === 'all') {
@@ -177,25 +163,19 @@ export default class AppModel extends Model {
     this.dispatchSettingsUpdated();
   }
 
-  /**
-   * Toggle the visibility of the left controls.
-   */
+  /** Toggle the visibility of the left controls. */
   toggleHide() {
     this.controlsHidden = !this.controlsHidden;
     this.dispatchSettingsUpdated();
   }
 
-  /**
-   * Toggle the state of the help dialogue.
-   */
+  /** Toggle the state of the help dialogue. */
   toggleHelp() {
     this.helpOpen = !this.helpOpen;
     this.emitter.emit('helpUpdated', this.helpOpen);
   }
 
-  /**
-   * @param {'dataset'|'purpose'|'overlay'|'time'} control
-   */
+  /** @param {'dataset'|'purpose'|'overlay'|'time'} control */
   toggleCollapse(control) {
     this.collapsed[control] = !this.collapsed[control];
     this.emitter.emit('collapsedUpdated', this.collapsed);
