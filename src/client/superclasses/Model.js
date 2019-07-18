@@ -1,10 +1,6 @@
-/**
- * Model superclass.
- */
+/** Model superclass. */
 export default class Model {
-  /**
-   * @param {EventEmitter} emitter
-   */
+  /** @param {EventEmitter} emitter */
   constructor(emitter) {
     this.emitter = emitter;
   }
