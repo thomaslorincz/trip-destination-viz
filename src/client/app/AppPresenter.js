@@ -1,6 +1,6 @@
 import Presenter from '../superclasses/Presenter';
-import MapView from '../components/map/Map.view';
-import MapPresenter from '../components/map/Map.presenter';
+import MapView from '../components/map/MapView';
+import MapPresenter from '../components/map/MapPresenter';
 
 /** @class */
 export default class AppPresenter extends Presenter {
