@@ -1,24 +1,21 @@
 import Model from '../superclasses/Model';
+import * as EventEmitter from 'eventemitter3';
 
 /** Model that stores and controls the app's data and state. */
 export default class AppModel extends Model {
-  /** @param {EventEmitter} emitter */
-  constructor(emitter) {
+  private dataset: string = '2065BAP';
+  private overlay: Set<string> = new Set(['cma', 'city', 'lrt']);
+  private purpose: Set<string> = new Set(['all']);
+  private time: Set<string> = new Set(['all']);
+  private controlsHidden: boolean = false;
+  private readonly dataDrivenPurposeColours: any[];
+  private readonly purposeToColourIndex: object;
+  private readonly colours: object;
+  private helpOpen: boolean = false;
+  private readonly collapsed: object;
+
+  public constructor(emitter: EventEmitter) {
     super(emitter);
-
-    /* @type {'2065BAP'|'2065CityII'} */
-    this.dataset = '2065BAP';
-
-    /* @type {Set} */
-    this.overlay = new Set(['cma', 'city', 'lrt']);
-
-    /* @type {'all'|Set} */
-    this.purpose = 'all';
-
-    /* @type {'all'|Set} */
-    this.time = 'all';
-
-    this.controlsHidden = false;
 
     this.dataDrivenPurposeColours = [
       'match', ['get', 'purp'],
@@ -62,8 +59,6 @@ export default class AppModel extends Model {
       },
     };
 
-    this.helpOpen = false;
-
     this.collapsed = {
       dataset: false,
       purpose: false,
@@ -73,42 +68,22 @@ export default class AppModel extends Model {
   }
 
   /** A method for dispatching the initial draw event of the app. */
-  initialDraw() {
+  public initialDraw(): void {
     this.dispatchSettingsUpdated();
     this.emitter.emit('helpUpdated', this.helpOpen);
   }
 
-  /** @param {'2065BAP'|'2065CityII'} dataset */
-  updateDataset(dataset) {
+  public updateDataset(dataset: string): void {
     this.dataset = dataset;
     this.dispatchSettingsUpdated();
   }
 
-  /** @param {'all'|'O'|'W'|'S'|'P'|'H'|'T'|'L'|'R'|'C'|'Q'} purpose */
-  updatePurpose(purpose) {
-    if (purpose === 'all') {
-      if (this.purpose === 'all') {
-        this.purpose = new Set();
-      } else {
-        this.purpose = purpose;
-      }
-    } else {
-      if (this.purpose === 'all') {
-        this.purpose = new Set([purpose]);
-      } else {
-        if (this.purpose.has(purpose)) {
-          this.purpose.delete(purpose);
-        } else {
-          this.purpose.add(purpose);
-        }
-      }
-    }
-
+  public updatePurpose(purpose: string): void {
+    this.purpose = AppModel.updateStringSet(this.purpose, purpose);
     this.dispatchSettingsUpdated();
   }
 
-  /** @param {string} overlay */
-  updateOverlay(overlay) {
+  public updateOverlay(overlay: string): void {
     if (this.overlay.has(overlay)) {
       this.overlay.delete(overlay);
     } else {
@@ -118,35 +93,33 @@ export default class AppModel extends Model {
     this.dispatchSettingsUpdated();
   }
 
-  /** @param {'all'|'1'|'21'|'22'|'23'|'3'|'41'|'42'|'43'|'5'|'6'} time */
-  updateTime(time) {
-    if (time === 'all') {
-      if (this.time === 'all') {
-        this.time = new Set();
-      } else {
-        this.time = time;
-      }
-    } else {
-      if (this.time === 'all') {
-        this.time = new Set([time]);
-      } else {
-        if (this.time.has(time)) {
-          this.time.delete(time);
-        } else {
-          this.time.add(time);
-        }
-      }
-    }
-
+  public updateTime(time): void {
+    this.time = AppModel.updateStringSet(this.time, time);
     this.dispatchSettingsUpdated();
   }
 
-  /**
-   * @param {'purpose'|'overlay'} category
-   * @param {string} key
-   * @param {string} value
-   */
-  updateColours({category, key, value}) {
+  private static updateStringSet(set: Set<string>, value: string): Set<string> {
+    if (value === 'all') {
+      if (set.has('all')) {
+        set.delete('all');
+      } else {
+        set = new Set(['all']);
+      }
+    } else {
+      if (set.has('all')) {
+        set = new Set([value]);
+      } else {
+        if (set.has(value)) {
+          set.delete(value);
+        } else {
+          set.add(value);
+        }
+      }
+    }
+    return set;
+  }
+
+  public updateColours(category: string, key: string, value: string): void {
     const colours = this.colours[category];
     if (category === 'purpose') {
       if (key === 'all') {
@@ -164,25 +137,24 @@ export default class AppModel extends Model {
   }
 
   /** Toggle the visibility of the left controls. */
-  toggleHide() {
+  public toggleHide(): void {
     this.controlsHidden = !this.controlsHidden;
     this.dispatchSettingsUpdated();
   }
 
   /** Toggle the state of the help dialogue. */
-  toggleHelp() {
+  public toggleHelp(): void {
     this.helpOpen = !this.helpOpen;
     this.emitter.emit('helpUpdated', this.helpOpen);
   }
 
-  /** @param {'dataset'|'purpose'|'overlay'|'time'} control */
-  toggleCollapse(control) {
+  public toggleCollapse(control: string): void {
     this.collapsed[control] = !this.collapsed[control];
     this.emitter.emit('collapsedUpdated', this.collapsed);
   }
 
   /** Shorthand method for dispatching a settingsUpdated event. */
-  dispatchSettingsUpdated() {
+  private dispatchSettingsUpdated(): void {
     this.emitter.emit('settingsUpdated', {
       dataset: this.dataset,
       purpose: this.purpose,

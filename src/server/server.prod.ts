@@ -1,11 +1,11 @@
-import path from 'path';
-import express from 'express';
-import helmet from 'helmet';
+import * as path from 'path';
+import * as express from 'express';
+import * as helmet from 'helmet';
 
 const app = express();
 const port = process.env.PORT || 8080;
 
-const httpsRedirect = (req, res, next) => {
+const httpsRedirect = (req, res, next): void => {
   if (req.headers['x-forwarded-proto'] === 'https') {
     return next();
   } else {
@@ -20,6 +20,8 @@ if (port === process.env.PORT) {
 }
 app.use(express.static(__dirname));
 
-app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
+app.get('/', (req, res): void => {
+  return res.sendFile(path.join(__dirname, 'index.html'));
+});
 
-app.listen(port, () => console.log(`Listening on port ${port}`));
+app.listen(port, (): void => console.log(`Listening on port ${port}`));
