@@ -21,7 +21,7 @@ export default class MapView extends View {
   private closeHelp = document.getElementById('close-help');
   private colourChoicesCover = document.getElementById('colour-choices-cover');
 
-  public constructor(container: Element, emitter: EventEmitter) {
+  public constructor(container: HTMLElement, emitter: EventEmitter) {
     super(container, emitter);
 
     document.querySelectorAll('.dataset-entry')
