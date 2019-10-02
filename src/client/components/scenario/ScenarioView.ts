@@ -8,6 +8,15 @@ export default class ScenarioView extends View {
   public constructor(container: HTMLElement, emitter: EventEmitter) {
     super(container, emitter);
 
+    const scenarios = new Map<string, boolean>();
+    document.querySelectorAll('.scenario-entry')
+        .forEach((entry: HTMLElement): void => {
+          scenarios.set(
+              entry.dataset.value,
+              entry.classList.contains('active')
+          );
+        });
+
     this.scenarioEntries.forEach((entry: HTMLElement): void => {
       entry.addEventListener('click', (event: MouseEvent): void => {
         if (!(event.target instanceof HTMLElement)) return;
@@ -18,6 +27,8 @@ export default class ScenarioView extends View {
     this.scenarioCollapse.addEventListener('click', (): void => {
       this.emitter.emit('toggle-collapse', 'scenario');
     });
+
+    this.emitter.emit('scenario-component-loaded', scenarios);
   }
 
   public draw(scenario: string): void {

@@ -3,8 +3,10 @@ import * as EventEmitter from 'eventemitter3';
 
 /** Model that stores and controls the app's data and state. */
 export default class AppModel extends Model {
-  private scenario: string = '2065BAP';
-  private overlay: Set<string> = new Set(['cma', 'city', 'lrt']);
+  private scenarios = new Map<string, boolean>();
+
+  private overlays = new Map<string, boolean>();
+
   private purpose: Set<string> = new Set(['all']);
   private time: Set<string> = new Set(['all']);
   private controlsHidden: boolean = false;
@@ -83,6 +85,28 @@ export default class AppModel extends Model {
     };
   }
 
+  /**
+   * Initialize the model scenario data.
+   * @param scenarios {Map<string, boolean>} - Maps the scenario options to
+   *     their respective active/inactive states.
+   */
+  public initializeScenarios(scenarios: Map<string, boolean>): void {
+    scenarios.forEach((active: boolean, layer: string): void => {
+      this.scenarios.set(layer, active);
+    });
+  }
+
+  /**
+   * Initialize the model overlay data.
+   * @param overlays {Map<string, boolean>} - Maps the overlay options to their
+   *    respective active/inactive states.
+   */
+  public initializeOverlays(overlays: Map<string, boolean>): void {
+    overlays.forEach((active: boolean, layer: string): void => {
+      this.overlays.set(layer, active);
+    });
+  }
+
   /** A method for dispatching the initial draw event of the app. */
   public initialDraw(): void {
     this.dispatchSettingsUpdated();
@@ -90,7 +114,14 @@ export default class AppModel extends Model {
   }
 
   public updateScenario(scenario: string): void {
-    this.scenario = scenario;
+    // Set all scenario options to inactive
+    Object.keys(this.scenarios).forEach((key: string): void => {
+      this.scenarios.set(key, false);
+    });
+
+    // Set the selected scenario option to active
+    this.scenarios.set(scenario, true);
+
     this.dispatchSettingsUpdated();
   }
 
@@ -100,11 +131,13 @@ export default class AppModel extends Model {
   }
 
   public updateOverlay(overlay: string): void {
-    if (this.overlay.has(overlay)) {
-      this.overlay.delete(overlay);
-    } else {
-      this.overlay.add(overlay);
-    }
+    // Set all overlay options to inactive
+    Object.keys(this.overlays).forEach((key: string): void => {
+      this.overlays.set(key, false);
+    });
+
+    // Set the selected overlay option to active
+    this.overlays.set(overlay, true);
 
     this.dispatchSettingsUpdated();
   }
@@ -194,14 +227,14 @@ export default class AppModel extends Model {
 
   /** Shorthand method for dispatching a settingsUpdated event. */
   private dispatchSettingsUpdated(): void {
-    this.emitter.emit('settingsUpdated', {
-      scenario: this.scenario,
-      purpose: this.purpose,
-      overlay: this.overlay,
-      time: this.time,
-      animating: this.animating,
-      hidden: this.controlsHidden,
-      colours: this.colours,
-    });
+    this.emitter.emit('settingsUpdated',
+        this.scenarios,
+        this.purpose,
+        this.overlays,
+        this.time,
+        this.animating,
+        this.controlsHidden,
+        this.colours,
+    );
   }
 }

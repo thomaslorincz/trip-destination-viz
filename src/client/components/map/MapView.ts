@@ -3,17 +3,13 @@ import View from '../../superclasses/View';
 import * as EventEmitter from 'eventemitter3';
 
 export default class MapView extends View {
-  private layers: string[] = [];
-  private overlays: string[] = [];
   private map: mapboxgl.Map;
   private purposeEntries = document.querySelectorAll('.purpose-entry');
   private colourChoices = document.getElementById('colour-choices');
   private purposeCollapse = document.getElementById('collapse-purpose');
-  private overlayEntries = document.querySelectorAll('.overlay-entry');
   private helpIcon = document.getElementById('help-icon');
   private timeEntries = document.querySelectorAll('.time-entry');
   private hideButton = document.getElementById('hide-controls-button');
-  private overlayCollapse = document.getElementById('collapse-overlay');
   private help = document.getElementById('help');
   private timeCollapse = document.getElementById('collapse-time');
   private closeHelp = document.getElementById('close-help');
@@ -22,17 +18,7 @@ export default class MapView extends View {
   public constructor(container: HTMLElement, emitter: EventEmitter) {
     super(container, emitter);
 
-    document.querySelectorAll('.scenario-entry')
-        .forEach((entry: HTMLElement): void => {
-          this.layers.push(entry.dataset.value);
-        });
-    document.querySelectorAll('.overlay-entry')
-        .forEach((entry: HTMLElement): void => {
-          this.overlays.push(entry.dataset.value);
-        });
-
     this.initializePurposeControl();
-    this.initializeOverlayControl();
     this.initializeTimeControl();
     this.initializeHide();
     this.initializeColourChooser();
@@ -57,6 +43,7 @@ export default class MapView extends View {
       customAttribution: attribution,
     }));
 
+    // TODO: Remove hard-coding in layers
     this.map.on('load', (): void => {
       this.map.addLayer({
         'id': '2065BAP',
@@ -169,27 +156,6 @@ export default class MapView extends View {
     });
   }
 
-  /** Initializes the checkbox overlay control for adding/removing overlays. */
-  private initializeOverlayControl(): void {
-    this.overlayEntries.forEach((entry: HTMLElement): void => {
-      entry.addEventListener('click', (event: Event): void => {
-        if (event.target instanceof HTMLElement) {
-          this.emitter.emit('overlayClicked', event.target.dataset.value);
-        }
-      });
-      entry.addEventListener('contextmenu', (event: Event): void => {
-        event.preventDefault();
-        this.colourChoices.classList.remove('circle-choices');
-        this.colourChoices.classList.add('square-choices');
-        this.colourChoices.setAttribute('category', 'overlay');
-        this.drawColourChoices(event, entry);
-      });
-    });
-    this.overlayCollapse.addEventListener('click', (): void => {
-      this.emitter.emit('toggleCollapse', 'overlay');
-    });
-  }
-
   /** Initializes the checkbox time control for filtering by time. */
   private initializeTimeControl(): void {
     this.timeEntries.forEach((entry: HTMLElement): void => {
@@ -254,20 +220,43 @@ export default class MapView extends View {
     });
   }
 
-  public draw(scenario: string, purpose: Set<string>, overlay: Set<string>,
-      time: Set<string>, animating: boolean, colours: object): void {
-    this.applyColours(purpose, colours);
-    this.layers.forEach((layerId: string): void => {
-      this.map.setLayoutProperty(layerId, 'visibility', 'none');
+  public draw(scenarios: Map<string, boolean>, purpose: Set<string>,
+      overlays: Map<string, boolean>, time: Set<string>, animating: boolean,
+      colours: object): void {
+    this.setMapColours(scenarios, purpose, overlays, colours);
+    scenarios.forEach((active: boolean, layer: string): void => {
+      this.map.setLayoutProperty(
+          layer,
+          'visibility',
+          (active) ? 'visible' : 'none'
+      );
     });
-    this.map.setLayoutProperty(scenario, 'visibility', 'visible');
+    overlays.forEach((active: boolean, layer: string): void => {
+      this.map.setLayoutProperty(
+          layer,
+          'visibility',
+          (active) ? 'visible' : 'none'
+      );
+    });
     this.drawPurpose(purpose);
-    this.drawOverlay(overlay);
     this.drawTime(time, animating);
-    this.drawDots(scenario, purpose, time);
+    this.drawDots(scenarios, purpose, time);
   }
 
-  public applyColours(purpose: Set<string>, colours: object): void {
+  public setMapColours(scenarios: Map<string, boolean>, purpose: Set<string>,
+      overlays: Map<string, boolean>, colours: object): void {
+    scenarios.forEach((active: boolean, layer: string): void => {
+      if (purpose.has('all')) {
+        this.map.setPaintProperty(
+            layer, 'circle-color', colours['purpose']['all']
+        );
+      } else {
+        this.map.setPaintProperty(
+            layer, 'circle-color', colours['purpose']['dataDriven']
+        );
+      }
+    });
+
     document.querySelectorAll('.purpose-entry')
         .forEach((entry: HTMLElement): void => {
           const icon = entry.querySelector('.left-control-icon');
@@ -277,30 +266,9 @@ export default class MapView extends View {
           }
         });
 
-    this.layers.forEach((id: string): void => {
-      if (purpose.has('all')) {
-        this.map.setPaintProperty(
-            id, 'circle-color', colours['purpose']['all']
-        );
-      } else {
-        this.map.setPaintProperty(
-            id, 'circle-color', colours['purpose']['dataDriven']
-        );
-      }
+    overlays.forEach((active: boolean, layer: string): void => {
+      this.map.setPaintProperty(layer, 'line-color', colours['overlay'][layer]);
     });
-
-    this.overlays.forEach((id: string): void => {
-      this.map.setPaintProperty(id, 'line-color', colours['overlay'][id]);
-    });
-
-    document.querySelectorAll('.overlay-entry')
-        .forEach((entry: HTMLElement): void => {
-          const icon = entry.querySelector('.left-control-icon');
-          if (icon instanceof HTMLElement) {
-            icon.style.backgroundColor
-                = colours['overlay'][entry.dataset.value];
-          }
-        });
   }
 
   public drawPurpose(purpose: Set<string>): void {
@@ -325,30 +293,6 @@ export default class MapView extends View {
             icon.textContent = 'check_box_outline_blank';
           }
         });
-  }
-
-  public drawOverlay(overlay: Set<string>): void {
-    this.overlays.forEach((layerId: string): void => {
-      this.map.setLayoutProperty(layerId, 'visibility', 'none');
-    });
-
-    document.querySelectorAll('.overlay-entry.selected')
-        .forEach((element: HTMLElement): void => {
-          element.classList.remove('selected');
-        });
-    overlay.forEach((value: string): void => {
-      document.getElementById(`overlay-${value}`).classList.add('selected');
-      this.map.setLayoutProperty(value, 'visibility', 'visible');
-    });
-    this.overlayEntries.forEach((entry: HTMLElement): void => {
-      if (entry.classList.contains('selected')) {
-        const icon = entry.querySelector('.left-control-checkbox');
-        icon.textContent = 'check_box';
-      } else {
-        const icon = entry.querySelector('.left-control-checkbox');
-        icon.textContent = 'check_box_outline_blank';
-      }
-    });
   }
 
   public drawTime(time: Set<string>, animating: boolean): void {
@@ -382,28 +326,32 @@ export default class MapView extends View {
     }
   }
 
-  public drawDots(scenario: string, purpose: Set<string>,
+  public drawDots(scenarios: Map<string, boolean>, purpose: Set<string>,
       time: Set<string>): void {
-    if (time.has('all') && purpose.has('all')) {
-      this.map.setFilter(scenario, null);
-    } else if (time.has('all')) {
-      this.map.setFilter(
-          scenario,
-          ['in', 'purp', ...Array.from(purpose.values())]
-      );
-    } else if (purpose.has('all')) {
-      const timeNumbers = Array.from(time.values())
-          .map((timeString: string): number => parseInt(timeString));
-      this.map.setFilter(scenario, ['in', 'time', ...timeNumbers]);
-    } else {
-      const timeNumbers = Array.from(time.values())
-          .map((timeString: string): number => parseInt(timeString));
-      this.map.setFilter(scenario, [
-        'all',
-        ['in', 'time', ...timeNumbers],
-        ['in', 'purp', ...Array.from(purpose.values())],
-      ]);
-    }
+    scenarios.forEach((active: boolean, layer: string): void => {
+      if (!active) return;
+
+      if (time.has('all') && purpose.has('all')) {
+        this.map.setFilter(layer, null);
+      } else if (time.has('all')) {
+        this.map.setFilter(
+            layer,
+            ['in', 'purp', ...Array.from(purpose.values())]
+        );
+      } else if (purpose.has('all')) {
+        const timeNumbers = Array.from(time.values())
+            .map((timeString: string): number => parseInt(timeString));
+        this.map.setFilter(layer, ['in', 'time', ...timeNumbers]);
+      } else {
+        const timeNumbers = Array.from(time.values())
+            .map((timeString: string): number => parseInt(timeString));
+        this.map.setFilter(layer, [
+          'all',
+          ['in', 'time', ...timeNumbers],
+          ['in', 'purp', ...Array.from(purpose.values())],
+        ]);
+      }
+    });
   }
 
   public drawColourChoices(event: Event, entry: HTMLElement): void {

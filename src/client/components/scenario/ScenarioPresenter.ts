@@ -9,6 +9,13 @@ export default class ScenarioPresenter
       emitter: EventEmitter) {
     super(model, view, emitter);
 
+    this.emitter.emit(
+        'scenario-component-loaded',
+        (scenarios: Map<string, boolean>): void => {
+          this.model.initializeScenarios(scenarios);
+        }
+    );
+
     this.emitter.on('scenario-clicked', (scenario: string): void => {
       this.model.updateScenario(scenario);
     });

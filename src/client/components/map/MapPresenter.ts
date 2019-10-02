@@ -15,10 +15,6 @@ export default class MapPresenter extends Presenter<AppModel, MapView> {
       this.model.updatePurpose(purpose);
     });
 
-    this.emitter.on('overlayClicked', (overlay: string): void => {
-      this.model.updateOverlay(overlay);
-    });
-
     this.emitter.on('timeClicked', (time: string): void => {
       this.model.updateTime(time);
     });

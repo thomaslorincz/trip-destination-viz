@@ -62,11 +62,11 @@ export default class AppPresenter extends Presenter<AppModel, View> {
 
     this.emitter.on(
         'settingsUpdated',
-        ({scenario, purpose, overlay, time, animating, colours}): void => {
+        (scenario, purpose, overlays, time, animating, colours): void => {
           this.mapView.draw(
               scenario,
               purpose,
-              overlay,
+              overlays,
               time,
               animating,
               colours
