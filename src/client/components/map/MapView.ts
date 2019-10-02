@@ -279,7 +279,6 @@ export default class MapView extends View {
     this.drawOverlay(overlay);
     this.drawTime(time, animating);
     this.drawDots(dataset, purpose, time);
-    this.drawVisibility(hidden);
   }
 
   public applyColours(purpose: Set<string>, colours: object): void {
@@ -472,18 +471,5 @@ export default class MapView extends View {
         icon.textContent = 'expand_less';
       }
     });
-  }
-
-  public drawVisibility(hidden: boolean): void {
-    const leftControls = document.getElementById('left-controls-container');
-    if (hidden) {
-      this.hideButton.innerHTML
-          = '<i class="material-icons-round">chevron_right</i>';
-      leftControls.classList.add('hidden');
-    } else {
-      this.hideButton.innerHTML
-          = '<i class="material-icons-round">chevron_left</i>';
-      leftControls.classList.remove('hidden');
-    }
   }
 }
