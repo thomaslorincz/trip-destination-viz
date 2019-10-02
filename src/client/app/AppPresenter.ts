@@ -12,8 +12,12 @@ import ScenarioView from '../components/scenario/ScenarioView';
 import ScenarioPresenter from '../components/scenario/ScenarioPresenter';
 import TimeView from '../components/time/TimeView';
 import TimePresenter from '../components/time/TimePresenter';
+import ColourEditorView from '../components/colour_editor/ColourEditorView';
+import ColourEditorPresenter
+  from '../components/colour_editor/ColourEditorPresenter';
 
 export default class AppPresenter extends Presenter<AppModel, View> {
+  private readonly colourEditorView: ColourEditorView;
   private readonly mapView: MapView;
   private readonly overlayView: OverlayView;
   private readonly purposeView: PurposeView;
@@ -22,6 +26,12 @@ export default class AppPresenter extends Presenter<AppModel, View> {
 
   public constructor(model: AppModel, view: View, emitter: EventEmitter) {
     super(model, view, emitter);
+
+    this.colourEditorView = new ColourEditorView(
+        document.getElementById('colour-choices'),
+        this.emitter
+    );
+    new ColourEditorPresenter(this.model, this.colourEditorView, this.emitter);
 
     this.mapView = new MapView(document.getElementById('map'), this.emitter);
     new MapPresenter(this.model, this.mapView, this.emitter);
