@@ -8,11 +8,14 @@ import OverlayView from '../components/overlay/OverlayView';
 import OverlayPresenter from '../components/overlay/OverlayPresenter';
 import PurposeView from '../components/purpose/PurposeView';
 import PurposePresenter from '../components/purpose/PurposePresenter';
+import ScenarioView from '../components/scenario/ScenarioView';
+import ScenarioPresenter from '../components/scenario/ScenarioPresenter';
 
 export default class AppPresenter extends Presenter<AppModel, View> {
   private readonly mapView: MapView;
   private readonly overlayView: OverlayView;
   private readonly purposeView: PurposeView;
+  private readonly scenarioView: ScenarioView;
 
   public constructor(model: AppModel, view: View, emitter: EventEmitter) {
     super(model, view, emitter);
@@ -31,6 +34,12 @@ export default class AppPresenter extends Presenter<AppModel, View> {
         this.emitter
     );
     new PurposePresenter(this.model, this.purposeView, this.emitter);
+
+    this.scenarioView = new ScenarioView(
+        document.getElementById('scenario-control'),
+        this.emitter
+    );
+    new ScenarioPresenter(this.model, this.scenarioView, this.emitter);
 
     this.emitter.on(
         'settingsUpdated',
