@@ -10,12 +10,15 @@ import PurposeView from '../components/purpose/PurposeView';
 import PurposePresenter from '../components/purpose/PurposePresenter';
 import ScenarioView from '../components/scenario/ScenarioView';
 import ScenarioPresenter from '../components/scenario/ScenarioPresenter';
+import TimeView from '../components/time/TimeView';
+import TimePresenter from '../components/time/TimePresenter';
 
 export default class AppPresenter extends Presenter<AppModel, View> {
   private readonly mapView: MapView;
   private readonly overlayView: OverlayView;
   private readonly purposeView: PurposeView;
   private readonly scenarioView: ScenarioView;
+  private readonly timeView: TimeView;
 
   public constructor(model: AppModel, view: View, emitter: EventEmitter) {
     super(model, view, emitter);
@@ -40,6 +43,12 @@ export default class AppPresenter extends Presenter<AppModel, View> {
         this.emitter
     );
     new ScenarioPresenter(this.model, this.scenarioView, this.emitter);
+
+    this.timeView = new TimeView(
+        document.getElementById('time-control'),
+        this.emitter
+    );
+    new TimePresenter(this.model, this.timeView, this.emitter);
 
     this.emitter.on(
         'settingsUpdated',
