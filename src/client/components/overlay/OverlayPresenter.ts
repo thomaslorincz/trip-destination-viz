@@ -13,10 +13,10 @@ export default class OverlayPresenter extends Presenter<AppModel, OverlayView> {
         (overlays: Map<string, boolean>): void => {
           this.model.initializeOverlays(overlays);
         }
-     );
+    );
 
     this.emitter.on('overlay-clicked', (overlay: string): void => {
-      this.model.updateOverlay(overlay, true);
+      this.model.updateOverlay(overlay);
     });
   }
 }
