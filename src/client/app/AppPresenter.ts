@@ -6,10 +6,13 @@ import MapView from '../components/map/MapView';
 import MapPresenter from '../components/map/MapPresenter';
 import OverlayView from '../components/overlay/OverlayView';
 import OverlayPresenter from '../components/overlay/OverlayPresenter';
+import PurposeView from '../components/purpose/PurposeView';
+import PurposePresenter from '../components/purpose/PurposePresenter';
 
 export default class AppPresenter extends Presenter<AppModel, View> {
   private readonly mapView: MapView;
   private readonly overlayView: OverlayView;
+  private readonly purposeView: PurposeView;
 
   public constructor(model: AppModel, view: View, emitter: EventEmitter) {
     super(model, view, emitter);
@@ -22,6 +25,12 @@ export default class AppPresenter extends Presenter<AppModel, View> {
         this.emitter
     );
     new OverlayPresenter(this.model, this.overlayView, this.emitter);
+
+    this.purposeView = new PurposeView(
+        document.getElementById('purpose-control'),
+        this.emitter
+    );
+    new PurposePresenter(this.model, this.purposeView, this.emitter);
 
     this.emitter.on(
         'settingsUpdated',
