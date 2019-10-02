@@ -11,10 +11,6 @@ export default class MapPresenter extends Presenter<AppModel, MapView> {
       this.model.initialDraw();
     });
 
-    this.emitter.on('datasetClicked', (dataset: string): void => {
-      this.model.updateDataset(dataset);
-    });
-
     this.emitter.on('purposeClicked', (purpose: string): void => {
       this.model.updatePurpose(purpose);
     });
@@ -43,7 +39,7 @@ export default class MapPresenter extends Presenter<AppModel, MapView> {
       this.model.toggleHelp();
     });
 
-    this.emitter.on('toggleCollapse', (control: string): void => {
+    this.emitter.on('toggle-collapse', (control: string): void => {
       this.model.toggleCollapse(control);
     });
   }

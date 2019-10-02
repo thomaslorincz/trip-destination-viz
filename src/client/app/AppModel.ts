@@ -3,7 +3,7 @@ import * as EventEmitter from 'eventemitter3';
 
 /** Model that stores and controls the app's data and state. */
 export default class AppModel extends Model {
-  private dataset: string = '2065BAP';
+  private scenario: string = '2065BAP';
   private overlay: Set<string> = new Set(['cma', 'city', 'lrt']);
   private purpose: Set<string> = new Set(['all']);
   private time: Set<string> = new Set(['all']);
@@ -89,8 +89,8 @@ export default class AppModel extends Model {
     this.emitter.emit('helpUpdated', this.helpOpen);
   }
 
-  public updateDataset(dataset: string): void {
-    this.dataset = dataset;
+  public updateScenario(scenario: string): void {
+    this.scenario = scenario;
     this.dispatchSettingsUpdated();
   }
 
@@ -195,7 +195,7 @@ export default class AppModel extends Model {
   /** Shorthand method for dispatching a settingsUpdated event. */
   private dispatchSettingsUpdated(): void {
     this.emitter.emit('settingsUpdated', {
-      dataset: this.dataset,
+      scenario: this.scenario,
       purpose: this.purpose,
       overlay: this.overlay,
       time: this.time,

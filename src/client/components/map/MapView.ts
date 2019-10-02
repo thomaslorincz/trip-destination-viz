@@ -6,8 +6,6 @@ export default class MapView extends View {
   private layers: string[] = [];
   private overlays: string[] = [];
   private map: mapboxgl.Map;
-  private datasetEntries = document.querySelectorAll('.dataset-entry');
-  private datasetCollapse = document.getElementById('collapse-dataset');
   private purposeEntries = document.querySelectorAll('.purpose-entry');
   private colourChoices = document.getElementById('colour-choices');
   private purposeCollapse = document.getElementById('collapse-purpose');
@@ -24,7 +22,7 @@ export default class MapView extends View {
   public constructor(container: HTMLElement, emitter: EventEmitter) {
     super(container, emitter);
 
-    document.querySelectorAll('.dataset-entry')
+    document.querySelectorAll('.scenario-entry')
         .forEach((entry: HTMLElement): void => {
           this.layers.push(entry.dataset.value);
         });
@@ -33,7 +31,6 @@ export default class MapView extends View {
           this.overlays.push(entry.dataset.value);
         });
 
-    this.initializeDatasetControl();
     this.initializePurposeControl();
     this.initializeOverlayControl();
     this.initializeTimeControl();
@@ -151,20 +148,6 @@ export default class MapView extends View {
     });
   }
 
-  /** Initializes the radio button control for selecting a dataset. */
-  private initializeDatasetControl(): void {
-    this.datasetEntries.forEach((entry: Element): void => {
-      entry.addEventListener('click', (event: Event): void => {
-        if (event.target instanceof HTMLElement) {
-          this.emitter.emit('datasetClicked', event.target.dataset.value);
-        }
-      });
-    });
-    this.datasetCollapse.addEventListener('click', (): void => {
-      this.emitter.emit('toggleCollapse', 'dataset');
-    });
-  }
-
   /** Initializes the checkbox purpose control for filtering by purpose. */
   private initializePurposeControl(): void {
     this.purposeEntries.forEach((entry: HTMLElement): void => {
@@ -271,14 +254,17 @@ export default class MapView extends View {
     });
   }
 
-  public draw(dataset: string, purpose: Set<string>, overlay: Set<string>,
+  public draw(scenario: string, purpose: Set<string>, overlay: Set<string>,
       time: Set<string>, animating: boolean, colours: object): void {
     this.applyColours(purpose, colours);
-    this.drawDataset(dataset);
+    this.layers.forEach((layerId: string): void => {
+      this.map.setLayoutProperty(layerId, 'visibility', 'none');
+    });
+    this.map.setLayoutProperty(scenario, 'visibility', 'visible');
     this.drawPurpose(purpose);
     this.drawOverlay(overlay);
     this.drawTime(time, animating);
-    this.drawDots(dataset, purpose, time);
+    this.drawDots(scenario, purpose, time);
   }
 
   public applyColours(purpose: Set<string>, colours: object): void {
@@ -315,25 +301,6 @@ export default class MapView extends View {
                 = colours['overlay'][entry.dataset.value];
           }
         });
-  }
-
-  public drawDataset(dataset: string): void {
-    this.layers.forEach((layerId: string): void => {
-      this.map.setLayoutProperty(layerId, 'visibility', 'none');
-    });
-    this.map.setLayoutProperty(dataset, 'visibility', 'visible');
-
-    document.querySelectorAll('.dataset-entry')
-        .forEach((entry: HTMLElement): void => {
-          entry.classList.remove('selected');
-          const icon = entry.querySelector('.left-control-icon');
-          icon.textContent = 'radio_button_unchecked';
-        });
-
-    document.getElementById(`data-${dataset}`).classList.add('selected');
-    const selected = document.querySelector('.dataset-entry.selected');
-    const icon = selected.querySelector('.left-control-icon');
-    icon.textContent = 'radio_button_checked';
   }
 
   public drawPurpose(purpose: Set<string>): void {
@@ -415,23 +382,23 @@ export default class MapView extends View {
     }
   }
 
-  public drawDots(dataset: string, purpose: Set<string>,
+  public drawDots(scenario: string, purpose: Set<string>,
       time: Set<string>): void {
     if (time.has('all') && purpose.has('all')) {
-      this.map.setFilter(dataset, null);
+      this.map.setFilter(scenario, null);
     } else if (time.has('all')) {
       this.map.setFilter(
-          dataset,
+          scenario,
           ['in', 'purp', ...Array.from(purpose.values())]
       );
     } else if (purpose.has('all')) {
       const timeNumbers = Array.from(time.values())
           .map((timeString: string): number => parseInt(timeString));
-      this.map.setFilter(dataset, ['in', 'time', ...timeNumbers]);
+      this.map.setFilter(scenario, ['in', 'time', ...timeNumbers]);
     } else {
       const timeNumbers = Array.from(time.values())
           .map((timeString: string): number => parseInt(timeString));
-      this.map.setFilter(dataset, [
+      this.map.setFilter(scenario, [
         'all',
         ['in', 'time', ...timeNumbers],
         ['in', 'purp', ...Array.from(purpose.values())],

@@ -8,5 +8,9 @@ export default class ScenarioPresenter
   public constructor(model: AppModel, view: ScenarioView,
       emitter: EventEmitter) {
     super(model, view, emitter);
+
+    this.emitter.on('scenario-clicked', (scenario: string): void => {
+      this.model.updateScenario(scenario);
+    });
   }
 }
