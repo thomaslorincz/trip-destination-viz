@@ -219,6 +219,10 @@ export default class MapView extends View {
     this.timeCollapse.addEventListener('click', (): void => {
       this.emitter.emit('toggleCollapse', 'time');
     });
+    document.getElementById('time-animate')
+        .addEventListener('click', (): void => {
+          this.emitter.emit('time-animate-clicked');
+        });
   }
 
   /** Initializes the hide/show chevron button used to minimize the controls. */
@@ -268,12 +272,12 @@ export default class MapView extends View {
   }
 
   public draw(dataset: string, purpose: Set<string>, overlay: Set<string>,
-      time: Set<string>, hidden: boolean, colours: object): void {
+      time: Set<string>, animating: boolean, colours: object): void {
     this.applyColours(purpose, colours);
     this.drawDataset(dataset);
     this.drawPurpose(purpose);
     this.drawOverlay(overlay);
-    this.drawTime(time);
+    this.drawTime(time, animating);
     this.drawDots(dataset, purpose, time);
     this.drawVisibility(hidden);
   }
@@ -381,7 +385,7 @@ export default class MapView extends View {
     });
   }
 
-  public drawTime(time: Set<string>): void {
+  public drawTime(time: Set<string>, animating: boolean): void {
     document.querySelectorAll('.time-entry.selected')
         .forEach((element: Element): void => {
           element.classList.remove('selected');
@@ -404,6 +408,12 @@ export default class MapView extends View {
         icon.textContent = 'check_box_outline_blank';
       }
     });
+
+    if (animating) {
+      document.getElementById('time-animate').classList.add('selected');
+    } else {
+      document.getElementById('time-animate').classList.remove('selected');
+    }
   }
 
   public drawDots(dataset: string, purpose: Set<string>,
