@@ -27,6 +27,10 @@ export default class MapPresenter extends Presenter<AppModel, MapView> {
       this.model.updateTime(time);
     });
 
+    this.emitter.on('time-animate-clicked', (): void => {
+      this.model.toggleAnimation();
+    });
+
     this.emitter.on('hideClicked', (): void => {
       this.model.toggleHide();
     });

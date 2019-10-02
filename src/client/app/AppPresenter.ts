@@ -16,8 +16,15 @@ export default class AppPresenter extends Presenter<AppModel, View> {
 
     this.emitter.on(
         'settingsUpdated',
-        ({dataset, purpose, overlay, time, hidden, colours}): void => {
-          this.mapView.draw(dataset, purpose, overlay, time, hidden, colours);
+        ({dataset, purpose, overlay, time, animating, colours}): void => {
+          this.mapView.draw(
+              dataset,
+              purpose,
+              overlay,
+              time,
+              animating,
+              colours
+          );
         }
     );
 

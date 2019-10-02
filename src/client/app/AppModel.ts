@@ -14,6 +14,22 @@ export default class AppModel extends Model {
   private helpOpen: boolean = false;
   private readonly collapsed: object;
 
+  private currentTime: string = '1';
+  private animating: boolean = false;
+  private animationInterval: number = undefined;
+  private timeSequence = new Map<string, string>([
+    ['1', '21'],
+    ['21', '22'],
+    ['22', '23'],
+    ['23', '3'],
+    ['3', '41'],
+    ['41', '42'],
+    ['42', '43'],
+    ['43', '5'],
+    ['5', '6'],
+    ['6', '1'],
+  ]);
+
   public constructor(emitter: EventEmitter) {
     super(emitter);
 
@@ -136,6 +152,29 @@ export default class AppModel extends Model {
     this.dispatchSettingsUpdated();
   }
 
+  /**
+   * Animate the time of day selection. Time is stored as a set so the set must
+   * be cleared before the animation begins.
+   */
+  public toggleAnimation(): void {
+    if (this.animating) {
+      this.animating = false;
+      window.clearInterval(this.animationInterval);
+    } else {
+      this.animating = true;
+      this.time.clear();
+      this.currentTime = '1';
+
+      this.animationInterval = window.setInterval((): void => {
+        this.currentTime = this.timeSequence.get(this.currentTime);
+        this.time.clear();
+        this.updateTime(this.currentTime);
+      }, 1000);
+
+      this.dispatchSettingsUpdated();
+    }
+  }
+
   /** Toggle the visibility of the left controls. */
   public toggleHide(): void {
     this.controlsHidden = !this.controlsHidden;
@@ -160,6 +199,7 @@ export default class AppModel extends Model {
       purpose: this.purpose,
       overlay: this.overlay,
       time: this.time,
+      animating: this.animating,
       hidden: this.controlsHidden,
       colours: this.colours,
     });
