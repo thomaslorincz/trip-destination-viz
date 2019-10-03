@@ -40,7 +40,7 @@ export default class OverlayView extends View {
         element.classList.add('active');
         checkbox.textContent = 'check_box';
       } else {
-        element.classList.remove('selected');
+        element.classList.remove('active');
         checkbox.textContent = 'check_box_outline_blank';
       }
     });
