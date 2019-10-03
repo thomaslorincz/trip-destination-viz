@@ -74,8 +74,9 @@ export default class AppModel extends Model {
 
   public constructor(emitter: EventEmitter) {
     super(emitter);
+  }
 
-    // Initial draw
+  public initialDraw(): void {
     this.dispatchMapUpdated();
     this.dispatchScenarioUpdated();
     this.dispatchPurposeUpdated();
@@ -110,21 +111,35 @@ export default class AppModel extends Model {
 
   private updateControlMap(controlMap: Map<string, boolean>,
       key: string): void {
-    // Set all control options to inactive
-    Object.keys(controlMap).forEach((key: string): void => {
-      controlMap.set(key, false);
-    });
-
-    // Set the selected control option to active
-    controlMap.set(key, true);
+    if (key === 'all') {
+      if (controlMap.get('all')) {
+        controlMap.set('all', false);
+      } else {
+        // Set all control options to inactive
+        controlMap.forEach((value: boolean, key: string): void => {
+          controlMap.set(key, false);
+        });
+        controlMap.set('all', true);
+      }
+    } else {
+      if (controlMap.get('all')) {
+        controlMap.set('all', false);
+      }
+      // Set the selected control option to active
+      controlMap.set(key, !controlMap.get(key));
+    }
   }
 
   public updatePurposeColours(purpose: string, colour: string): void {
     this.purposeColours.set(purpose, colour);
+    this.dispatchMapUpdated();
+    this.dispatchPurposeUpdated();
   }
 
   public updateOverlayColours(overlay: string, colour: string): void {
     this.overlayColours.set(overlay, colour);
+    this.dispatchMapUpdated();
+    this.dispatchOverlayUpdated();
   }
 
   /** Toggle the state of the help dialogue. */
