@@ -2,56 +2,56 @@ import View from '../../superclasses/View';
 import * as EventEmitter from 'eventemitter3';
 
 export default class OverlayView extends View {
-  private overlayEntries = document.querySelectorAll('.overlay-entry');
-  private overlayCollapse = document.getElementById('collapse-overlay');
+  private readonly overlayEntries: NodeListOf<HTMLElement>;
+  private readonly overlayCollapse: HTMLElement;
 
   public constructor(container: HTMLElement, emitter: EventEmitter) {
     super(container, emitter);
 
-    const overlays = new Map<string, boolean>();
-    document.querySelectorAll('.overlay-entry')
-        .forEach((entry: HTMLElement): void => {
-          overlays.set(entry.dataset.value, entry.classList.contains('active'));
-        });
+    this.overlayEntries = document.querySelectorAll('.overlay-entry');
+    this.overlayCollapse = document.getElementById('overlay-collapse');
 
+    // Add click events for each overlay entry
     this.overlayEntries.forEach((entry: HTMLElement): void => {
-      entry.addEventListener('click', (event: Event): void => {
-        if (event.target instanceof HTMLElement) {
-          this.emitter.emit('overlay-clicked', event.target.dataset.value);
-        }
+      entry.addEventListener('click', (event: MouseEvent): void => {
+        if (!(event.target instanceof HTMLElement)) return;
+
+        this.emitter.emit('overlay-clicked', event.target.dataset.value);
       });
     });
-    this.overlayCollapse.addEventListener('click', (): void => {
-      this.emitter.emit('toggle-collapse', 'overlay');
-    });
 
-    this.emitter.emit('overlay-component-loaded', overlays);
+    // Add click event for overlay collapse button
+    this.overlayCollapse.addEventListener('click', (): void => {
+      this.emitter.emit('toggle-overlay-collapse');
+    });
   }
 
-  public draw(overlay: Set<string>, colours: Map<string, string>): void {
-    document.querySelectorAll('.overlay-entry.selected')
-        .forEach((element: HTMLElement): void => {
-          element.classList.remove('selected');
-        });
-    overlay.forEach((value: string): void => {
-      document.getElementById(`overlay-${value}`).classList.add('selected');
-    });
-    this.overlayEntries.forEach((entry: HTMLElement): void => {
-      if (entry.classList.contains('selected')) {
-        const icon = entry.querySelector('.control-entry-checkbox');
-        icon.textContent = 'check_box';
+  public draw(overlays: Map<string, boolean>, colours: Map<string, string>,
+      collapsed: boolean): void {
+    overlays.forEach((active: boolean, overlay: string): void => {
+      const element = document.getElementById(`overlay-${overlay}`);
+      const icon = element.querySelector('.control-entry-icon');
+      const checkbox = element.querySelector('.control-entry-checkbox');
+
+      if (!(icon instanceof HTMLElement)) return;
+      icon.style.backgroundColor = colours[overlay];
+
+      if (active) {
+        element.classList.add('active');
+        checkbox.textContent = 'check_box';
       } else {
-        const icon = entry.querySelector('.control-entry-checkbox');
-        icon.textContent = 'check_box_outline_blank';
+        element.classList.remove('selected');
+        checkbox.textContent = 'check_box_outline_blank';
       }
     });
 
-    document.querySelectorAll('.overlay-entry')
-        .forEach((entry: HTMLElement): void => {
-          const icon = entry.querySelector('.control-entry-icon');
-          if (icon instanceof HTMLElement) {
-            icon.style.backgroundColor = colours[entry.dataset.value];
-          }
-        });
+    const content = document.getElementById('overlay-content');
+    if (collapsed) {
+      content.classList.add('collapsed');
+      this.overlayCollapse.textContent = 'expand_more';
+    } else {
+      content.classList.remove('collapsed');
+      this.overlayCollapse.textContent = 'expand_less';
+    }
   }
 }

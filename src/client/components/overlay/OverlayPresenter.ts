@@ -8,15 +8,12 @@ export default class OverlayPresenter extends Presenter<AppModel, OverlayView> {
       emitter: EventEmitter) {
     super(model, view, emitter);
 
-    this.emitter.on(
-        'overlay-component-loaded',
-        (overlays: Map<string, boolean>): void => {
-          this.model.initializeOverlays(overlays);
-        }
-    );
-
     this.emitter.on('overlay-clicked', (overlay: string): void => {
       this.model.updateOverlay(overlay);
+    });
+
+    this.emitter.on('toggle-overlay-collapse', (): void => {
+      this.model.toggleCollapse('overlay');
     });
   }
 }
