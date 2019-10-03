@@ -2,20 +2,14 @@ import View from '../../superclasses/View';
 import * as EventEmitter from 'eventemitter3';
 
 export default class ScenarioView extends View {
-  private scenarioEntries = document.querySelectorAll('.scenario-entry');
-  private scenarioCollapse = document.getElementById('collapse-scenario');
+  private readonly scenarioEntries: NodeListOf<HTMLElement>;
+  private readonly scenarioCollapse: HTMLElement;
 
   public constructor(container: HTMLElement, emitter: EventEmitter) {
     super(container, emitter);
 
-    const scenarios = new Map<string, boolean>();
-    document.querySelectorAll('.scenario-entry')
-        .forEach((entry: HTMLElement): void => {
-          scenarios.set(
-              entry.dataset.value,
-              entry.classList.contains('active')
-          );
-        });
+    this.scenarioEntries = document.querySelectorAll('.scenario-entry');
+    this.scenarioCollapse = document.getElementById('scenario-collapse');
 
     this.scenarioEntries.forEach((entry: HTMLElement): void => {
       entry.addEventListener('click', (event: MouseEvent): void => {
@@ -25,23 +19,31 @@ export default class ScenarioView extends View {
       });
     });
     this.scenarioCollapse.addEventListener('click', (): void => {
-      this.emitter.emit('toggle-collapse', 'scenario');
+      this.emitter.emit('toggle-scenario-collapse');
     });
-
-    this.emitter.emit('scenario-component-loaded', scenarios);
   }
 
-  public draw(scenario: string): void {
-    document.querySelectorAll('.scenario-entry')
-        .forEach((entry: HTMLElement): void => {
-          entry.classList.remove('selected');
-          const icon = entry.querySelector('.control-entry-icon');
-          icon.textContent = 'radio_button_unchecked';
-        });
+  public draw(scenarios: Map<string, boolean>, collapsed: boolean): void {
+    scenarios.forEach((active: boolean, scenario: string): void => {
+      const element = document.getElementById(`scenario-${scenario}`);
+      const icon = element.querySelector('.control-entry-icon');
 
-    document.getElementById(`scenario-${scenario}`).classList.add('selected');
-    const selected = document.querySelector('.scenario-entry.selected');
-    const icon = selected.querySelector('.control-entry-icon');
-    icon.textContent = 'radio_button_checked';
+      if (active) {
+        element.classList.add('active');
+        icon.textContent = 'radio_button_checked';
+      } else {
+        element.classList.remove('active');
+        icon.textContent = 'radio_button_unchecked';
+      }
+    });
+
+    const content = document.getElementById('scenario-content');
+    if (collapsed) {
+      content.classList.add('collapsed');
+      this.scenarioCollapse.textContent = 'expand_more';
+    } else {
+      content.classList.remove('collapsed');
+      this.scenarioCollapse.textContent = 'expand_less';
+    }
   }
 }
