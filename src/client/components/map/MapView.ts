@@ -4,24 +4,15 @@ import * as EventEmitter from 'eventemitter3';
 
 export default class MapView extends View {
   private map: mapboxgl.Map;
-  private purposeEntries = document.querySelectorAll('.purpose-entry');
-  private colourChoices = document.getElementById('colour-choices');
-  private purposeCollapse = document.getElementById('collapse-purpose');
+
+  /* Help window elements */
   private helpIcon = document.getElementById('help-icon');
-  private timeEntries = document.querySelectorAll('.time-entry');
-  private hideButton = document.getElementById('hide-controls-button');
   private help = document.getElementById('help');
-  private timeCollapse = document.getElementById('collapse-time');
   private closeHelp = document.getElementById('close-help');
-  private colourChoicesCover = document.getElementById('colour-choices-cover');
 
   public constructor(container: HTMLElement, emitter: EventEmitter) {
     super(container, emitter);
 
-    this.initializePurposeControl();
-    this.initializeTimeControl();
-    this.initializeHide();
-    this.initializeColourChooser();
     this.initializeHelp();
 
     mapboxgl.accessToken = 'pk.eyJ1IjoidGhvbWFzbG9yaW5jeiIsImEiOiJjamx5aXVwaH' +
@@ -43,15 +34,8 @@ export default class MapView extends View {
       customAttribution: attribution,
     }));
 
-    // TODO: Remove hard-coding in layers
     this.map.on('load', (): void => {
-      this.map.addLayer({
-        'id': '2065BAP',
-        'source': {
-          type: 'vector',
-          url: 'mapbox://thomaslorincz.b38h0wik',
-        },
-        'source-layer': 'output_2065BAP_300-2jb2ha',
+      const scenarioLayerStyling = {
         'type': 'circle',
         'paint': {
           'circle-radius': [
@@ -63,7 +47,21 @@ export default class MapView extends View {
               'max', 1, ['*', 2, ['/', ['to-number', ['get', 'count']], 300]],
             ],
           ],
+          'circle-opacity-transition': {
+            'duration': 1000,
+            'delay': 0,
+          },
         },
+      };
+
+      this.map.addLayer({
+        'id': '2065BAP',
+        'source': {
+          type: 'vector',
+          url: 'mapbox://thomaslorincz.b38h0wik',
+        },
+        'source-layer': 'output_2065BAP_300-2jb2ha',
+        ...scenarioLayerStyling,
       });
 
       this.map.addLayer({
@@ -73,19 +71,17 @@ export default class MapView extends View {
           url: 'mapbox://thomaslorincz.4qfirexj',
         },
         'source-layer': 'output_2065CityII_300-7gjcgt',
-        'type': 'circle',
-        'paint': {
-          'circle-radius': [
-            'interpolate', ['linear'], ['zoom'],
-            9, [
-              'max', 0.1, ['/', ['to-number', ['get', 'count']], 300],
-            ],
-            12, [
-              'max', 1, ['*', 2, ['/', ['to-number', ['get', 'count']], 300]],
-            ],
-          ],
-        },
+        ...scenarioLayerStyling,
       });
+
+      const overlayLayerStyling = {
+        'type': 'line',
+        'paint': {'line-width': 2},
+        'line-opacity-transition': {
+          'duration': 500,
+          'delay': 0,
+        },
+      };
 
       this.map.addLayer({
         'id': 'cma',
@@ -94,8 +90,7 @@ export default class MapView extends View {
           url: 'mapbox://thomaslorincz.1kz18y39',
         },
         'source-layer': 'cma_boundary-5vtklc',
-        'type': 'line',
-        'paint': {'line-width': 2},
+        ...overlayLayerStyling,
       });
 
       this.map.addLayer({
@@ -105,8 +100,7 @@ export default class MapView extends View {
           url: 'mapbox://thomaslorincz.48okpw5t',
         },
         'source-layer': 'city_boundary-d6ewoz',
-        'type': 'line',
-        'paint': {'line-width': 2},
+        ...overlayLayerStyling,
       });
 
       this.map.addLayer({
@@ -116,8 +110,7 @@ export default class MapView extends View {
           url: 'mapbox://thomaslorincz.d571qaco',
         },
         'source-layer': 'nc_CityII-axaip8',
-        'type': 'line',
-        'paint': {'line-width': 2},
+        ...overlayLayerStyling,
       });
 
       this.map.addLayer({
@@ -127,78 +120,10 @@ export default class MapView extends View {
           url: 'mapbox://thomaslorincz.75obfmea',
         },
         'source-layer': 'lrt_2065-0kp6p1',
-        'type': 'line',
-        'paint': {'line-width': 2},
+        ...overlayLayerStyling,
       });
 
       this.emitter.emit('loaded');
-    });
-  }
-
-  /** Initializes the checkbox purpose control for filtering by purpose. */
-  private initializePurposeControl(): void {
-    this.purposeEntries.forEach((entry: HTMLElement): void => {
-      entry.addEventListener('click', (event: Event): void => {
-        if (event.target instanceof HTMLElement) {
-          this.emitter.emit('purposeClicked', event.target.dataset.value);
-        }
-      });
-      entry.addEventListener('contextmenu', (event: Event): void => {
-        event.preventDefault();
-        this.colourChoices.classList.remove('square-choices');
-        this.colourChoices.classList.add('circle-choices');
-        this.colourChoices.setAttribute('category', 'purpose');
-        this.drawColourChoices(event, entry);
-      });
-    });
-    this.purposeCollapse.addEventListener('click', (): void => {
-      this.emitter.emit('toggleCollapse', 'purpose');
-    });
-  }
-
-  /** Initializes the checkbox time control for filtering by time. */
-  private initializeTimeControl(): void {
-    this.timeEntries.forEach((entry: HTMLElement): void => {
-      entry.addEventListener('click', (event: Event): void => {
-        if (event.target instanceof HTMLElement) {
-          this.emitter.emit('timeClicked', event.target.dataset.value);
-        }
-      });
-    });
-    this.timeCollapse.addEventListener('click', (): void => {
-      this.emitter.emit('toggleCollapse', 'time');
-    });
-    document.getElementById('time-animate')
-        .addEventListener('click', (): void => {
-          this.emitter.emit('time-animate-clicked');
-        });
-  }
-
-  /** Initializes the hide/show chevron button used to minimize the controls. */
-  private initializeHide(): void {
-    this.hideButton.addEventListener('click', (): void => {
-      this.emitter.emit('hideClicked');
-    });
-  }
-
-  /**
-   * Initializes the colour chooser which is used to change control colours.
-   */
-  private initializeColourChooser(): void {
-    const circles = this.colourChoices.querySelectorAll('.colour-choice-icon');
-    circles.forEach((circle: HTMLElement): void => {
-      circle.addEventListener('click', (): void => {
-        this.hideColourChoices();
-        this.emitter.emit('colourClicked', {
-          category: this.colourChoices.dataset.category,
-          key: this.colourChoices.dataset.value,
-          value: getComputedStyle(circle).backgroundColor,
-        });
-      });
-      this.colourChoices.appendChild(circle);
-    });
-    this.colourChoicesCover.addEventListener('click', (): void => {
-      this.hideColourChoices();
     });
   }
 
@@ -208,183 +133,87 @@ export default class MapView extends View {
    */
   private initializeHelp(): void {
     this.helpIcon.addEventListener('click', (): void => {
-      this.emitter.emit('helpClicked');
+      this.emitter.emit('help-clicked');
     });
     this.help.addEventListener('click', (event: Event): void => {
       if (event.target === document.getElementById('help')) {
-        this.emitter.emit('helpClicked');
+        this.emitter.emit('help-clicked');
       }
     });
     this.closeHelp.addEventListener('click', (): void => {
-      this.emitter.emit('helpClicked');
+      this.emitter.emit('help-clicked');
     });
   }
 
-  public draw(scenarios: Map<string, boolean>, purpose: Set<string>,
-      overlays: Map<string, boolean>, time: Set<string>, animating: boolean,
-      colours: object): void {
-    this.setMapColours(scenarios, purpose, overlays, colours);
+  public draw(scenarios: Map<string, boolean>, purposes: Map<string, boolean>,
+      overlays: Map<string, boolean>, times: Map<string, boolean>,
+      purposeColours: Map<string, string>,
+      overlayColours: Map<string, string>): void {
+    // Update colour and opacity for scenario layers
     scenarios.forEach((active: boolean, layer: string): void => {
-      this.map.setLayoutProperty(
-          layer,
-          'visibility',
-          (active) ? 'visible' : 'none'
-      );
-    });
-    overlays.forEach((active: boolean, layer: string): void => {
-      this.map.setLayoutProperty(
-          layer,
-          'visibility',
-          (active) ? 'visible' : 'none'
-      );
-    });
-    this.drawPurpose(purpose);
-    this.drawTime(time, animating);
-    this.drawDots(scenarios, purpose, time);
-  }
-
-  public setMapColours(scenarios: Map<string, boolean>, purpose: Set<string>,
-      overlays: Map<string, boolean>, colours: object): void {
-    scenarios.forEach((active: boolean, layer: string): void => {
-      if (purpose.has('all')) {
+      if (purposes.get('all')) {
         this.map.setPaintProperty(
-            layer, 'circle-color', colours['purpose']['all']
+            layer, 'circle-color', purposeColours.get('all')
         );
       } else {
         this.map.setPaintProperty(
-            layer, 'circle-color', colours['purpose']['dataDriven']
+            layer, 'circle-color', [
+              'match', ['get', 'purp'],
+              'O', purposeColours.get('O'),
+              'W', purposeColours.get('W'),
+              'S', purposeColours.get('S'),
+              'P', purposeColours.get('P'),
+              'H', purposeColours.get('H'),
+              'T', purposeColours.get('T'),
+              'L', purposeColours.get('L'),
+              'R', purposeColours.get('R'),
+              'C', purposeColours.get('C'),
+              'Q', purposeColours.get('Q'),
+              '#000000',
+            ]
         );
       }
+
+      this.map.setPaintProperty(layer, 'circle-opacity', (active) ? 1 : 0);
     });
 
-    document.querySelectorAll('.purpose-entry')
-        .forEach((entry: HTMLElement): void => {
-          const icon = entry.querySelector('.left-control-icon');
-          if (icon instanceof HTMLElement) {
-            icon.style.backgroundColor
-                = colours['purpose'][entry.dataset.value];
-          }
-        });
-
+    // Update colour and opacity for overlay layers
     overlays.forEach((active: boolean, layer: string): void => {
-      this.map.setPaintProperty(layer, 'line-color', colours['overlay'][layer]);
-    });
-  }
-
-  public drawPurpose(purpose: Set<string>): void {
-    document.querySelectorAll('.purpose-entry.selected')
-        .forEach((element: HTMLElement): void => {
-          element.classList.remove('selected');
-        });
-    if (purpose.has('all')) {
-      document.getElementById('purpose-all').classList.add('selected');
-    } else {
-      purpose.forEach((value): void => {
-        document.getElementById(`purpose-${value}`).classList.add('selected');
-      });
-    }
-    document.querySelectorAll('.purpose-entry')
-        .forEach((entry: HTMLElement): void => {
-          if (entry.classList.contains('selected')) {
-            const icon = entry.querySelector('.left-control-checkbox');
-            icon.textContent = 'check_box';
-          } else {
-            const icon = entry.querySelector('.left-control-checkbox');
-            icon.textContent = 'check_box_outline_blank';
-          }
-        });
-  }
-
-  public drawTime(time: Set<string>, animating: boolean): void {
-    document.querySelectorAll('.time-entry.selected')
-        .forEach((element: Element): void => {
-          element.classList.remove('selected');
-        });
-
-    if (time.has('all')) {
-      document.getElementById('time-all').classList.add('selected');
-    } else {
-      time.forEach((value: string): void => {
-        document.getElementById(`time-${value}`).classList.add('selected');
-      });
-    }
-
-    this.timeEntries.forEach((entry): void => {
-      if (entry.classList.contains('selected')) {
-        const icon = entry.querySelector('.left-control-checkbox');
-        icon.textContent = 'check_box';
-      } else {
-        const icon = entry.querySelector('.left-control-checkbox');
-        icon.textContent = 'check_box_outline_blank';
-      }
+      this.map.setPaintProperty(layer, 'line-color', overlayColours.get(layer));
+      this.map.setPaintProperty(layer, 'line-opacity', (active) ? 1 : 0);
     });
 
-    if (animating) {
-      document.getElementById('time-animate').classList.add('selected');
-    } else {
-      document.getElementById('time-animate').classList.remove('selected');
-    }
-  }
-
-  public drawDots(scenarios: Map<string, boolean>, purpose: Set<string>,
-      time: Set<string>): void {
+    // Draw the dots
     scenarios.forEach((active: boolean, layer: string): void => {
       if (!active) return;
 
-      if (time.has('all') && purpose.has('all')) {
+      const activePurposes = [];
+      purposes.forEach((active: boolean, purpose: string): void => {
+        if (active) activePurposes.push(purpose);
+      });
+
+      const activeTimes = [];
+      times.forEach((active: boolean, time: string): void => {
+        if (active) activeTimes.push(parseInt(time));
+      });
+
+      if (times.get('all') && purposes.get('all')) {
         this.map.setFilter(layer, null);
-      } else if (time.has('all')) {
-        this.map.setFilter(
-            layer,
-            ['in', 'purp', ...Array.from(purpose.values())]
-        );
-      } else if (purpose.has('all')) {
-        const timeNumbers = Array.from(time.values())
-            .map((timeString: string): number => parseInt(timeString));
-        this.map.setFilter(layer, ['in', 'time', ...timeNumbers]);
+      } else if (times.get('all')) {
+        this.map.setFilter(layer, ['in', 'purp', ...activePurposes]);
+      } else if (purposes.has('all')) {
+        this.map.setFilter(layer, ['in', 'time', ...activeTimes]);
       } else {
-        const timeNumbers = Array.from(time.values())
-            .map((timeString: string): number => parseInt(timeString));
         this.map.setFilter(layer, [
           'all',
-          ['in', 'time', ...timeNumbers],
-          ['in', 'purp', ...Array.from(purpose.values())],
+          ['in', 'time', ...activeTimes],
+          ['in', 'purp', ...activePurposes],
         ]);
       }
     });
   }
 
-  public drawColourChoices(event: Event, entry: HTMLElement): void {
-    this.colourChoices.classList.add('visible');
-    if (event.target instanceof HTMLElement) {
-      this.colourChoices.dataset.value = event.target.dataset.value;
-    }
-    const rect = entry.getBoundingClientRect();
-    this.colourChoices.style.top = `${rect.top}px`;
-    this.colourChoices.style.left = `${rect.right}px`;
-    this.colourChoicesCover.style.display = 'block';
-  }
-
-  public hideColourChoices(): void {
-    this.colourChoices.classList.remove('visible');
-    this.colourChoicesCover.style.display = 'none';
-  }
-
   public static drawHelp(open: boolean): void {
     document.getElementById('help').style.display = (open) ? 'flex' : 'none';
-  }
-
-  public drawCollapsed(collapsedMap: object): void {
-    Object.keys(collapsedMap).forEach((control: string): void => {
-      const content = document.getElementById(`${control}-content`);
-      const icon = document.getElementById(`collapse-${control}`);
-      if (collapsedMap[control]) {
-        content.classList.add('collapsed');
-        icon.textContent = 'expand_more';
-      } else {
-        content.classList.remove('collapsed');
-        icon.textContent = 'expand_less';
-      }
-    });
   }
 }

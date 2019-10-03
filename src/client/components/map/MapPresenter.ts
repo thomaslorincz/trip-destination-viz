@@ -11,32 +11,8 @@ export default class MapPresenter extends Presenter<AppModel, MapView> {
       this.model.initialDraw();
     });
 
-    this.emitter.on('purposeClicked', (purpose: string): void => {
-      this.model.updatePurpose(purpose);
-    });
-
-    this.emitter.on('timeClicked', (time: string): void => {
-      this.model.updateTime(time);
-    });
-
-    this.emitter.on('time-animate-clicked', (): void => {
-      this.model.toggleAnimation();
-    });
-
-    this.emitter.on('hideClicked', (): void => {
-      this.model.toggleHide();
-    });
-
-    this.emitter.on('colourClicked', ({category, key, value}): void => {
-      this.model.updateColours(category, key, value);
-    });
-
-    this.emitter.on('helpClicked', (): void => {
+    this.emitter.on('help-clicked', (): void => {
       this.model.toggleHelp();
-    });
-
-    this.emitter.on('toggle-collapse', (control: string): void => {
-      this.model.toggleCollapse(control);
     });
   }
 }
