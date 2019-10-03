@@ -34,7 +34,7 @@ export default class OverlayView extends View {
       const checkbox = element.querySelector('.control-entry-checkbox');
 
       if (!(icon instanceof HTMLElement)) return;
-      icon.style.backgroundColor = colours[overlay];
+      icon.style.backgroundColor = colours.get(overlay);
 
       if (active) {
         element.classList.add('active');

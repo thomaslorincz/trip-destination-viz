@@ -31,7 +31,7 @@ export default class PurposeView extends View {
       const icon = element.querySelector('.control-entry-icon');
 
       if (!(icon instanceof HTMLElement)) return;
-      icon.style.backgroundColor = colours[purpose];
+      icon.style.backgroundColor = colours.get(purpose);
 
       if (active) {
         element.classList.add('active');
