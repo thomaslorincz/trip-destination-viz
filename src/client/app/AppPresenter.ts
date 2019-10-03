@@ -61,26 +61,54 @@ export default class AppPresenter extends Presenter<AppModel, View> {
     new TimePresenter(this.model, this.timeView, this.emitter);
 
     this.emitter.on(
-        'settingsUpdated',
-        (scenario, purpose, overlays, time, animating, colours): void => {
+        'map-updated',
+        (scenarios: Map<string, boolean>, purposes: Map<string, boolean>,
+            overlays: Map<string, boolean>, times: Map<string, boolean>,
+            purposeColours: Map<string, string>,
+            overlayColours: Map<string, string>): void => {
           this.mapView.draw(
-              scenario,
-              purpose,
+              scenarios,
+              purposes,
               overlays,
-              time,
-              animating,
-              colours
+              times,
+              purposeColours,
+              overlayColours
           );
-          this.scenarioView.draw(scenario);
         }
     );
 
-    this.emitter.on('helpUpdated', (helpOpen: boolean): void => {
-      MapView.drawHelp(helpOpen);
-    });
+    this.emitter.on(
+        'scenario-updated',
+        (scenarios: Map<string, boolean>, collapsed: boolean): void => {
+          this.scenarioView.draw(scenarios, collapsed);
+        }
+    );
 
-    this.emitter.on('collapsedUpdated', (collapsed: object): void => {
-      this.mapView.drawCollapsed(collapsed);
+    this.emitter.on(
+        'purpose-updated',
+        (purposes: Map<string, boolean>, colours: Map<string, string>,
+            collapsed: boolean): void => {
+          this.purposeView.draw(purposes, colours, collapsed);
+        }
+    );
+
+    this.emitter.on(
+        'overlay-updated',
+        (overlays: Map<string, boolean>, colours: Map<string, string>,
+            collapsed: boolean): void => {
+          this.overlayView.draw(overlays, colours, collapsed);
+        }
+    );
+
+    this.emitter.on(
+        'time-updated',
+        (times: Map<string, boolean>, collapsed: boolean): void => {
+          this.timeView.draw(times, collapsed);
+        }
+    );
+
+    this.emitter.on('help-updated', (open: boolean): void => {
+      MapView.drawHelp(open);
     });
   }
 }
