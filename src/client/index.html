@@ -16,10 +16,10 @@
 <div id="map"></div>
 <div id="control-container">
   <div id="scenario-control" class="control">
-    <i id="collapse-scenario" class="collapse-icon material-icons-round">expand_less</i>
+    <i id="scenario-collapse" class="collapse-icon material-icons-round">expand_less</i>
     <div class="control-title">Scenarios</div>
     <div id="scenario-content" class="control-content">
-      <div id="scenario-2065BAP" class="control-entry scenario-entry active" data-value="2065BAP">
+      <div id="scenario-2065BAP" class="control-entry scenario-entry" data-value="2065BAP">
         <i class="control-entry-icon material-icons-round scenario-icon"></i>
         <div class="control-entry-label">Business as Usual (2065)</div>
       </div>
@@ -30,7 +30,7 @@
     </div>
   </div>
   <div id="purpose-control" class="control">
-    <i id="collapse-purpose" class="collapse-icon material-icons-round">expand_less</i>
+    <i id="purpose-collapse" class="collapse-icon material-icons-round">expand_less</i>
     <div class="control-title">Trip Purpose</div>
     <div id="purpose-content" class="control-content">
       <div id="purpose-all" class="control-entry purpose-entry" data-value="all">
@@ -91,15 +91,15 @@
     </div>
   </div>
   <div id="overlay-control" class="control">
-    <i id="collapse-overlay" class="collapse-icon material-icons-round">expand_less</i>
+    <i id="overlay-collapse" class="collapse-icon material-icons-round">expand_less</i>
     <div class="control-title">Overlay</div>
     <div id="overlay-content" class="control-content">
-      <div id="overlay-cma" class="control-entry overlay-entry active" data-value="cma">
+      <div id="overlay-cma" class="control-entry overlay-entry" data-value="cma">
         <div class="control-entry-icon square"></div>
         <div class="control-entry-label">CMA Boundary</div>
         <i class="control-entry-checkbox material-icons-round"></i>
       </div>
-      <div id="overlay-city" class="control-entry overlay-entry active" data-value="city">
+      <div id="overlay-city" class="control-entry overlay-entry" data-value="city">
         <div class="control-entry-icon square"></div>
         <div class="control-entry-label">City Boundary</div>
         <i class="control-entry-checkbox material-icons-round"></i>
@@ -109,7 +109,7 @@
         <div class="control-entry-label">Nodes & Corridors</div>
         <i class="control-entry-checkbox material-icons-round"></i>
       </div>
-      <div id="overlay-lrt" class="control-entry overlay-entry active" data-value="lrt">
+      <div id="overlay-lrt" class="control-entry overlay-entry" data-value="lrt">
         <div class="control-entry-icon square"></div>
         <div class="control-entry-label">Light Rail Transit</div>
         <i class="control-entry-checkbox material-icons-round"></i>
@@ -117,7 +117,7 @@
     </div>
   </div>
     <div id="time-control" class="control">
-      <i id="collapse-time" class="collapse-icon material-icons-round">expand_less</i>
+      <i id="time-collapse" class="collapse-icon material-icons-round">expand_less</i>
       <div class="control-title">Time of Day</div>
       <div id="time-content" class="control-content">
         <div id="time-all" class="control-entry time-entry" data-value="all">
@@ -164,27 +164,8 @@
           <div class="control-entry-label time-label">22:00-04:00</div>
           <i class="control-entry-checkbox material-icons-round"></i>
         </div>
-        <div id="time-animate" class="control-entry">
-          <i class="material-icons-round">play_circle_outline</i>
-          <div class="control-entry-label">Animate</div>
-        </div>
       </div>
     </div>
-</div>
-<div id="colour-choices-cover">
-  <div id="colour-choices">
-    <div class="colour-choice-icon white-bg"></div>
-    <div class="colour-choice-icon red-bg"></div>
-    <div class="colour-choice-icon orange-bg"></div>
-    <div class="colour-choice-icon yellow-bg"></div>
-    <div class="colour-choice-icon yellow-green-bg"></div>
-    <div class="colour-choice-icon green-bg"></div>
-    <div class="colour-choice-icon green-blue-bg"></div>
-    <div class="colour-choice-icon blue-bg"></div>
-    <div class="colour-choice-icon violet-bg"></div>
-    <div class="colour-choice-icon pink-bg"></div>
-    <div class="colour-choice-icon brown-bg"></div>
-  </div>
 </div>
 <i id="help-icon" class="material-icons-round">help_outline</i>
 <div id="help">
