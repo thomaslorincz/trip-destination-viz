@@ -58,13 +58,9 @@ export default class AppModel extends Model {
   private readonly times = new Map<string, boolean>([
     ['all', true],
     ['1', false],
-    ['21', false],
-    ['22', false],
-    ['23', false],
+    ['2', false],
     ['3', false],
-    ['41', false],
-    ['42', false],
-    ['43', false],
+    ['4', false],
     ['5', false],
     ['6', false],
   ]);

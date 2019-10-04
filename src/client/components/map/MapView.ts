@@ -38,15 +38,7 @@ export default class MapView extends View {
       const scenarioLayerStyling = {
         'type': 'circle',
         'paint': {
-          'circle-radius': [
-            'interpolate', ['linear'], ['zoom'],
-            9, [
-              'max', 0.1, ['/', ['to-number', ['get', 'count']], 300],
-            ],
-            12, [
-              'max', 1, ['*', 2, ['/', ['to-number', ['get', 'count']], 300]],
-            ],
-          ],
+          'circle-radius': ['/', ['to-number', ['get', 'count']], 300],
           'circle-opacity-transition': {
             'duration': 1000,
             'delay': 0,
@@ -58,9 +50,9 @@ export default class MapView extends View {
         'id': '2065BAP',
         'source': {
           type: 'vector',
-          url: 'mapbox://thomaslorincz.b38h0wik',
+          url: 'mapbox://thomaslorincz.1mgtoxdx',
         },
-        'source-layer': 'output_2065BAP_300-2jb2ha',
+        'source-layer': 'output_2065BAP_300_peak-bjgso4',
         ...scenarioLayerStyling,
       });
 
@@ -68,9 +60,9 @@ export default class MapView extends View {
         'id': '2065CityII',
         'source': {
           type: 'vector',
-          url: 'mapbox://thomaslorincz.4qfirexj',
+          url: 'mapbox://thomaslorincz.3low14lh',
         },
-        'source-layer': 'output_2065CityII_300-7gjcgt',
+        'source-layer': 'output_2065CityII_300_peak-avhe9k',
         ...scenarioLayerStyling,
       });
 
