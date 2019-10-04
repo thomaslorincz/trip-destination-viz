@@ -18,7 +18,7 @@ export default class AppModel extends Model {
     ['S', false],
     ['P', false],
     ['H', false],
-    ['T', false],
+    // ['T', false],
     ['L', false],
     ['R', false],
     ['C', false],
@@ -31,11 +31,11 @@ export default class AppModel extends Model {
     ['S', '#FFFF00'],
     ['P', '#ADFF2F'],
     ['H', '#008000'],
-    ['T', '#20B2AA'],
-    ['L', '#0000FF'],
-    ['R', '#9932CC'],
-    ['C', '#FF1493'],
-    ['Q', '#8B4513'],
+    // ['T', '#20B2AA'],
+    ['L', '#20B2AA'],
+    ['R', '#0000FF'],
+    ['C', '#9932CC'],
+    ['Q', '#FF1493'],
   ]);
   private purposesCollapsed = false;
 
