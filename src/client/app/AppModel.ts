@@ -8,7 +8,7 @@ export default class AppModel extends Model {
     ['2065BAP', true],
     ['2065CityII', false],
   ]);
-  private scenariosCollapsed: boolean = false;
+  private scenariosCollapsed = false;
 
   /* Purpose component state data. */
   private readonly purposes = new Map<string, boolean>([
@@ -37,7 +37,7 @@ export default class AppModel extends Model {
     ['C', '#FF1493'],
     ['Q', '#8B4513'],
   ]);
-  private purposesCollapsed: boolean = false;
+  private purposesCollapsed = false;
 
   /* Overlay component state data. */
   private readonly overlays = new Map<string, boolean>([
@@ -52,7 +52,7 @@ export default class AppModel extends Model {
     ['nc', '#FFFF00'],
     ['lrt', '#FF1493'],
   ]);
-  private overlaysCollapsed: boolean = false;
+  private overlaysCollapsed = false;
 
   /* Time component state data. */
   private readonly times = new Map<string, boolean>([
@@ -68,9 +68,9 @@ export default class AppModel extends Model {
     ['5', false],
     ['6', false],
   ]);
-  private timesCollapsed: boolean = false;
+  private timesCollapsed = false;
 
-  private helpOpen: boolean = false;
+  private helpOpen = false;
 
   public constructor(emitter: EventEmitter) {
     super(emitter);
