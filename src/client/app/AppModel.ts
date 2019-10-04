@@ -86,7 +86,10 @@ export default class AppModel extends Model {
   }
 
   public updateScenario(scenario: string): void {
-    this.updateControlMap(this.scenarios, scenario);
+    this.scenarios.forEach((active: boolean, key: string): void => {
+      this.scenarios.set(key, false);
+    });
+    this.scenarios.set(scenario, true);
     this.dispatchMapUpdated();
     this.dispatchScenarioUpdated();
   }
