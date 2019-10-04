@@ -19,10 +19,7 @@ export default class AppModel extends Model {
     ['P', false],
     ['H', false],
     // ['T', false],
-    ['L', false],
-    ['R', false],
-    ['C', false],
-    ['Q', false],
+    ['Other', false],
   ]);
   private readonly purposeColours = new Map<string, string>([
     ['all', '#FFFFFF'],
@@ -30,12 +27,9 @@ export default class AppModel extends Model {
     ['W', '#FFA500'],
     ['S', '#FFFF00'],
     ['P', '#ADFF2F'],
-    ['H', '#008000'],
+    ['H', '#00EEEE'],
     // ['T', '#20B2AA'],
-    ['L', '#20B2AA'],
-    ['R', '#0000FF'],
-    ['C', '#9932CC'],
-    ['Q', '#FF1493'],
+    ['Other', '#9932CC'],
   ]);
   private purposesCollapsed = false;
 

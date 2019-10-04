@@ -157,10 +157,7 @@ export default class MapView extends View {
               'P', purposeColours.get('P'),
               'H', purposeColours.get('H'),
               // 'T', purposeColours.get('T'),
-              'L', purposeColours.get('L'),
-              'R', purposeColours.get('R'),
-              'C', purposeColours.get('C'),
-              'Q', purposeColours.get('Q'),
+              'Other', purposeColours.get('Other'),
               '#000000',
             ]
         );
