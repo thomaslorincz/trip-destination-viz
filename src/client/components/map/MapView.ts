@@ -35,85 +35,59 @@ export default class MapView extends View {
     }));
 
     this.map.on('load', (): void => {
-      const scenarioLayerStyling = {
-        'type': 'circle',
-        'paint': {
-          'circle-radius': ['/', ['to-number', ['get', 'count']], 300],
-          'circle-opacity-transition': {
-            'duration': 1000,
+      const scenarios = [
+        ['2065BAP', 'thomaslorincz.1046c6an', 'output_2065BAP_focused-28fctt'],
+        [
+          '2065CityII',
+          'thomaslorincz.3wttrtss',
+          'output_2065CityII_focused-757xdf',
+        ],
+      ];
+
+      for (let i = 0; i < scenarios.length; i++) {
+        const scenario = scenarios[i];
+        this.map.addLayer({
+          'id': scenario[0],
+          'source': {
+            type: 'vector',
+            url: 'mapbox://' + scenario[1],
+          },
+          'source-layer': scenario[2],
+          'type': 'circle',
+          'paint': {
+            'circle-radius': ['/', ['to-number', ['get', 'count']], 300],
+            'circle-opacity-transition': {
+              'duration': 1000,
+              'delay': 0,
+            },
+          },
+        });
+      }
+
+      const overlays = [
+        ['cma', 'thomaslorincz.1kz18y39', 'cma_boundary-5vtklc'],
+        ['city', 'thomaslorincz.48okpw5t', 'city_boundary-d6ewoz'],
+        ['nc', 'thomaslorincz.d571qaco', 'nc_CityII-axaip8'],
+        ['lrt', 'thomaslorincz.75obfmea', 'lrt_2065-0kp6p1'],
+      ];
+
+      for (let i = 0; i < overlays.length; i++) {
+        const overlay = overlays[i];
+        this.map.addLayer({
+          'id': overlay[0],
+          'source': {
+            type: 'vector',
+            url: 'mapbox://' + overlays[1],
+          },
+          'source-layer': overlay[2],
+          'type': 'line',
+          'paint': {'line-width': 2},
+          'line-opacity-transition': {
+            'duration': 500,
             'delay': 0,
           },
-        },
-      };
-
-      this.map.addLayer({
-        'id': '2065BAP',
-        'source': {
-          type: 'vector',
-          url: 'mapbox://thomaslorincz.1mgtoxdx',
-        },
-        'source-layer': 'output_2065BAP_300_peak-bjgso4',
-        ...scenarioLayerStyling,
-      });
-
-      this.map.addLayer({
-        'id': '2065CityII',
-        'source': {
-          type: 'vector',
-          url: 'mapbox://thomaslorincz.3low14lh',
-        },
-        'source-layer': 'output_2065CityII_300_peak-avhe9k',
-        ...scenarioLayerStyling,
-      });
-
-      const overlayLayerStyling = {
-        'type': 'line',
-        'paint': {'line-width': 2},
-        'line-opacity-transition': {
-          'duration': 500,
-          'delay': 0,
-        },
-      };
-
-      this.map.addLayer({
-        'id': 'cma',
-        'source': {
-          type: 'vector',
-          url: 'mapbox://thomaslorincz.1kz18y39',
-        },
-        'source-layer': 'cma_boundary-5vtklc',
-        ...overlayLayerStyling,
-      });
-
-      this.map.addLayer({
-        'id': 'city',
-        'source': {
-          type: 'vector',
-          url: 'mapbox://thomaslorincz.48okpw5t',
-        },
-        'source-layer': 'city_boundary-d6ewoz',
-        ...overlayLayerStyling,
-      });
-
-      this.map.addLayer({
-        'id': 'nc',
-        'source': {
-          type: 'vector',
-          url: 'mapbox://thomaslorincz.d571qaco',
-        },
-        'source-layer': 'nc_CityII-axaip8',
-        ...overlayLayerStyling,
-      });
-
-      this.map.addLayer({
-        'id': 'lrt',
-        'source': {
-          type: 'vector',
-          url: 'mapbox://thomaslorincz.75obfmea',
-        },
-        'source-layer': 'lrt_2065-0kp6p1',
-        ...overlayLayerStyling,
-      });
+        });
+      }
 
       this.emitter.emit('loaded');
     });
