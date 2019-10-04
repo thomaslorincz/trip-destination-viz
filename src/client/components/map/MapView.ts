@@ -174,8 +174,6 @@ export default class MapView extends View {
 
     // Draw the dots
     scenarios.forEach((active: boolean, layer: string): void => {
-      if (!active) return;
-
       const activePurposes = [];
       purposes.forEach((active: boolean, purpose: string): void => {
         if (active) activePurposes.push(purpose);
