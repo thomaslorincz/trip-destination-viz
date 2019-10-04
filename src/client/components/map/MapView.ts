@@ -193,7 +193,7 @@ export default class MapView extends View {
         this.map.setFilter(layer, null);
       } else if (times.get('all')) {
         this.map.setFilter(layer, ['in', 'purp', ...activePurposes]);
-      } else if (purposes.has('all')) {
+      } else if (purposes.get('all')) {
         this.map.setFilter(layer, ['in', 'time', ...activeTimes]);
       } else {
         this.map.setFilter(layer, [
