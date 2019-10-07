@@ -5,8 +5,8 @@ import * as EventEmitter from 'eventemitter3';
 export default class AppModel extends Model {
   /* Scenario component state data. */
   private readonly scenarios = new Map<string, boolean>([
-    ['2065BAP', true],
-    ['2065CityII', false],
+    ['BAU', true],
+    ['Pref', false],
   ]);
   private scenariosCollapsed = false;
 
@@ -18,7 +18,7 @@ export default class AppModel extends Model {
     ['S', false],
     ['P', false],
     ['H', false],
-    // ['T', false],
+    ['T', false],
     ['Other', false],
   ]);
   private readonly purposeColours = new Map<string, string>([
@@ -28,7 +28,7 @@ export default class AppModel extends Model {
     ['S', '#FFFF00'],
     ['P', '#ADFF2F'],
     ['H', '#00EEEE'],
-    // ['T', '#20B2AA'],
+    ['T', '#003EFF'],
     ['Other', '#9932CC'],
   ]);
   private purposesCollapsed = false;
@@ -38,7 +38,7 @@ export default class AppModel extends Model {
     ['cma', true],
     ['city', true],
     ['nc', false],
-    ['lrt', true],
+    ['lrt', false],
   ]);
   private readonly overlayColours = new Map<string, string>([
     ['cma', '#9932CC'],
