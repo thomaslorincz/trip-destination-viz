@@ -365,5 +365,7 @@ body {
 }
 
 .mapboxgl-ctrl-bottom-left {
-  left: 304px;
+  bottom: 16px;
+  right: 4px;
+  left: unset;
 }
