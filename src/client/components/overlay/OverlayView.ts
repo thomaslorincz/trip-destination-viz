@@ -24,6 +24,11 @@ export default class OverlayView extends View {
     this.overlayCollapse.addEventListener('click', (): void => {
       this.emitter.emit('toggle-overlay-collapse');
     });
+
+    document.getElementById('overlay-edit-colours')
+        .addEventListener('click', () => {
+          this.emitter.emit('overlay-edit-colours-clicked');
+        });
   }
 
   public draw(overlays: Map<string, boolean>, colours: Map<string, string>,

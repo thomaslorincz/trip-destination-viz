@@ -15,5 +15,9 @@ export default class OverlayPresenter extends Presenter<AppModel, OverlayView> {
     this.emitter.on('toggle-overlay-collapse', (): void => {
       this.model.toggleCollapse('overlay');
     });
+
+    this.emitter.on('overlay-edit-colours-clicked', () => {
+      this.model.openColourEditor('overlay');
+    });
   }
 }

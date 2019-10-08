@@ -21,6 +21,11 @@ export default class PurposeView extends View {
     this.purposeCollapse.addEventListener('click', (): void => {
       this.emitter.emit('toggle-purpose-collapse');
     });
+
+    document.getElementById('purpose-edit-colours')
+        .addEventListener('click', () => {
+          this.emitter.emit('purpose-edit-colours-clicked');
+        });
   }
 
   public draw(purposes: Map<string, boolean>, colours: Map<string, string>,
