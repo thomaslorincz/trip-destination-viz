@@ -8,5 +8,16 @@ export default class ColourEditorPresenter
   public constructor(model: AppModel, view: ColourEditorView,
       emitter: EventEmitter) {
     super(model, view, emitter);
+
+    this.emitter.on(
+        'colours-updated',
+        (type: string, colourMap: Map<string, string>) => {
+          if (type === 'purpose') {
+            this.model.updatePurposeColours(colourMap);
+          } else if (type === 'overlay') {
+            this.model.updateOverlayColours(colourMap);
+          }
+        }
+    );
   }
 }

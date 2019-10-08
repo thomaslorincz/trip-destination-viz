@@ -28,10 +28,17 @@ export default class AppPresenter extends Presenter<AppModel, View> {
     super(model, view, emitter);
 
     this.colourEditorView = new ColourEditorView(
-        document.getElementById('colour-choices'),
+        document.getElementById('colour-editor'),
         this.emitter
     );
     new ColourEditorPresenter(this.model, this.colourEditorView, this.emitter);
+
+    this.emitter.on(
+        'open-colour-editor',
+        (type: string, colourMap: Map<string, string>) => {
+          this.colourEditorView.draw(type, colourMap);
+        }
+    );
 
     this.mapView = new MapView(document.getElementById('map'), this.emitter);
     new MapPresenter(this.model, this.mapView, this.emitter);

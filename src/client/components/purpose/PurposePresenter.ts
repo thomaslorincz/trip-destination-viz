@@ -15,5 +15,9 @@ export default class PurposePresenter extends Presenter<AppModel, PurposeView> {
     this.emitter.on('toggle-purpose-collapse', (): void => {
       this.model.toggleCollapse('purpose');
     });
+
+    this.emitter.on('purpose-edit-colours-clicked', () => {
+      this.model.openColourEditor('purpose');
+    });
   }
 }

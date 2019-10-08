@@ -72,7 +72,6 @@ export default class AppModel extends Model {
     this.dispatchPurposeUpdated();
     this.dispatchOverlayUpdated();
     this.dispatchTimeUpdated();
-    this.emitter.emit('help-updated', this.helpOpen);
   }
 
   public updateScenario(scenario: string): void {
@@ -123,16 +122,28 @@ export default class AppModel extends Model {
     }
   }
 
-  public updatePurposeColours(purpose: string, colour: string): void {
-    this.purposeColours.set(purpose, colour);
+  public updatePurposeColours(colourMap: Map<string, string>): void {
+    colourMap.forEach((colour: string, purpose: string) => {
+      this.purposeColours.set(purpose, colour);
+    });
     this.dispatchMapUpdated();
     this.dispatchPurposeUpdated();
   }
 
-  public updateOverlayColours(overlay: string, colour: string): void {
-    this.overlayColours.set(overlay, colour);
+  public updateOverlayColours(colourMap: Map<string, string>): void {
+    colourMap.forEach((colour: string, overlay: string) => {
+      this.overlayColours.set(overlay, colour);
+    });
     this.dispatchMapUpdated();
     this.dispatchOverlayUpdated();
+  }
+
+  public openColourEditor(type: string): void {
+    if (type === 'purpose') {
+      this.emitter.emit('open-colour-editor', type, this.purposeColours);
+    } else if (type === 'overlay') {
+      this.emitter.emit('open-colour-editor', type, this.overlayColours);
+    }
   }
 
   /** Toggle the state of the help dialogue. */

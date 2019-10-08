@@ -1,0 +1,98 @@
+#colour-editor-mask {
+  display: none;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.2);
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+#colour-editor-mask.active {
+  display: flex;
+}
+
+#colour-editor {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  width: auto;
+  height: auto;
+  padding: 20px;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
+  justify-content: center;
+  z-index: 2;
+  font-family: "Montserrat", sans-serif;
+}
+
+.colour-entry {
+  display: flex;
+  position: relative;
+  width: auto;
+  height: auto;
+  padding: 8px 12px;
+  margin: 1px 8px;
+  cursor: pointer;
+  border-radius: 20px;
+  align-items: center;
+}
+
+.colour-entry:hover {
+  background-color: gainsboro;
+}
+
+.colour-entry > input {
+  display: none;
+}
+
+.colour-entry > label {
+  cursor: pointer;
+}
+
+.colour-choice-icon {
+  display: inline-block;
+  position: relative;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  border: 1px solid #2B2B2B;
+  margin-right: 8px;
+}
+
+.colour-choice-icon.circle {
+  border-radius: 50%;
+  border: 1px solid #2B2B2B;
+}
+
+.colour-choice-icon.square {
+  border-radius: unset;
+}
+
+#button-container {
+  display: flex;
+  position: relative;
+  flex-direction: row;
+  width: 280px;
+  padding: 8px;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.colour-editor-button {
+  margin: 2px 8px;
+  padding: 4px 12px;
+  border-radius: 16px;
+  cursor: pointer;
+  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
+  background-color: white;
+  color: #2B2B2B;
+  transition: background-color 250ms ease;
+  border: 1px solid gainsboro;
+}
+
+.colour-editor-button:hover {
+  background-color: gainsboro;
+}

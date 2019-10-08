@@ -13,7 +13,7 @@ export default class MapView extends View {
   public constructor(container: HTMLElement, emitter: EventEmitter) {
     super(container, emitter);
 
-    this.initializeHelp();
+    // this.initializeHelp();
 
     mapboxgl.accessToken = 'pk.eyJ1IjoidGhvbWFzbG9yaW5jeiIsImEiOiJjamx5aXVwaH' +
         'AxamZzM3dsaWdkZ3Q2eGJyIn0.mXjlp9c3l2-NBoS1uaEUdw';

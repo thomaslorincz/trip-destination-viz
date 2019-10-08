@@ -216,55 +216,6 @@ body {
   color: gainsboro;
 }
 
-#colour-choices-cover {
-  display: none;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  z-index: 1;
-}
-
-#colour-choices {
-  display: flex;
-  position: absolute;
-  box-sizing: border-box;
-  flex-direction: row;
-  background-color: white;
-  border-radius: 12px;
-  padding: 4px 12px;
-  box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.2);
-  z-index: 2;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 250ms ease;
-}
-
-#colour-choices.visible {
-  pointer-events: all;
-  opacity: 1;
-}
-
-.colour-choice-icon {
-  display: inline-block;
-  position: relative;
-  width: 16px;
-  height: 16px;
-  cursor: pointer;
-  margin: 0 2px;
-  border: 1px solid #2B2B2B;
-}
-
-#colour-choices.circle-choices .colour-choice-icon {
-  border-radius: 50%;
-  border: 1px solid #2B2B2B;
-}
-
-#colour-choices.square-choices .colour-choice-icon {
-  border-radius: unset;
-}
-
 .white-bg {background-color: white;}
 .red-bg {background-color: red;}
 .orange-bg {background-color: orange;}
