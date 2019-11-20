@@ -177,7 +177,7 @@ export default class AppModel extends Model {
         this.overlays,
         this.times,
         this.purposeColours,
-        this.overlayColours
+        this.overlayColours,
     );
   }
 
@@ -185,7 +185,7 @@ export default class AppModel extends Model {
     this.emitter.emit(
         'scenario-updated',
         this.scenarios,
-        this.scenariosCollapsed
+        this.scenariosCollapsed,
     );
   }
 
@@ -194,7 +194,7 @@ export default class AppModel extends Model {
         'purpose-updated',
         this.purposes,
         this.purposeColours,
-        this.purposesCollapsed
+        this.purposesCollapsed,
     );
   }
 
@@ -203,7 +203,7 @@ export default class AppModel extends Model {
         'overlay-updated',
         this.overlays,
         this.overlayColours,
-        this.overlaysCollapsed
+        this.overlaysCollapsed,
     );
   }
 
@@ -211,7 +211,7 @@ export default class AppModel extends Model {
     this.emitter.emit(
         'time-updated',
         this.times,
-        this.timesCollapsed
+        this.timesCollapsed,
     );
   }
 }

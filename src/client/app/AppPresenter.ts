@@ -29,7 +29,7 @@ export default class AppPresenter extends Presenter<AppModel, View> {
 
     this.colourEditorView = new ColourEditorView(
         document.getElementById('colour-editor'),
-        this.emitter
+        this.emitter,
     );
     new ColourEditorPresenter(this.model, this.colourEditorView, this.emitter);
 
@@ -37,7 +37,7 @@ export default class AppPresenter extends Presenter<AppModel, View> {
         'open-colour-editor',
         (type: string, colourMap: Map<string, string>) => {
           this.colourEditorView.draw(type, colourMap);
-        }
+        },
     );
 
     this.mapView = new MapView(document.getElementById('map'), this.emitter);
@@ -45,25 +45,25 @@ export default class AppPresenter extends Presenter<AppModel, View> {
 
     this.overlayView = new OverlayView(
         document.getElementById('overlay-control'),
-        this.emitter
+        this.emitter,
     );
     new OverlayPresenter(this.model, this.overlayView, this.emitter);
 
     this.purposeView = new PurposeView(
         document.getElementById('purpose-control'),
-        this.emitter
+        this.emitter,
     );
     new PurposePresenter(this.model, this.purposeView, this.emitter);
 
     this.scenarioView = new ScenarioView(
         document.getElementById('scenario-control'),
-        this.emitter
+        this.emitter,
     );
     new ScenarioPresenter(this.model, this.scenarioView, this.emitter);
 
     this.timeView = new TimeView(
         document.getElementById('time-control'),
-        this.emitter
+        this.emitter,
     );
     new TimePresenter(this.model, this.timeView, this.emitter);
 
@@ -79,16 +79,16 @@ export default class AppPresenter extends Presenter<AppModel, View> {
               overlays,
               times,
               purposeColours,
-              overlayColours
+              overlayColours,
           );
-        }
+        },
     );
 
     this.emitter.on(
         'scenario-updated',
         (scenarios: Map<string, boolean>, collapsed: boolean): void => {
           this.scenarioView.draw(scenarios, collapsed);
-        }
+        },
     );
 
     this.emitter.on(
@@ -96,7 +96,7 @@ export default class AppPresenter extends Presenter<AppModel, View> {
         (purposes: Map<string, boolean>, colours: Map<string, string>,
             collapsed: boolean): void => {
           this.purposeView.draw(purposes, colours, collapsed);
-        }
+        },
     );
 
     this.emitter.on(
@@ -104,14 +104,14 @@ export default class AppPresenter extends Presenter<AppModel, View> {
         (overlays: Map<string, boolean>, colours: Map<string, string>,
             collapsed: boolean): void => {
           this.overlayView.draw(overlays, colours, collapsed);
-        }
+        },
     );
 
     this.emitter.on(
         'time-updated',
         (times: Map<string, boolean>, collapsed: boolean): void => {
           this.timeView.draw(times, collapsed);
-        }
+        },
     );
 
     this.emitter.on('help-updated', (open: boolean): void => {

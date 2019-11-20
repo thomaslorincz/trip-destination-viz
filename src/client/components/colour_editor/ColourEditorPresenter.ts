@@ -17,7 +17,7 @@ export default class ColourEditorPresenter
           } else if (type === 'overlay') {
             this.model.updateOverlayColours(colourMap);
           }
-        }
+        },
     );
   }
 }

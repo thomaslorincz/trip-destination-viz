@@ -223,16 +223,16 @@ export default class MapView extends View {
           this.map.setPaintProperty(
               layerId,
               'circle-opacity',
-              (scenarioActive && purposeActive && timeActive) ? 0.6 : 0
+              (scenarioActive && purposeActive && timeActive) ? 0.6 : 0,
           );
 
           if (purposes.get('all')) {
             this.map.setPaintProperty(
-                layerId, 'circle-color', purposeColours.get('all')
+                layerId, 'circle-color', purposeColours.get('all'),
             );
           } else {
             this.map.setPaintProperty(
-                layerId, 'circle-color', purposeColours.get(purpose)
+                layerId, 'circle-color', purposeColours.get(purpose),
             );
           }
         });
