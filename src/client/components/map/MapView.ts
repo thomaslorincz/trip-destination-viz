@@ -5,15 +5,8 @@ import * as EventEmitter from 'eventemitter3';
 export default class MapView extends View {
   private map: mapboxgl.Map;
 
-  /* Help window elements */
-  private helpIcon = document.getElementById('help-icon');
-  private help = document.getElementById('help');
-  private closeHelp = document.getElementById('close-help');
-
   public constructor(container: HTMLElement, emitter: EventEmitter) {
     super(container, emitter);
-
-    // this.initializeHelp();
 
     mapboxgl.accessToken = 'pk.eyJ1IjoidGhvbWFzbG9yaW5jeiIsImEiOiJjamx5aXVwaH' +
         'AxamZzM3dsaWdkZ3Q2eGJyIn0.mXjlp9c3l2-NBoS1uaEUdw';
@@ -179,24 +172,6 @@ export default class MapView extends View {
       }
 
       this.emitter.emit('loaded');
-    });
-  }
-
-  /**
-   * Initializes the help icon and help dialogue for displaying project
-   * information and controls.
-   */
-  private initializeHelp(): void {
-    this.helpIcon.addEventListener('click', (): void => {
-      this.emitter.emit('help-clicked');
-    });
-    this.help.addEventListener('click', (event: Event): void => {
-      if (event.target === document.getElementById('help')) {
-        this.emitter.emit('help-clicked');
-      }
-    });
-    this.closeHelp.addEventListener('click', (): void => {
-      this.emitter.emit('help-clicked');
     });
   }
 
