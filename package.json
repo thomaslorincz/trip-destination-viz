@@ -7,7 +7,8 @@
     "npm": ">=6.0.0"
   },
   "scripts": {
-    "lint:fix": "eslint './src/**/*.{ts,tsx}'",
+    "lint": "eslint ./src/**/*.{ts,tsx}",
+    "lint:fix": "eslint --fix ./src/**/*.{ts,tsx}",
     "build:dev": "rimraf dist && webpack --mode development --config webpack.server.config.js && webpack --mode development --config webpack.dev.config.js",
     "dev": "npm run build-dev && npm start",
     "build:prod": "rimraf dist && webpack --mode production --config webpack.server.config.js && webpack --mode production --config webpack.prod.config.js",
