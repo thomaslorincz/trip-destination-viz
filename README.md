@@ -1,3 +1,4 @@
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 # Trip Destination Visualization
 A visualization of daily trip destination in the Edmonton Central Metropolitan Area across several time periods
 ## Website
