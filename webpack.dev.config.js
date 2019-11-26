@@ -4,7 +4,7 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebPackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  entry: './src/client/index.ts',
+  entry: './src/client/index.tsx',
   output: {
     path: path.join(__dirname, 'dist'),
     publicPath: '/',
@@ -18,13 +18,17 @@ module.exports = {
     hot: true,
   },
   resolve: {
-    extensions: ['.ts', '.js'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
+  },
+  externals: {
+    'react': 'React',
+    'react-dom': 'ReactDOM'
   },
   module: {
     rules: [
       {
         enforce: 'pre',
-        test: /\.(ts|js)$/,
+        test: /\.(tsx?|jsx?)$/,
         exclude: /node_modules/,
         loader: 'eslint-loader',
         options: {
@@ -34,12 +38,9 @@ module.exports = {
         },
       },
       {
-        test: /\.ts$/,
+        test: /\.tsx?$/,
         loader: 'ts-loader',
         exclude: /node_modules/,
-        options: {
-          configFile: 'tsconfig.dev.json',
-        },
       },
       {
         test: /\.html$/,
@@ -53,7 +54,8 @@ module.exports = {
   },
   plugins: [
     new CopyWebpackPlugin([
-      {from: 'assets', to: 'images'},
+      {from: 'src/client/assets/images'},
+      {from: 'src/client/assets/robots.txt'}
     ]),
     new HtmlWebPackPlugin({
       template: './src/client/index.html',
