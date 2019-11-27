@@ -7,20 +7,24 @@ import * as config from '../../webpack.dev.config.js';
 
 const app = express();
 const port = process.env.PORT || 8080;
-const compiler = webpack(config);
+const compiler: webpack.Compiler = webpack(config as webpack.Configuration);
 
-app.use(webpackDevMiddleware(compiler, {publicPath: config.output.publicPath}));
+app.use(
+  webpackDevMiddleware(compiler, { publicPath: config.output.publicPath })
+);
 app.use(webpackHotMiddleware(compiler));
 
 app.get('/', (req, res, next): void => {
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
   compiler.outputFileSystem.readFile(
-      path.join(__dirname, 'index.html'),
-      (err, result): void => {
-        if (err) return next(err);
-        res.set('content-type', 'text/html');
-        res.send(result);
-        res.end();
-      }
+    path.join(__dirname, 'index.html'),
+    (err: NodeJS.ErrnoException, result: Buffer): void => {
+      if (err) return next(err);
+      res.set('content-type', 'text/html');
+      res.send(result);
+      res.end();
+    }
   );
 });
 

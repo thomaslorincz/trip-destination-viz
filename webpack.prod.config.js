@@ -8,7 +8,7 @@ const CompressPlugin = require('compression-webpack-plugin');
 
 module.exports = {
   entry: {
-    main: './src/client/index.ts',
+    main: './src/client/index.tsx',
   },
   output: {
     path: path.join(__dirname, 'dist'),
@@ -33,13 +33,17 @@ module.exports = {
     },
   },
   resolve: {
-    extensions: ['.ts', '.js'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
+  },
+  externals: {
+    'react': 'React',
+    'react-dom': 'ReactDOM'
   },
   module: {
     rules: [
       {
         enforce: 'pre',
-        test: /\.(ts|js)$/,
+        test: /\.(tsx?|jsx?)$/,
         exclude: /node_modules/,
         loader: 'eslint-loader',
         options: {
@@ -49,12 +53,9 @@ module.exports = {
         },
       },
       {
-        test: /\.ts$/,
+        test: /\.tsx?$/,
         loader: 'ts-loader',
         exclude: /node_modules/,
-        options: {
-          configFile: 'tsconfig.prod.json',
-        },
       },
       {
         test: /\.html$/,
@@ -73,7 +74,8 @@ module.exports = {
   },
   plugins: [
     new CopyWebpackPlugin([
-      {from: 'assets', to: 'images'},
+      {from: 'src/client/assets/images'},
+      {from: 'src/client/assets/robots.txt'}
     ]),
     new HtmlWebPackPlugin({
       template: './src/client/index.html',
