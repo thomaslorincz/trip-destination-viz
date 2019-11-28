@@ -70,6 +70,7 @@ module.exports = {
   },
   plugins: [
     new CopyWebpackPlugin([
+      {from: 'src/client/assets/data'},
       {from: 'src/client/assets/images'},
       {from: 'src/client/assets/robots.txt'}
     ]),
@@ -83,7 +84,7 @@ module.exports = {
       chunkFilename: '[name].css',
     }),
     new CompressPlugin({
-      test: /\.(js|css)$/,
+      test: /\.(js|css|csv)$/,
       algorithm: 'brotliCompress',
       filename: '[path].br[query]',
       deleteOriginalAssets: true,
