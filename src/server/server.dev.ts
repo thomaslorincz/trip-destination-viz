@@ -4,6 +4,7 @@ import * as webpack from 'webpack';
 import * as webpackDevMiddleware from 'webpack-dev-middleware';
 import * as webpackHotMiddleware from 'webpack-hot-middleware';
 import * as config from '../../webpack.dev.config.js';
+import * as expressStaticGzip from 'express-static-gzip';
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -13,6 +14,14 @@ app.use(
   webpackDevMiddleware(compiler, { publicPath: config.output.publicPath })
 );
 app.use(webpackHotMiddleware(compiler));
+app.use(
+  '/',
+  expressStaticGzip(__dirname, {
+    enableBrotli: true,
+    customCompressions: [],
+    orderPreference: ['br']
+  })
+);
 
 app.get('/', (req, res, next): void => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
